@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sigma-mutate"
+version = "0.0.1"
+description = "Mutation testing for Sigma detection rules: how easily can a rule be evaded?"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = ["PyYAML>=6"]
+
+[project.scripts]
+sigma-mutate = "sigma_mutate.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

