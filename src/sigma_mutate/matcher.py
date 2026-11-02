@@ -12,7 +12,7 @@ from __future__ import annotations
 import fnmatch
 import re
 
-_MODS = {"contains", "startswith", "endswith", "all"}
+_MODS = {"contains", "startswith", "endswith", "all", "windash"}
 
 
 def parse_pattern(p: str) -> list[tuple]:
@@ -51,15 +51,20 @@ def literal_value(p) -> str:
 
 
 _REGEX_CACHE: dict = {}
+# 'windash': a dash may also be written as a slash or as a typographic dash (en dash, em dash, horizontal bar).
+_DASH_CLASS = r"[\-/\u2013\u2014\u2015]"
 
 
-def _regex(pattern: str, op: str):
-    key = (pattern, op)
+def _regex(pattern: str, op: str, windash: bool = False):
+    key = (pattern, op, windash)
     if key not in _REGEX_CACHE:
-        body = "".join(
-            re.escape(x[1]) if x[0] == "lit" else (".*" if x[0] == "any" else ".")
-            for x in parse_pattern(pattern)
-        )
+        parts = []
+        for x in parse_pattern(pattern):
+            if x[0] == "lit":
+                parts.append("".join(_DASH_CLASS if (windash and ch == "-") else re.escape(ch) for ch in x[1]))
+            else:
+                parts.append(".*" if x[0] == "any" else ".")
+        body = "".join(parts)
         if op in ("startswith", "equals"):
             body = r"\A" + body
         if op in ("endswith", "equals"):
@@ -72,7 +77,8 @@ def _field_matches(value, mods, patterns) -> bool:
     v = str(value)
     op = ("contains" if "contains" in mods else "startswith" if "startswith" in mods
           else "endswith" if "endswith" in mods else "equals")
-    results = [bool(_regex(str(p), op).search(v)) for p in patterns]
+    windash = "windash" in mods
+    results = [bool(_regex(str(p), op, windash).search(v)) for p in patterns]
     return all(results) if "all" in mods else any(results)
 
 
@@ -86,8 +92,12 @@ def _selection_matches(sel, event) -> bool:
         unknown = set(mods) - _MODS
         if unknown:
             raise NotImplementedError(f"unsupported modifier(s): {sorted(unknown)}")
-        if expected is None:
-            raise NotImplementedError("null values (field must be absent) are not supported yet")
+        if isinstance(expected, list) and any(e is None for e in expected):
+            raise NotImplementedError("null inside a value list is not supported yet")
+        if expected is None:  # the field must be absent (or empty)
+            if event.get(field) not in (None, ""):
+                return False
+            continue
         if field not in event:
             return False
         patterns = expected if isinstance(expected, list) else [expected]

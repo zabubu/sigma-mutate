@@ -68,6 +68,21 @@ class MatcherTests(unittest.TestCase):
         # a lone backslash followed by an ordinary character stays a backslash
         self.assertTrue(matches(r(BS + "cmd.exe", "endswith"), {"CommandLine": "C:" + BS + "x" + BS + "cmd.exe"}))
 
+    def test_windash(self):
+        rule = {"detection": {"sel": {"CommandLine|contains|windash": " -enc "}, "condition": "sel"}}
+        self.assertTrue(matches(rule, {"CommandLine": "ps -enc abc"}))
+        self.assertTrue(matches(rule, {"CommandLine": "ps /enc abc"}))
+        self.assertTrue(matches(rule, {"CommandLine": "ps " + chr(0x2013) + "enc abc"}))
+        self.assertFalse(matches(rule, {"CommandLine": "ps +enc abc"}))
+        plain = {"detection": {"sel": {"CommandLine|contains": " -enc "}, "condition": "sel"}}
+        self.assertFalse(matches(plain, {"CommandLine": "ps /enc abc"}))
+
+    def test_null_means_field_absent(self):
+        rule = {"detection": {"sel": {"CommandLine|contains": "x", "Hashes": None}, "condition": "sel"}}
+        self.assertTrue(matches(rule, {"CommandLine": "x"}))
+        self.assertTrue(matches(rule, {"CommandLine": "x", "Hashes": ""}))
+        self.assertFalse(matches(rule, {"CommandLine": "x", "Hashes": "abc"}))
+
     def test_unsupported_modifier_is_explicit(self):
         rule = {"detection": {"sel": {"CommandLine|re": "a.*"}, "condition": "sel"}}
         with self.assertRaises(NotImplementedError):

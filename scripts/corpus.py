@@ -22,7 +22,7 @@ import yaml  # noqa: E402
 
 from sigma_mutate.reference import rsigma_matches  # noqa: E402
 from sigma_mutate.scoring import score_rule  # noqa: E402
-from sigma_mutate.synth import SynthError, synthesize  # noqa: E402
+from sigma_mutate.synth import SynthError, synthesize_ex  # noqa: E402
 
 
 def load_rule(path: str):
@@ -49,8 +49,8 @@ def analyse(path: str, args) -> dict:
         row.update(status="skipped", reason=f"category {ls.get('category')}")
         return row
     try:
-        event = synthesize(rule)
-        if "CommandLine" not in event:
+        event, positive = synthesize_ex(rule)
+        if "CommandLine" not in positive:
             row.update(status="no_commandline", reason="rule does not constrain CommandLine")
             return row
         if args.verify_rsigma and not rsigma_matches(args.rsigma, path, event):

@@ -70,6 +70,44 @@ class SynthTests(unittest.TestCase):
         self.assertIn(wanted, ev["CommandLine"])
         self.assertNotIn(BS * 4, ev["CommandLine"])
 
+    def test_null_filters_get_filler_values(self):
+        # pattern of many SigmaHQ rules: filters that fire when the field is absent or empty
+        r = rule({
+            "selection": [{"Image|endswith": [":\\\\Windows\\\\System32\\\\bash.exe"]},
+                          {"OriginalFileName": "Bash.exe"}],
+            "filter_main_cli_flag": {"CommandLine|contains": ["bash.exe -", "bash -"]},
+            "filter_main_no_cli": {"CommandLine": None},
+            "filter_main_empty": {"CommandLine": ""},
+            "condition": "selection and not 1 of filter_main_*",
+        })
+        ev = synthesize(r)
+        self.assertTrue(matches(r, ev))
+        self.assertIn("CommandLine", ev)
+
+    def test_alternatives_are_combined_consistently(self):
+        # first alternatives conflict (ParentCommandLine contains /c vs equals /../../): must try others
+        r = rule({
+            "selection_img": [{"ParentImage|endswith": "\\cmd.exe"}, {"Image|endswith": "\\cmd.exe"}],
+            "selection_flags": [{"ParentCommandLine|contains": ["/c", "/k"]},
+                                {"CommandLine|contains": ["/c", "/k"]}],
+            "selection_trav": [{"ParentCommandLine": "/../../"}, {"CommandLine|contains": "/../../"}],
+            "filter_java": {"CommandLine|contains": "java"},
+            "condition": "all of selection_* and not 1 of filter_*",
+        })
+        ev = synthesize(r)
+        self.assertTrue(matches(r, ev))
+        self.assertIn("CommandLine", ev)
+
+    def test_windash_rule(self):
+        r = rule({"sel": {"CommandLine|contains|windash": " -urlcache "}, "condition": "sel"})
+        self.assertTrue(matches(r, synthesize(r)))
+
+    def test_null_field_stays_absent(self):
+        r = rule({"sel": {"CommandLine|contains": "x", "Hashes": None}, "condition": "sel"})
+        ev = synthesize(r)
+        self.assertNotIn("Hashes", ev)
+        self.assertTrue(matches(r, ev))
+
     def test_wildcard_inside_contains(self):
         r = rule({"sel": {"CommandLine|contains": "abc*xyz"}, "condition": "sel"})
         self.assertTrue(matches(r, synthesize(r)))
@@ -77,7 +115,7 @@ class SynthTests(unittest.TestCase):
     def test_unsupported_things_are_reported_not_guessed(self):
         bad = [
             rule({"sel": {"CommandLine|re": "a.*"}, "condition": "sel"}),
-            rule({"sel": {"CommandLine": None}, "condition": "sel"}),
+            rule({"sel": {"CommandLine|contains": ["a", None]}, "condition": "sel"}),
             rule({"sel": ["keyword"], "condition": "sel"}),
         ]
         for r in bad:
