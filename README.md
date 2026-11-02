@@ -4,34 +4,62 @@ Mutation testing for [Sigma](https://github.com/SigmaHQ/sigma) detection rules.
 
 A rule that fires on `certutil -urlcache ... http://...` may stay silent on
 `certutil -url""cache ... ht""tp://...`, a command that does exactly the same thing.
-**sigma-mutate** rewrites a known true-positive event into semantically equivalent
-variants, replays each variant against the rule, and reports which variants slip through.
+**sigma-mutate** rewrites a known true-positive event into variants that are equivalent
+under a stated assumption, replays each variant against the rule, and reports which
+variants slip through.
 
 ## Quick start
 
 ```bash
 pip install -e .
 sigma-mutate examples/certutil_rule.yml examples/certutil_event.json
+
+# whole SigmaHQ folder, cross-checked against rsigma
+python scripts/corpus.py path/to/sigma/rules/windows/process_creation --verify-rsigma
 ```
 
-## Design principles
+## How it works
 
-- **Semantic validity first.** Each mutator declares the assumption under which a variant is
-  equivalent (`argv`, `cmd.exe`, `program`). Only `argv` runs by default.
-- **Reproducible.** Deterministic mutators, no hidden randomness.
-- **CI-friendly.** `--fail-under 0.8` exits non-zero when robustness regresses.
+1. **Synthesize** a minimal true-positive event from the rule itself (SigmaHQ ships none).
+2. **Mutate** its `CommandLine` with deterministic mutators.
+3. **Replay** every variant through the matcher; a variant that is no longer detected is an evasion.
+4. **Cross-check** the matcher against [rsigma](https://github.com/timescale/rsigma) (reference engine).
+
+## Mutators and assumptions
+
+| Mutator | Assumption | Idea |
+|---|---|---|
+| `quote_split` | argv | `h""ttp` is parsed back to `http` |
+| `quote_wrap` | argv | `"-urlcache"` is parsed back to `-urlcache` |
+| `space_padding`, `tab_separator` | argv | whitespace tweaks (trivial) |
+| `caret_insert` | cmd.exe | `h^ttp`, only if run through cmd.exe |
+| `option_prefix_swap` | program | `-x` -> `/x`, only if the program accepts both |
+
+`argv` = same result after standard Windows argument parsing. Only `argv` runs by default.
+
+## Verdicts
+
+Per rule: **evadable** (at least one undetected variant), **robust** (at least N non-trivial
+variants, all detected) or **inconclusive** (too few meaningful variants to claim anything).
+
+## Honest limitations
+
+- Events are **minimal**: they contain what the rule asks for, not a realistic attack.
+- Variants are **not yet validated on a real Windows host**; some programs do not use standard
+  argument parsing. Planned: validate each mutator against representative programs.
+- Only `CommandLine` is mutated; `re`, `base64offset` and `fieldref` rules are not supported yet.
 
 ## Status
 
-MVP (v0.0.1): minimal Sigma matcher, 4 mutators on `CommandLine`, per-rule score.
+v0.0.9 - matcher validated against rsigma on SigmaHQ `windows/process_creation`
+(events and variants, no disagreement at last run).
 
 ## Roadmap
 
-1. Cross-check the matcher against pySigma on the full SigmaHQ corpus
-2. Support more Sigma features (`1 of`, `re`, `base64`, keywords)
-3. Add semantic mutators (equivalent utilities, argument reordering)
-4. Benchmark every SigmaHQ `process_creation` rule and publish the results
-5. Upstream fixes to SigmaHQ; GitHub Action
+1. Validate mutators on Windows (sandbox) and publish the method
+2. Support `re` / `base64offset`, mutate other fields (paths, parent command lines)
+3. Benchmark all SigmaHQ rule folders and publish the results
+4. Upstream fixes to SigmaHQ; GitHub Action
 
 ## Related work
 
