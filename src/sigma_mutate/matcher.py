@@ -2,7 +2,7 @@
 
 Supports: field modifiers contains / startswith / endswith / all, wildcard
 equality, list-of-maps selections, and conditions made of selection names with
-and / or / not / parentheses. Matching is case-insensitive, like Sigma.
+and / or / not / parentheses and '1 of X*' / 'all of them' quantifiers. Matching is case-insensitive, like Sigma.
 
 Anything else raises NotImplementedError instead of silently guessing.
 Later milestone: cross-check this matcher against pySigma on the SigmaHQ corpus.
@@ -40,6 +40,8 @@ def _selection_matches(sel, event) -> bool:
         unknown = set(mods) - _MODS
         if unknown:
             raise NotImplementedError(f"unsupported modifier(s): {sorted(unknown)}")
+        if expected is None:
+            raise NotImplementedError("null values (field must be absent) are not supported yet")
         if field not in event:
             return False
         patterns = expected if isinstance(expected, list) else [expected]
@@ -94,8 +96,18 @@ def _eval_condition(cond: str, truth: dict) -> bool:
                 raise ValueError("missing closing parenthesis in condition")
             take()
             return v
-        if peek() == "of" or tok in ("all", "1"):
-            raise NotImplementedError("'1 of' / 'all of' conditions are not supported yet")
+        if peek() == "of":
+            take()
+            if peek() is None:
+                raise ValueError("missing pattern after 'of'")
+            pattern = take()
+            if tok != "all" and not tok.isdigit():
+                raise ValueError(f"invalid quantifier before 'of': {tok}")
+            names = [n for n in truth if pattern == "them" or fnmatch.fnmatchcase(n, pattern)]
+            if not names:
+                raise ValueError(f"no selection matches '{pattern}'")
+            hits = sum(truth[n] for n in names)
+            return hits == len(names) if tok == "all" else hits >= int(tok)
         if tok not in truth:
             raise ValueError(f"unknown selection in condition: {tok}")
         return truth[tok]
@@ -117,3 +129,8 @@ def matches(rule: dict, event: dict) -> bool:
     cond = det["condition"]
     conds = cond if isinstance(cond, list) else [cond]
     return any(_eval_condition(c, truth) for c in conds)
+
+
+# Public aliases used by the event synthesizer.
+eval_condition = _eval_condition
+SUPPORTED_MODIFIERS = _MODS

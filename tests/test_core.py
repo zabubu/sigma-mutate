@@ -36,6 +36,18 @@ class MatcherTests(unittest.TestCase):
         self.assertTrue(matches(rule, {"CommandLine": "x http://evil.example"}))
         self.assertFalse(matches(rule, {"CommandLine": "x http://good.example"}))
 
+    def test_of_quantifiers(self):
+        rule = {"detection": {
+            "sel_a": {"CommandLine|contains": "aaa"},
+            "sel_b": {"CommandLine|contains": "bbb"},
+            "condition": "1 of sel_*",
+        }}
+        self.assertTrue(matches(rule, {"CommandLine": "xx aaa"}))
+        self.assertFalse(matches(rule, {"CommandLine": "xx ccc"}))
+        rule["detection"]["condition"] = "all of them"
+        self.assertFalse(matches(rule, {"CommandLine": "xx aaa"}))
+        self.assertTrue(matches(rule, {"CommandLine": "aaa bbb"}))
+
     def test_unsupported_modifier_is_explicit(self):
         rule = {"detection": {"sel": {"CommandLine|re": "a.*"}, "condition": "sel"}}
         with self.assertRaises(NotImplementedError):
