@@ -98,6 +98,17 @@ class SynthTests(unittest.TestCase):
         self.assertTrue(matches(r, ev))
         self.assertIn("CommandLine", ev)
 
+    def test_command_line_starts_with_the_program_name(self):
+        r = rule({"selection": {"Image|endswith": chr(92) + "certutil.exe", "CommandLine|contains": "-urlcache"},
+                  "condition": "selection"})
+        ev = synthesize(r)
+        self.assertTrue(ev["CommandLine"].startswith("certutil.exe "))
+        self.assertTrue(matches(r, ev))
+
+    def test_startswith_constraint_keeps_working(self):
+        r = rule({"selection": {"CommandLine|startswith": "-x"}, "condition": "selection"})
+        self.assertTrue(matches(r, synthesize(r)))
+
     def test_windash_rule(self):
         r = rule({"sel": {"CommandLine|contains|windash": " -urlcache "}, "condition": "sel"})
         self.assertTrue(matches(r, synthesize(r)))

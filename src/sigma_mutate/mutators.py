@@ -42,20 +42,23 @@ def _boundaries(tok: str) -> list[tuple[str, int]]:
     return out
 
 
-def _per_token(cmd: str, ins: str, name: str, assumption: str) -> list[Mutation]:
+def _per_token(cmd: str, ins: str, name: str, assumption: str, first_token: str | None = None) -> list[Mutation]:
+    """`first_token`: assumption to use for token 0 (the program name), if different."""
     toks = cmd.split(" ")
     out = []
     for i, tok in enumerate(toks):
         for where, pos in _boundaries(tok):
             new = tok[:pos] + ins + tok[pos:]
             value = " ".join(toks[:i] + [new] + toks[i + 1 :])
-            out.append(Mutation(name, f"token {i} ({tok}) {where}", value, assumption))
+            out.append(Mutation(name, f"token {i} ({tok}) {where}", value,
+                                first_token if (i == 0 and first_token) else assumption))
     return out
 
 
 def quote_split(cmd: str) -> list[Mutation]:
-    # h""ttp is parsed back to http by the Windows argument parser.
-    return _per_token(cmd, '""', "quote_split", ARGV)
+    # h""ttp is parsed back to http by the Windows argument parser. The program name (token 0)
+    # is parsed by CreateProcess, which does not strip inner quotes: only cmd.exe does.
+    return _per_token(cmd, '""', "quote_split", ARGV, first_token=CMD)
 
 
 def quote_wrap(cmd: str) -> list[Mutation]:
@@ -94,12 +97,48 @@ def option_prefix_swap(cmd: str) -> list[Mutation]:
     return out
 
 
+# Evidence from scripts/validate_mutators.py on a real Windows host (variants gave the same exit code and
+# output as the original): quote_split / quote_wrap on arguments, whitespace tweaks, quote_wrap on the
+# program name, and (through cmd.exe) caret_insert and quote_split on the program name.
+VALIDATED_PROGRAMS = {"certutil.exe", "whoami.exe", "reg.exe", "findstr.exe", "sort.exe",
+                      "powershell.exe", "curl.exe", "where.exe"}
+
+# Programs that interpret their own command line instead of using standard argument parsing.
+# Evidence: in `cmd.exe /c ty""pe file` the command is not found, and `echo he""llo` prints the quotes.
+# Candidates still to validate: rundll32, msiexec, mshta, wscript, cscript, regsvr32.
+SELF_PARSING = {"cmd.exe"}
+
 MUTATORS = [quote_split, quote_wrap, space_padding, tab_separator, caret_insert, option_prefix_swap]
 
 # Whitespace-only tweaks: they only break rules whose patterns contain spaces.
 TRIVIAL = {"space_padding", "tab_separator"}
 
 
+def program_of(cmd: str) -> str:
+    """Lower-case file name of the program (first token), e.g. 'certutil.exe'."""
+    first = cmd.strip().split(" ")[0].strip('"').replace("\\", "/")
+    name = first.rsplit("/", 1)[-1].lower()
+    return name if "." in name else name + ".exe"
+
+
+def program_status(cmd: str) -> str:
+    prog = program_of(cmd)
+    if prog in SELF_PARSING:
+        return "self-parsing"
+    return "validated" if prog in VALIDATED_PROGRAMS else "unvalidated"
+
+
 def generate(cmd: str, assumptions=(ARGV,)) -> list[Mutation]:
+    """Variants of a command line. For self-parsing programs (cmd.exe), quote mutations of the
+    arguments are only valid command by command, so they are filed under 'program'."""
     allowed = set(assumptions)
-    return [m for fn in MUTATORS for m in fn(cmd) if m.assumption in allowed]
+    self_parsing = program_of(cmd) in SELF_PARSING
+    out = []
+    for fn in MUTATORS:
+        for m in fn(cmd):
+            if (self_parsing and m.assumption == ARGV and m.mutator in ("quote_split", "quote_wrap")
+                    and not m.label.startswith("token 0")):
+                m = Mutation(m.mutator, m.label, m.value, PROGRAM)
+            if m.assumption in allowed:
+                out.append(m)
+    return out

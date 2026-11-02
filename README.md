@@ -29,7 +29,7 @@ python scripts/corpus.py path/to/sigma/rules/windows/process_creation --verify-r
 
 | Mutator | Assumption | Idea |
 |---|---|---|
-| `quote_split` | argv | `h""ttp` is parsed back to `http` |
+| `quote_split` | argv (arguments), cmd.exe (program name) | `h""ttp` is parsed back to `http` |
 | `quote_wrap` | argv | `"-urlcache"` is parsed back to `-urlcache` |
 | `space_padding`, `tab_separator` | argv | whitespace tweaks (trivial) |
 | `caret_insert` | cmd.exe | `h^ttp`, only if run through cmd.exe |
@@ -42,6 +42,23 @@ python scripts/corpus.py path/to/sigma/rules/windows/process_creation --verify-r
 Per rule: **evadable** (at least one undetected variant), **robust** (at least N non-trivial
 variants, all detected) or **inconclusive** (too few meaningful variants to claim anything).
 
+## Validation on Windows
+
+`scripts/validate_mutators.py` runs harmless commands (certutil, whoami, reg, findstr, sort,
+cmd /c type, powershell, curl, where) and their variants on a real Windows host, and compares exit
+code and output. First run (9 programs):
+
+| Mutator | Kind of token | Result |
+|---|---|---|
+| `quote_split` | argument | equivalent on every program except `cmd.exe` |
+| `quote_wrap` | argument / program name | equivalent on all programs |
+| `space_padding`, `tab_separator` | whitespace | equivalent on all programs |
+| `caret_insert`, `quote_split` on program name | via cmd.exe | equivalent when launched through cmd.exe |
+
+`cmd.exe` interprets its own command line: `cmd /c ty""pe file` fails, `echo he""llo` prints the quotes.
+Quote mutations on `cmd.exe` arguments are therefore filed under `program` (not assumed valid).
+Verdicts are reported separately for rules whose program was validated.
+
 ## Honest limitations
 
 - Events are **minimal**: they contain what the rule asks for, not a realistic attack.
@@ -51,7 +68,7 @@ variants, all detected) or **inconclusive** (too few meaningful variants to clai
 
 ## Status
 
-v0.0.9 - matcher validated against rsigma on SigmaHQ `windows/process_creation`
+v0.0.12 - matcher validated against rsigma on SigmaHQ `windows/process_creation`
 (events and variants, no disagreement at last run).
 
 ## Roadmap

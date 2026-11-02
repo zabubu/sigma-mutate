@@ -12,6 +12,7 @@ not a realistic attack), so scores measure the rule's fragility on its own patte
 """
 from __future__ import annotations
 
+import re
 from itertools import combinations, islice, product
 
 from .matcher import (SUPPORTED_MODIFIERS, _selection_matches, eval_condition,
@@ -167,6 +168,23 @@ def _falsify_null_filters(det: dict, chosen: list[str], event: dict) -> None:
 
 
 # ---------------------------------------------------------------- public API
+def _program_name(event: dict) -> str:
+    img = event.get("Image")
+    if img:
+        base = re.split(r"[\\/]", str(img))[-1]
+        if base:
+            return base
+    return str(event.get("OriginalFileName") or "app.exe")
+
+
+def _with_program(event: dict) -> dict | None:
+    """Real command lines start with the program name; the rule's patterns usually do not."""
+    cmd = event.get("CommandLine")
+    if not cmd:
+        return None
+    return {**event, "CommandLine": f"{_program_name(event)} {cmd}"}
+
+
 def synthesize_ex(rule: dict, verify: bool = True, prefer_field: str = "CommandLine"):
     """Return (event, positive_fields). positive_fields excludes filler values."""
     det = rule.get("detection")
@@ -184,17 +202,25 @@ def synthesize_ex(rule: dict, verify: bool = True, prefer_field: str = "CommandL
                 continue
             positive = set(event)
             _falsify_null_filters(det, chosen, event)
+            variants = [event]
+            prefixed = _with_program(event)
+            if prefixed:
+                variants.insert(0, prefixed)  # preferred: starts with the program name
             if not verify:
-                return event, positive
-            try:
-                ok = matches(rule, event)
-            except NotImplementedError as e:
-                raise SynthError(f"unsupported feature: {e}")
-            if not ok:
+                return variants[0], positive
+            good = None
+            for ev in variants:
+                try:
+                    if matches(rule, ev):
+                        good = ev
+                        break
+                except NotImplementedError as e:
+                    raise SynthError(f"unsupported feature: {e}")
+            if good is None:
                 continue
             if prefer_field in positive or not mentions:
-                return event, positive
-            best = best or (event, positive)
+                return good, positive
+            best = best or (good, positive)
     if best:
         return best
     raise first_error or SynthError("synthesized event does not satisfy the rule")

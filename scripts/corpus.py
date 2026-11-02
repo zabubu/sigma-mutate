@@ -26,13 +26,13 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 import yaml  # noqa: E402
 
-from sigma_mutate.mutators import TRIVIAL  # noqa: E402
+from sigma_mutate.mutators import TRIVIAL, program_of, program_status  # noqa: E402
 from sigma_mutate.reference import rsigma_matches_many  # noqa: E402
 from sigma_mutate.scoring import score_rule  # noqa: E402
 from sigma_mutate.synth import SynthError, synthesize_ex  # noqa: E402
 
 ALL_ASSUMPTIONS = ("argv", "cmd.exe", "program")
-FIELDS = ["path", "title", "status", "reason", "mutations_argv", "evaded_argv", "argv_verdict",
+FIELDS = ["path", "title", "status", "reason", "program", "program_status", "mutations_argv", "evaded_argv", "argv_verdict",
           "mutations_all", "evaded_all", "engine_diffs"]
 
 
@@ -65,6 +65,8 @@ def analyse(path: str, args, diffs: list) -> dict:
         if "CommandLine" not in positive:
             row.update(status="no_commandline", reason="rule does not constrain CommandLine")
             return row
+        row["program"] = program_of(event["CommandLine"])
+        row["program_status"] = program_status(event["CommandLine"])
         report = score_rule(rule, event, assumptions=ALL_ASSUMPTIONS)
         if report.total == 0:
             row.update(status="no_mutations", reason="no mutation applicable")
@@ -138,19 +140,30 @@ def main() -> int:
             print(f"  {n:4}  {reason}")
 
     scored = [r for r in rows if r["status"] == "scored"]
-    verdicts = collections.Counter(r["argv_verdict"] for r in scored)
-    if scored:
-        ev, rob, inc = verdicts["evadable"], verdicts["robust"], verdicts["inconclusive"]
-        print(f"\nVerdict per rule (argv-equivalent variants only), {len(scored)} rules:")
+
+    def show(label: str, subset: list) -> None:
+        v = collections.Counter(r["argv_verdict"] for r in subset)
+        ev, rob, inc = v["evadable"], v["robust"], v["inconclusive"]
+        print(f"\n{label} ({len(subset)} rules):")
         print(f"  evadable     : {ev}  (at least one variant is NOT detected)")
         print(f"  robust       : {rob}  (>= {args.min_variants} non-trivial variants, all detected)")
         print(f"  inconclusive : {inc}  (too few meaningful variants applicable)")
         if ev + rob:
             print(f"  -> among conclusive rules: {100 * ev / (ev + rob):.0f}% evadable")
+
+    if scored:
+        by_status = collections.Counter(r["program_status"] for r in scored)
+        print(f"\nPrograms: {dict(by_status)}")
+        show("Verdict, ALL rules (argv-equivalent variants, hypothesis for unvalidated programs)", scored)
+        show("Verdict, rules whose program was VALIDATED on Windows", [r for r in scored if r["program_status"] == "validated"])
         print("\nSample of robust rules (check them by hand):")
         for r in [r for r in scored if r["argv_verdict"] == "robust"][:8]:
-            print(f"  {r['mutations_argv']:>3} variants  {r['title']}")
-        print("\nNote: events are minimal and variants are NOT yet validated on a real Windows host.")
+            print(f"  {r['mutations_argv']:>3} variants  {r['title']}  [{r['program']}]")
+        print("\nUnvalidated programs most often seen (candidates to validate next):")
+        unv = collections.Counter(r["program"] for r in scored if r["program_status"] == "unvalidated")
+        for prog, n in unv.most_common(12):
+            print(f"  {n:4}  {prog}")
+        print("\nNote: events are minimal; variants are validated only for the programs listed above.")
 
     if args.verify_rsigma:
         checked = [r for r in scored if r["engine_diffs"] != ""]

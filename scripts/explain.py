@@ -16,7 +16,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 import yaml  # noqa: E402
 
 from sigma_mutate.matcher import _selection_matches, eval_condition  # noqa: E402
-from sigma_mutate.synth import SynthError, satisfying_selections, synthesize  # noqa: E402
+from sigma_mutate.scoring import score_rule  # noqa: E402
+from sigma_mutate.synth import SynthError, satisfying_selections, synthesize_ex  # noqa: E402
 
 
 def main() -> int:
@@ -36,7 +37,7 @@ def main() -> int:
     try:
         chosen = satisfying_selections(det)
         print(f"Selections chosen to be true: {chosen}")
-        event = synthesize(rule, verify=False)
+        event, _ = synthesize_ex(rule, verify=False)
     except (SynthError, NotImplementedError) as e:
         print(f"Cannot build an event: {e}")
         return 1
@@ -58,6 +59,14 @@ def main() -> int:
         print(f"Condition on candidate event: {result}")
     except Exception as e:
         print(f"Condition could not be evaluated: {e}")
+        return 0
+    if result and "CommandLine" in event:
+        print("\nVariants of CommandLine (argv-equivalent first):")
+        report = score_rule(rule, event, assumptions=("argv", "cmd.exe", "program"))
+        for r in sorted(report.results, key=lambda r: r.mutation.assumption != "argv"):
+            m = r.mutation
+            print(f"  {'detected' if r.detected else 'EVADED  '} [{m.assumption}] {m.mutator} {m.label}\n"
+                  f"           {m.value!r}")
     return 0
 
 

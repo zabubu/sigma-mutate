@@ -4,3 +4,4 @@ __pycache__/
 results.csv
 verif.csv
 *.ndjson
+validation.csv
