@@ -79,7 +79,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_cmd_copy_dmp_from_share.yml,Copy .DMP/.DUMP Files From Remote Share Via Cmd.EXE,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_cmd_curl_download_exec_combo.yml,Curl Download And Execute Combination,unsupported,unsupported modifier(s): ['windash'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_cmd_del_execution.yml,File Deletion Via Del,unsupported,unsupported modifier(s): ['windash'],0,0,
-..\sigma\rules\windows\process_creation\proc_creation_win_cmd_del_greedy_deletion.yml,Greedy File Deletion Using Del,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_cmd_del_greedy_deletion.yml,Greedy File Deletion Using Del,scored,,1,1,1.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_cmd_dir_execution.yml,File And SubFolder Enumeration Via Dir Command,unsupported,unsupported modifier(s): ['windash'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_cmd_dosfuscation.yml,Potential Dosfuscation Activity,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_cmd_http_appdata.yml,Command Line Execution with Suspicious URL and AppData Strings,scored,,2,1,0.5
@@ -92,9 +92,9 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_cmd_path_traversal.yml,Potential CommandLine Path Traversal Via Cmd.EXE,unsupported,synthesized event does not satisfy the rule,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_cmd_ping_copy_combined_execution.yml,Potentially Suspicious Ping/Copy Command Combination,unsupported,unsupported modifier(s): ['windash'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_cmd_ping_del_combined_execution.yml,Suspicious Ping/Del Command Combination,unsupported,unsupported modifier(s): ['windash'],0,0,
-..\sigma\rules\windows\process_creation\proc_creation_win_cmd_redirection_susp_folder.yml,Potentially Suspicious CMD Shell Output Redirect,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_cmd_redirection_susp_folder.yml,Potentially Suspicious CMD Shell Output Redirect,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_cmd_rmdir_execution.yml,Directory Removal Via Rmdir,scored,,2,1,0.5
-..\sigma\rules\windows\process_creation\proc_creation_win_cmd_shadowcopy_access.yml,Copy From VolumeShadowCopy Via Cmd.EXE,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_cmd_shadowcopy_access.yml,Copy From VolumeShadowCopy Via Cmd.EXE,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_cmd_stdin_redirect.yml,Read Contents From Stdin Via Cmd.EXE,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_cmd_sticky_key_like_backdoor_execution.yml,Sticky Key Like Backdoor Execution,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_cmd_sticky_keys_replace.yml,Persistence Via Sticky Key Backdoor,scored,,2,0,0.0
@@ -185,7 +185,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_findstr_lnk.yml,Findstr Launching .lnk File,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_findstr_lsass.yml,LSASS Process Reconnaissance Via Findstr.EXE,unsupported,unsupported modifier(s): ['windash'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_findstr_recon_everyone.yml,Permission Misconfiguration Reconnaissance Via Findstr.EXE,scored,,3,0,0.0
-..\sigma\rules\windows\process_creation\proc_creation_win_findstr_recon_pipe_output.yml,Recon Command Output Piped To Findstr.EXE,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_findstr_recon_pipe_output.yml,Recon Command Output Piped To Findstr.EXE,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_findstr_security_keyword_lookup.yml,Security Tools Keyword Lookup Via Findstr.EXE,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_findstr_subfolder_search.yml,Insensitive Subfolder Search Via Findstr.EXE,unsupported,unsupported modifier(s): ['windash'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_findstr_sysmon_discovery_via_default_altitude.yml,Sysmon Discovery Via Default Driver Altitude Using Findstr.EXE,scored,,1,1,1.0
@@ -229,9 +229,9 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_hktl_coercedpotato.yml,HackTool - CoercedPotato Execution,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_hktl_covenant.yml,HackTool - Covenant PowerShell Launcher,scored,,4,1,0.25
 ..\sigma\rules\windows\process_creation\proc_creation_win_hktl_crackmapexec_execution.yml,HackTool - CrackMapExec Execution,no_commandline,rule does not constrain CommandLine,0,0,
-..\sigma\rules\windows\process_creation\proc_creation_win_hktl_crackmapexec_execution_patterns.yml,HackTool - CrackMapExec Execution Patterns,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_hktl_crackmapexec_execution_patterns.yml,HackTool - CrackMapExec Execution Patterns,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_hktl_crackmapexec_patterns.yml,HackTool - CrackMapExec Process Patterns,scored,,4,0,0.0
-..\sigma\rules\windows\process_creation\proc_creation_win_hktl_crackmapexec_powershell_obfuscation.yml,HackTool - CrackMapExec PowerShell Obfuscation,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_hktl_crackmapexec_powershell_obfuscation.yml,HackTool - CrackMapExec PowerShell Obfuscation,scored,,1,1,1.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_hktl_createminidump.yml,HackTool - CreateMiniDump Execution,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_hktl_defendnot_execution.yml,HackTool - Defendnot Execution,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_hktl_dinjector.yml,HackTool - DInjector PowerShell Cradle Execution,scored,,2,1,0.5
@@ -316,7 +316,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_hvci_registry_tampering.yml,Hypervisor-protected Code Integrity (HVCI) Related Registry Tampering Via CommandLine,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_hwp_exploits.yml,Suspicious HWP Sub Processes,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_hxtsr_masquerading.yml,Potential Fake Instance Of Hxtsr.EXE Executed,no_commandline,rule does not constrain CommandLine,0,0,
-..\sigma\rules\windows\process_creation\proc_creation_win_icacls_deny.yml,Use Icacls to Hide File to Everyone,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_icacls_deny.yml,Use Icacls to Hide File to Everyone,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_ieexec_download.yml,File Download And Execution Via IEExec.EXE,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_iexpress_susp_execution.yml,Self Extracting Package Creation Via Iexpress.EXE From Potentially Suspicious Location,unsupported,unsupported modifier(s): ['windash'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_iis_appcmd_http_logging.yml,Disable Windows IIS HTTP Logging,scored,,4,1,0.25
@@ -449,11 +449,11 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_net_share_unmount.yml,Unmount Share Via Net.EXE,scored,,3,1,0.333
 ..\sigma\rules\windows\process_creation\proc_creation_win_net_start_service.yml,Start Windows Service Via Net.EXE,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_net_stop_service.yml,Stop Windows Service Via Net.EXE,scored,,2,1,0.5
-..\sigma\rules\windows\process_creation\proc_creation_win_net_use_mount_admin_share.yml,Windows Admin Share Mount Via Net.EXE,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_net_use_mount_admin_share.yml,Windows Admin Share Mount Via Net.EXE,scored,,1,1,1.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_net_use_mount_internet_share.yml,Windows Internet Hosted WebDav Share Mount Via Net.EXE,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_net_use_mount_share.yml,Windows Share Mount Via Net.EXE,scored,,1,1,1.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_net_use_network_connections_discovery.yml,System Network Connections Discovery Via Net.EXE,scored,,1,1,1.0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_use_password_plaintext.yml,Password Provided In Command Line Of Net.EXE,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_net_use_password_plaintext.yml,Password Provided In Command Line Of Net.EXE,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_net_user_add.yml,New User Created Via Net.EXE,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_net_user_add_never_expire.yml,New User Created Via Net.EXE With Never Expire Option,scored,,3,1,0.333
 ..\sigma\rules\windows\process_creation\proc_creation_win_net_user_default_accounts_manipulation.yml,Suspicious Manipulation Of Default Accounts Via Net.EXE,scored,,2,1,0.5
@@ -476,7 +476,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_node_abuse.yml,Potential Arbitrary Code Execution Via Node.EXE,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_node_adobe_creative_cloud_abuse.yml,Node Process Executions,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_node_new_agent_skills_installed.yml,New Agent Skills Installation Attempt Via Node.EXE,scored,,2,1,0.5
-..\sigma\rules\windows\process_creation\proc_creation_win_notepad_local_passwd_discovery.yml,Notepad Password Files Discovery,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_notepad_local_passwd_discovery.yml,Notepad Password Files Discovery,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_nslookup_domain_discovery.yml,Network Reconnaissance Activity,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_nslookup_poweshell_download.yml,Nslookup PowerShell Download Cradle - ProcessCreation,scored,,1,1,1.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_ntdsutil_susp_usage.yml,Suspicious Usage Of Active Directory Diagnostic Tool (ntdsutil.exe),scored,,3,1,0.333
@@ -533,17 +533,17 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_cl_invocation.yml,Potential Process Execution Proxy Via CL_Invocation.ps1,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_cl_loadassembly.yml,Assembly Loading Via CL_LoadAssembly.ps1,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_cl_mutexverifiers.yml,Potential Script Proxy Execution Via CL_Mutexverifiers.ps1,scored,,5,0,0.0
-..\sigma\rules\windows\process_creation\proc_creation_win_powershell_cmdlet_invocation_via_exported_commands_array_index.yml,PowerShell Dynamic Module Invocation Via ExportedCommands Array Index,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_powershell_cmdlet_invocation_via_exported_commands_array_index.yml,PowerShell Dynamic Module Invocation Via ExportedCommands Array Index,scored,,5,1,0.2
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_cmdline_convertto_securestring.yml,ConvertTo-SecureString Cmdlet Usage Via CommandLine,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_cmdline_reversed_strings.yml,Potential PowerShell Obfuscation Via Reversed Commands,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_cmdline_special_characters.yml,Potential PowerShell Command Line Obfuscation,unsupported,unsupported modifier(s): ['re'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_comobject_msi.yml,Obfuscated PowerShell MSI Install via WindowsInstaller COM,scored,,4,1,0.25
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_comobject_msi_remote.yml,PowerShell MSI Install via WindowsInstaller COM From Remote Location,scored,,4,1,0.25
-..\sigma\rules\windows\process_creation\proc_creation_win_powershell_computer_discovery_get_adcomputer.yml,Computer Discovery And Export Via Get-ADComputer Cmdlet,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_powershell_computer_discovery_get_adcomputer.yml,Computer Discovery And Export Via Get-ADComputer Cmdlet,scored,,2,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_console_history_file_access.yml,Potential PowerShell Console History Access Attempt via History File,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_create_service.yml,New Service Creation Using PowerShell,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_decode_gzip.yml,Gzip Archive Decode Via PowerShell,scored,,2,1,0.5
-..\sigma\rules\windows\process_creation\proc_creation_win_powershell_decrypt_pattern.yml,PowerShell Execution With Potential Decryption Capabilities,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_powershell_decrypt_pattern.yml,PowerShell Execution With Potential Decryption Capabilities,scored,,3,1,0.333
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_defender_disable_feature.yml,Powershell Defender Disable Scan Feature,unsupported,unsupported modifier(s): ['base64offset'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_defender_exclusion.yml,Powershell Defender Exclusion,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_disable_defender_av_security_monitoring.yml,Disable Windows Defender AV Security Monitoring,scored,,2,0,0.0
@@ -605,11 +605,11 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_susp_ps_appdata.yml,PowerShell Script Run in AppData,scored,,3,1,0.333
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_token_obfuscation.yml,Powershell Token Obfuscation - Process Creation,unsupported,unsupported modifier(s): ['re'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_uninstall_defender_feature.yml,Suspicious Uninstall of Windows Defender Feature via PowerShell,scored,,3,1,0.333
-..\sigma\rules\windows\process_creation\proc_creation_win_powershell_user_discovery_get_aduser.yml,User Discovery And Export Via Get-ADUser Cmdlet,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_powershell_user_discovery_get_aduser.yml,User Discovery And Export Via Get-ADUser Cmdlet,scored,,2,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_webclient_casing.yml,Net WebClient Casing Anomalies,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_x509enrollment.yml,Suspicious X509Enrollment - Process Creation,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_powershell_xor_commandline.yml,Suspicious XOR Encoded PowerShell Command,scored,,3,1,0.333
-..\sigma\rules\windows\process_creation\proc_creation_win_powershell_zip_compress.yml,Folder Compress To Potentially Suspicious Output Via Compress-Archive Cmdlet,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_powershell_zip_compress.yml,Folder Compress To Potentially Suspicious Output Via Compress-Archive Cmdlet,scored,,3,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_presentationhost_download.yml,Arbitrary File Download Via PresentationHost.EXE,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_presentationhost_uncommon_location_exec.yml,XBAP Execution From Uncommon Locations Via PresentationHost.EXE,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_pressanykey_lolbin_execution.yml,Visual Studio NodejsTools PressAnyKey Arbitrary Binary Execution,no_commandline,rule does not constrain CommandLine,0,0,
@@ -670,7 +670,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_quickassist_execution.yml,QuickAssist Execution,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_rar_compress_data.yml,Files Added To An Archive Using Rar.EXE,scored,,1,1,1.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_rar_compression_with_password.yml,Rar Usage with Password and Compression Level,scored,,1,1,1.0
-..\sigma\rules\windows\process_creation\proc_creation_win_rar_susp_greedy_compression.yml,Suspicious Greedy Compression Using Rar.EXE,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_rar_susp_greedy_compression.yml,Suspicious Greedy Compression Using Rar.EXE,scored,,1,1,1.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_rasdial_execution.yml,Suspicious RASdial Activity,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_rdp_enable_or_disable_via_win32_terminalservicesetting_wmi_class.yml,RDP Enable or Disable via Win32_TerminalServiceSetting WMI Class,scored,,3,1,0.333
 ..\sigma\rules\windows\process_creation\proc_creation_win_rdrleakdiag_process_dumping.yml,Process Memory Dump via RdrLeakDiag.EXE,unsupported,unsupported modifier(s): ['windash'],0,0,
@@ -678,7 +678,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_reg_add_run_key.yml,Potential Persistence Attempt Via Run Keys Using Reg.EXE,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_reg_add_safeboot.yml,Add SafeBoot Keys Via Reg Utility,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_reg_bitlocker.yml,Suspicious Reg Add BitLocker,scored,,2,1,0.5
-..\sigma\rules\windows\process_creation\proc_creation_win_reg_credential_access_via_password_filter.yml,Dropping Of Password Filter DLL,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_reg_credential_access_via_password_filter.yml,Dropping Of Password Filter DLL,scored,,3,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_reg_defender_exclusion.yml,Suspicious Windows Defender Folder Exclusion Added Via Reg.EXE,scored,,3,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_reg_delete_runmru.yml,RunMRU Registry Key Deletion,scored,,1,1,1.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_reg_delete_safeboot.yml,SafeBoot Registry Key Deleted Via Reg.EXE,scored,,2,1,0.5
@@ -804,7 +804,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_inline_vbs.yml,Suspicious Rundll32 Invoking Inline VBScript,scored,,5,1,0.2
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_installscreensaver.yml,Rundll32 InstallScreenSaver Execution,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_keymgr.yml,Suspicious Key Manager Access,scored,,3,2,0.667
-..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_mshtml_runhtmlapplication.yml,Mshtml.DLL RunHTMLApplication Suspicious Usage,error,PermissionError: [WinError 5] Accès refusé,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_mshtml_runhtmlapplication.yml,Mshtml.DLL RunHTMLApplication Suspicious Usage,error,RuntimeError: file access denied after 3 attempts (antivirus?): [WinError 5] Accès refusé,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_no_params.yml,Rundll32 Execution Without CommandLine Parameters,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_ntlmrelay.yml,Suspicious NTLM Authentication on the Printer Spooler Service,scored,,3,1,0.333
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_obfuscated_ordinal_call.yml,Potential Obfuscated Ordinal Call Via Rundll32,no_mutations,no mutation applicable,0,0,
@@ -823,7 +823,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_susp_shellexec_ordinal_execution.yml,Suspicious ShellExec_RunDLL Call Via Ordinal,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_susp_shimcache_flush.yml,ShimCache Flush,scored,,4,1,0.25
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_sys.yml,Suspicious Rundll32 Activity Invoking Sys File,scored,,1,0,0.0
-..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_udl_exec.yml,Potentially Suspicious Rundll32.EXE Execution of UDL File,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_udl_exec.yml,Potentially Suspicious Rundll32.EXE Execution of UDL File,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_unc_path.yml,Rundll32 UNC Path Execution,scored,,1,1,1.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_uncommon_dll_extension.yml,Rundll32 Execution With Uncommon DLL Extension,unsupported,unsupported feature: null values (field must be absent) are not supported yet,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_user32_dll.yml,Suspicious Workstation Locking via Rundll32,scored,,3,1,0.333
@@ -849,7 +849,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_schtasks_creation_temp_folder.yml,Suspicious Scheduled Task Creation Involving Temp Folder,scored,,3,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_schtasks_curl_and_powershell_combo.yml,Scheduled Task Creation with Curl and PowerShell Execution Combo,unsupported,unsupported modifier(s): ['windash'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_schtasks_delete.yml,Delete Important Scheduled Task,unsupported,unsupported modifier(s): ['windash'],0,0,
-..\sigma\rules\windows\process_creation\proc_creation_win_schtasks_delete_all.yml,Delete All Scheduled Tasks,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_schtasks_delete_all.yml,Delete All Scheduled Tasks,scored,,2,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_schtasks_disable.yml,Disable Important Scheduled Task,unsupported,unsupported modifier(s): ['windash'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_schtasks_env_folder.yml,Schedule Task Creation From Env Variable Or Potentially Suspicious Path Via Schtasks.EXE,unsupported,unsupported modifier(s): ['windash'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_schtasks_folder_combos.yml,Schtasks From Suspicious Folders,scored,,3,1,0.333
@@ -918,7 +918,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_cmd_for_loop_execution_with_recursive_directory_search.yml,Suspicious Usage of For Loop with Recursive Directory Search in CMD,scored,,2,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_commandline_path_traversal_evasion.yml,Potential Command Line Path Traversal Evasion Attempt,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_copy_browser_data.yml,Potential Browser Data Stealing,scored,,3,0,0.0
-..\sigma\rules\windows\process_creation\proc_creation_win_susp_copy_lateral_movement.yml,Copy From Or To Admin Share Or Sysvol Folder,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_susp_copy_lateral_movement.yml,Copy From Or To Admin Share Or Sysvol Folder,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_copy_system_dir.yml,Suspicious Copy From or To System Directory,unsupported,"unsupported modifier(s): ['i', 're']",0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_copy_system_dir_lolbin.yml,LOL-Binary Copied From System Directory,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_cross_user_process_spawn.yml,Suspicious Cross-User Process Spawn,unsupported,unsupported feature: unsupported modifier(s): ['fieldref'],0,0,
@@ -936,7 +936,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_embed_exe_lnk.yml,Hidden Powershell in Link File Pattern,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_emoji_usage_in_cli_1.yml,Potential Defense Evasion Activity Via Emoji Usage In CommandLine - 1,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_emoji_usage_in_cli_2.yml,Potential Defense Evasion Activity Via Emoji Usage In CommandLine - 2,no_mutations,no mutation applicable,0,0,
-..\sigma\rules\windows\process_creation\proc_creation_win_susp_emoji_usage_in_cli_3.yml,Potential Defense Evasion Activity Via Emoji Usage In CommandLine - 3,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_susp_emoji_usage_in_cli_3.yml,Potential Defense Evasion Activity Via Emoji Usage In CommandLine - 3,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_emoji_usage_in_cli_4.yml,Potential Defense Evasion Activity Via Emoji Usage In CommandLine - 4,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_etw_modification_cmdline.yml,ETW Logging Tamper In .NET Processes Via CommandLine,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_etw_trace_evasion.yml,ETW Trace Evasion Activity,unsupported,unsupported modifier(s): ['windash'],0,0,
@@ -959,7 +959,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_local_system_owner_account_discovery.yml,Local Accounts Discovery,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_lolbin_exec_from_non_c_drive.yml,LOLBIN Execution From Abnormal Drive,unsupported,unsupported feature: null values (field must be absent) are not supported yet,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_lsass_dmp_cli_keywords.yml,LSASS Dump Keyword In CommandLine,scored,,1,0,0.0
-..\sigma\rules\windows\process_creation\proc_creation_win_susp_ms_appinstaller_download.yml,Potential File Download Via MS-AppInstaller Protocol Handler,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_susp_ms_appinstaller_download.yml,Potential File Download Via MS-AppInstaller Protocol Handler,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_network_command.yml,Suspicious Network Command,unsupported,unsupported modifier(s): ['re'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_network_scan_loop.yml,Suspicious Scan Loop Network,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_network_sniffing.yml,Potential Network Sniffing Activity Using Network Tools,no_mutations,no mutation applicable,0,0,
@@ -975,20 +975,20 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_obfuscated_ip_via_cli.yml,Obfuscated IP Via CLI,unsupported,unsupported feature: unsupported modifier(s): ['re'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_parents.yml,Suspicious Process Parents,unsupported,unsupported feature: null values (field must be absent) are not supported yet,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_powershell_execution_via_dll.yml,Potential PowerShell Execution Via DLL,scored,,1,0,0.0
-..\sigma\rules\windows\process_creation\proc_creation_win_susp_priv_escalation_via_named_pipe.yml,Privilege Escalation via Named Pipe Impersonation,rsigma_disagrees,rsigma does not match the synthesized event,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_susp_priv_escalation_via_named_pipe.yml,Privilege Escalation via Named Pipe Impersonation,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_private_keys_recon.yml,Private Keys Reconnaissance Via CommandLine Tools,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_privilege_escalation_cli_patterns.yml,Suspicious RunAs-Like Flag Combination,scored,,2,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_proc_wrong_parent.yml,Windows Processes Suspicious Parent Directory,unsupported,unsupported feature: null values (field must be absent) are not supported yet,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_progname.yml,Suspicious Program Names,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_recon.yml,Recon Information for Export with Command Prompt,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_recycle_bin_fake_execution.yml,Suspicious Process Execution From Fake Recycle.Bin Folder,no_commandline,rule does not constrain CommandLine,0,0,
-..\sigma\rules\windows\process_creation\proc_creation_win_susp_redirect_local_admin_share.yml,Suspicious Redirection to Local Admin Share,rsigma_disagrees,rsigma does not match the synthesized event,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_susp_redirect_local_admin_share.yml,Suspicious Redirection to Local Admin Share,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_registry_modification_of_ms_setting_protocol_handler.yml,Registry Modification of MS-settings Protocol Handler,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_remote_desktop_tunneling.yml,Potential Remote Desktop Tunneling,scored,,1,1,1.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_right_to_left_override.yml,Potential Defense Evasion Via Right-to-Left Override,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_script_exec_from_env_folder.yml,Script Interpreter Execution From Suspicious Folder,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_script_interpretor_spawn_credential_scanner.yml,Script Interpreter Spawning Credential Scanner - Windows,no_commandline,rule does not constrain CommandLine,0,0,
-..\sigma\rules\windows\process_creation\proc_creation_win_susp_sensitive_file_access_shadowcopy.yml,Sensitive File Access Via Volume Shadow Copy Backup,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_susp_sensitive_file_access_shadowcopy.yml,Sensitive File Access Via Volume Shadow Copy Backup,no_mutations,no mutation applicable,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_service_creation.yml,Suspicious New Service Creation,scored,,4,1,0.25
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_service_dir.yml,Suspicious Service Binary Directory,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_service_tamper.yml,Suspicious Windows Service Tampering,scored,,2,1,0.5
@@ -1123,7 +1123,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_whoami_all_execution.yml,Enumerate All Information With Whoami.EXE,unsupported,unsupported modifier(s): ['windash'],0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_whoami_execution_from_high_priv_process.yml,Whoami.EXE Execution From Privileged Process,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_whoami_groups_discovery.yml,Group Membership Reconnaissance Via Whoami.EXE,scored,,2,1,0.5
-..\sigma\rules\windows\process_creation\proc_creation_win_whoami_output.yml,Whoami.EXE Execution With Output Option,unsupported,wildcard inside a contains/startswith/endswith pattern,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_whoami_output.yml,Whoami.EXE Execution With Output Option,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_whoami_parent_anomaly.yml,Whoami.EXE Execution Anomaly,unsupported,unsupported feature: null values (field must be absent) are not supported yet,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_whoami_priv_discovery.yml,Security Privileges Enumeration Via Whoami.EXE,scored,,2,1,0.5
 ..\sigma\rules\windows\process_creation\proc_creation_win_windows_terminal_susp_children.yml,Suspicious WindowsTerminal Child Processes,no_commandline,rule does not constrain CommandLine,0,0,
@@ -1146,7 +1146,7 @@ path,title,status,reason,total,detected,score
 ..\sigma\rules\windows\process_creation\proc_creation_win_wmi_password_never_expire.yml,Password Set to Never Expire via WMI,scored,,4,1,0.25
 ..\sigma\rules\windows\process_creation\proc_creation_win_wmi_persistence_script_event_consumer.yml,WMI Persistence - Script Event Consumer,no_commandline,rule does not constrain CommandLine,0,0,
 ..\sigma\rules\windows\process_creation\proc_creation_win_wmic_eventconsumer_creation.yml,NewActiveScriptEventConsumer Creation Attempt via Wmic.EXE,scored,,3,1,0.333
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_namespace_defender.yml,Potential Windows Defender Tampering Via Wmic.EXE,rsigma_disagrees,rsigma does not match the synthesized event,0,0,
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_namespace_defender.yml,Potential Windows Defender Tampering Via Wmic.EXE,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_wmic_process_creation.yml,Process Creation Attempt via Wmic.EXE,scored,,4,1,0.25
 ..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_computersystem.yml,Computer System Reconnaissance Via Wmic.EXE,scored,,1,0,0.0
 ..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_csproduct.yml,Hardware Model Reconnaissance Via Wmic.EXE,scored,,1,0,0.0

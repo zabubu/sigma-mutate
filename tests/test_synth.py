@@ -57,10 +57,26 @@ class SynthTests(unittest.TestCase):
         r = rule(det)
         self.assertTrue(matches(r, synthesize(r)))
 
+    def test_sigma_escapes_admin_share_rule(self):
+        BS = chr(92)
+        # Rule text with doubled backslashes: it means \\127.0.0.1\admin$\ once unescaped.
+        rule_text = BS * 4 + "127.0.0.1" + BS * 2 + "admin$" + BS * 2
+        wanted = BS * 2 + "127.0.0.1" + BS + "admin$" + BS
+        r = rule({"selection_redirect": {"CommandLine|contains": ">"},
+                  "selection_share": {"CommandLine|contains": [rule_text]},
+                  "condition": "all of selection_*"})
+        ev = synthesize(r)
+        self.assertTrue(matches(r, ev))
+        self.assertIn(wanted, ev["CommandLine"])
+        self.assertNotIn(BS * 4, ev["CommandLine"])
+
+    def test_wildcard_inside_contains(self):
+        r = rule({"sel": {"CommandLine|contains": "abc*xyz"}, "condition": "sel"})
+        self.assertTrue(matches(r, synthesize(r)))
+
     def test_unsupported_things_are_reported_not_guessed(self):
         bad = [
             rule({"sel": {"CommandLine|re": "a.*"}, "condition": "sel"}),
-            rule({"sel": {"CommandLine|contains": "a*b"}, "condition": "sel"}),
             rule({"sel": {"CommandLine": None}, "condition": "sel"}),
             rule({"sel": ["keyword"], "condition": "sel"}),
         ]

@@ -1,7 +1,7 @@
 """Minimal Sigma matcher (MVP).
 
-Supports: field modifiers contains / startswith / endswith / all, wildcard
-equality, list-of-maps selections, and conditions made of selection names with
+Supports: field modifiers contains / startswith / endswith / all, wildcards (* ?) and
+Sigma escapes (\\\\ \\* \\?), list-of-maps selections, and conditions made of selection names with
 and / or / not / parentheses and '1 of X*' / 'all of them' quantifiers. Matching is case-insensitive, like Sigma.
 
 Anything else raises NotImplementedError instead of silently guessing.
@@ -15,18 +15,64 @@ import re
 _MODS = {"contains", "startswith", "endswith", "all"}
 
 
+def parse_pattern(p: str) -> list[tuple]:
+    """Parse a Sigma value: '\\\\' -> backslash, '\\*' and '\\?' -> literals, '*' / '?' -> wildcards.
+
+    A backslash followed by anything else stays a literal backslash (Sigma spec).
+    """
+    out: list[tuple] = []
+    buf: list[str] = []
+
+    def flush():
+        if buf:
+            out.append(("lit", "".join(buf)))
+            buf.clear()
+
+    i = 0
+    while i < len(p):
+        c = p[i]
+        if c == "\\" and i + 1 < len(p) and p[i + 1] in "\\*?":
+            buf.append(p[i + 1])
+            i += 2
+            continue
+        if c in "*?":
+            flush()
+            out.append(("any",) if c == "*" else ("one",))
+        else:
+            buf.append(c)
+        i += 1
+    flush()
+    return out
+
+
+def literal_value(p) -> str:
+    """A concrete string that matches the pattern (wildcards replaced by 'x')."""
+    return "".join(part[1] if part[0] == "lit" else "x" for part in parse_pattern(str(p)))
+
+
+_REGEX_CACHE: dict = {}
+
+
+def _regex(pattern: str, op: str):
+    key = (pattern, op)
+    if key not in _REGEX_CACHE:
+        body = "".join(
+            re.escape(x[1]) if x[0] == "lit" else (".*" if x[0] == "any" else ".")
+            for x in parse_pattern(pattern)
+        )
+        if op in ("startswith", "equals"):
+            body = r"\A" + body
+        if op in ("endswith", "equals"):
+            body = body + r"\Z"
+        _REGEX_CACHE[key] = re.compile(body, re.IGNORECASE | re.DOTALL)
+    return _REGEX_CACHE[key]
+
+
 def _field_matches(value, mods, patterns) -> bool:
-    v = str(value).lower()
-    pats = [str(p).lower() for p in patterns]
-    if "contains" in mods:
-        test = lambda p: p in v
-    elif "startswith" in mods:
-        test = v.startswith
-    elif "endswith" in mods:
-        test = v.endswith
-    else:
-        test = lambda p: fnmatch.fnmatchcase(v, p)
-    results = [test(p) for p in pats]
+    v = str(value)
+    op = ("contains" if "contains" in mods else "startswith" if "startswith" in mods
+          else "endswith" if "endswith" in mods else "equals")
+    results = [bool(_regex(str(p), op).search(v)) for p in patterns]
     return all(results) if "all" in mods else any(results)
 
 

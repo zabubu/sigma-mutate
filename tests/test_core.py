@@ -48,6 +48,26 @@ class MatcherTests(unittest.TestCase):
         self.assertFalse(matches(rule, {"CommandLine": "xx aaa"}))
         self.assertTrue(matches(rule, {"CommandLine": "aaa bbb"}))
 
+    def test_wildcards_and_escapes(self):
+        BS = chr(92)  # a single backslash character
+
+        def r(pattern, mod="contains"):
+            return {"detection": {"sel": {f"CommandLine|{mod}": pattern}, "condition": "sel"}}
+
+        self.assertTrue(matches(r("a*c"), {"CommandLine": "xx abbbc yy"}))
+        self.assertFalse(matches(r("a*c"), {"CommandLine": "xx ab yy"}))
+        self.assertTrue(matches(r("a?c"), {"CommandLine": "abc"}))
+        self.assertFalse(matches(r("a?c"), {"CommandLine": "ac"}))
+        # escaped star is a literal star
+        self.assertTrue(matches(r("a" + BS + "*c"), {"CommandLine": "a*c"}))
+        self.assertFalse(matches(r("a" + BS + "*c"), {"CommandLine": "abc"}))
+        # two backslashes in the rule text mean ONE backslash
+        pattern = BS * 2 + "srv" + BS * 2 + "share"
+        self.assertTrue(matches(r(pattern), {"CommandLine": "x " + BS + "srv" + BS + "share"}))
+        self.assertFalse(matches(r(pattern), {"CommandLine": "x " + BS * 2 + "srv" + BS * 2 + "share"}))
+        # a lone backslash followed by an ordinary character stays a backslash
+        self.assertTrue(matches(r(BS + "cmd.exe", "endswith"), {"CommandLine": "C:" + BS + "x" + BS + "cmd.exe"}))
+
     def test_unsupported_modifier_is_explicit(self):
         rule = {"detection": {"sel": {"CommandLine|re": "a.*"}, "condition": "sel"}}
         with self.assertRaises(NotImplementedError):

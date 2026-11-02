@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from itertools import combinations
 
-from .matcher import SUPPORTED_MODIFIERS, eval_condition, matches
+from .matcher import SUPPORTED_MODIFIERS, eval_condition, literal_value, matches
 
 
 class SynthError(Exception):
@@ -61,8 +61,6 @@ def _constraints(sel):
         pats = [str(p) for p in (expected if isinstance(expected, list) else [expected])]
         op = ("contains" if "contains" in mods else "startswith" if "startswith" in mods
               else "endswith" if "endswith" in mods else "equals")
-        if op != "equals" and any(("*" in p or "?" in p) for p in pats):
-            raise SynthError("wildcard inside a contains/startswith/endswith pattern")
         out.append((field, op, pats if "all" in mods else pats[:1]))
     return out
 
@@ -75,10 +73,10 @@ def _build(items) -> str:
     if eq:
         if len(set(eq)) > 1:
             raise SynthError("conflicting equality constraints on one field")
-        return eq[0].replace("*", "x").replace("?", "x")
+        return literal_value(eq[0])
     if len(set(starts)) > 1 or len(set(ends)) > 1:
         raise SynthError("conflicting startswith/endswith constraints on one field")
-    pieces = starts[:1] + list(dict.fromkeys(cont)) + ends[:1]
+    pieces = [literal_value(x) for x in starts[:1] + list(dict.fromkeys(cont)) + ends[:1]]
     value = ""
     for piece in pieces:
         glue = "" if (not value or piece[:1] in ("\\", ".")) else " "
