@@ -44,20 +44,25 @@ variants, all detected: it only means the rule survived these mutators) or **inc
 
 ## Validation on Windows
 
-`scripts/validate_mutators.py` runs harmless commands (certutil, whoami, reg, findstr, sort,
-cmd /c type, powershell, curl, where) and their variants on a real Windows host, and compares exit
-code and output. First run (9 programs):
+`scripts/validate_mutators.py` runs harmless, read-only commands and their variants on a real Windows
+host and compares exit code and output with the original command (15 programs: certutil, whoami, reg,
+findstr, sort, cmd /c type, powershell, curl, where, schtasks, net, netsh, sc, bitsadmin, wmic).
 
-| Mutator | Kind of token | Result |
+| Mutator | Kind of token | Equivalent / total |
 |---|---|---|
-| `quote_split` | argument | equivalent on every program except `cmd.exe` |
-| `quote_wrap` | argument / program name | equivalent on all programs |
-| `space_padding`, `tab_separator` | whitespace | equivalent on all programs |
-| `caret_insert`, `quote_split` on program name | via cmd.exe | equivalent when launched through cmd.exe |
+| `quote_split` | argument | 98/117 (all failures: wmic, and schtasks whose output was unstable) |
+| `quote_wrap` | argument / program name | 44/49 and 14/15 (failures: schtasks only) |
+| `space_padding` | whitespace | 14/15 (schtasks only) |
+| `tab_separator` | whitespace | 12/15 (net, wmic, schtasks) |
+| `caret_insert`, `quote_split` on program name | via cmd.exe | 89/98, 41/44, 42/45 (schtasks only); program-name variants never work without cmd.exe (0/45) |
 
-`cmd.exe` interprets its own command line: `cmd /c ty""pe file` fails, `echo he""llo` prints the quotes.
-Quote mutations on `cmd.exe` arguments are therefore filed under `program` (not assumed valid).
-Verdicts are reported separately for rules whose program was validated.
+Consequences encoded in the tool:
+- `cmd.exe` interprets its own command line (`cmd /c ty""pe file` fails): quote mutations of its
+  arguments are filed under `program`, not assumed valid.
+- `net.exe` and `wmic.exe` do not treat a tab as a separator, and `wmic.exe` keeps inner quotes: those
+  mutators are filed under `program` for them.
+- `schtasks.exe` is not counted as validated until its test is redone with a stable command.
+- Verdicts are reported separately for rules whose program was validated.
 
 ## Honest limitations
 
@@ -70,7 +75,7 @@ Verdicts are reported separately for rules whose program was validated.
 
 ## Status
 
-v0.0.15 - matcher validated against rsigma on SigmaHQ `windows/process_creation`
+v0.0.16 - matcher validated against rsigma on SigmaHQ `windows/process_creation`
 (events and variants, no disagreement at last run).
 
 ## Roadmap

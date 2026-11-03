@@ -130,7 +130,13 @@ def option_prefix_swap(cmd: str) -> list[Mutation]:
 # output as the original): quote_split / quote_wrap on arguments, whitespace tweaks, quote_wrap on the
 # program name, and (through cmd.exe) caret_insert and quote_split on the program name.
 VALIDATED_PROGRAMS = {"certutil.exe", "whoami.exe", "reg.exe", "findstr.exe", "sort.exe",
-                      "powershell.exe", "curl.exe", "where.exe"}
+                      "powershell.exe", "curl.exe", "where.exe",
+                      "bitsadmin.exe", "netsh.exe", "sc.exe", "net.exe", "wmic.exe"}
+
+# Counter-examples found on a real host: for these programs the mutator is NOT argv-equivalent
+# (net.exe and wmic.exe do not treat a tab as a separator; wmic.exe does not strip inner quotes).
+# schtasks.exe is not listed as validated: its test output changes between runs (to be redone).
+MUTATOR_EXCEPTIONS = {"net.exe": {"tab_separator"}, "wmic.exe": {"quote_split", "tab_separator"}}
 
 # Programs that interpret their own command line instead of using standard argument parsing.
 # Evidence: in `cmd.exe /c ty""pe file` the command is not found, and `echo he""llo` prints the quotes.
@@ -167,10 +173,14 @@ def generate(cmd: str, assumptions=(ARGV,)) -> list[Mutation]:
     """Variants of a command line. For self-parsing programs (cmd.exe), quote mutations of the
     arguments are only valid command by command, so they are filed under 'program'."""
     allowed = set(assumptions)
-    self_parsing = program_of(cmd) in SELF_PARSING
+    prog = program_of(cmd)
+    self_parsing = prog in SELF_PARSING
+    excluded = MUTATOR_EXCEPTIONS.get(prog, set())
     out = []
     for fn in MUTATORS:
         for m in fn(cmd):
+            if m.assumption == ARGV and m.mutator in excluded and not m.label.startswith("token 0"):
+                m = Mutation(m.mutator, m.label, m.value, PROGRAM)
             if (self_parsing and m.assumption == ARGV and m.mutator in ("quote_split", "quote_wrap")
                     and not m.label.startswith("token 0")):
                 m = Mutation(m.mutator, m.label, m.value, PROGRAM)

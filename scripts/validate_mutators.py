@@ -40,7 +40,7 @@ def test_commands(tmp_file: str) -> list[tuple[str, str]]:
         ("powershell", "powershell.exe -NoProfile -NonInteractive -Command Write-Output hello"),
         ("curl", "curl.exe --version"),
         ("where", "where.exe /q cmd.exe"),
-        ("schtasks", "schtasks.exe /query /fo csv /nh"),
+        ("schtasks", "schtasks.exe /query /?"),
         ("net", "net.exe accounts"),
         ("netsh", "netsh.exe interface show interface"),
         ("sc", "sc.exe query wuauserv"),
@@ -95,6 +95,10 @@ def main() -> int:
             if base[0] != 0:
                 print(f"  skipped: the original command did not succeed ({base[0]}), results would be meaningless")
                 continue
+            again = run(cmd)
+            if (again[0], again[1]) != (base[0], base[1]):
+                print("  skipped: the ORIGINAL command gives different output on two runs (non-deterministic)")
+                continue
             for m in muts:
                 res = launch(m.assumption, m.value)
                 blocked = str(res[0]).startswith("oserror")
@@ -144,8 +148,12 @@ def main() -> int:
             print(f"  {r['program']} | {r['mutator']} {r['label']} -> {r['exit']}")
     bad = [r for r in rows if r["equivalent"] is False]
     if bad:
-        print("\nExamples of differences (up to 10):")
-        for r in bad[:10]:
+        print("\nExamples of differences (up to 2 per program):")
+        shown = collections.Counter()
+        for r in bad:
+            if shown[r["program"]] >= 2:
+                continue
+            shown[r["program"]] += 1
             print(f"  {r['program']} | {r['mutator']} {r['label']} -> exit {r['exit']}")
             print(f"      variant : {r['variant']}")
             print(f"      output  : {r['output_start']!r}")

@@ -22,7 +22,7 @@ path,title,status,reason,program,program_status,other_paths,mutations_argv,evade
 ..\sigma\rules\windows\process_creation\proc_creation_win_auditpol_nt_resource_kit_usage.yml,Audit Policy Tampering Via NT Resource Kit Auditpol,scored,,(unspecified),unspecified,False,8,3,evadable,17,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_auditpol_susp_execution.yml,Audit Policy Tampering Via Auditpol,scored,,auditpol.exe,unvalidated,False,8,3,evadable,17,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_autologger_session_registry_modification.yml,Windows EventLog Autologger Session Registry Modification Via CommandLine,scored,,reg.exe,validated,False,17,14,evadable,31,22,0
-..\sigma\rules\windows\process_creation\proc_creation_win_autorun_registry_modified_via_wmic.yml,Suspicious Autorun Registry Modified via WMI,scored,,wmic.exe,unvalidated,False,21,16,evadable,37,26,0
+..\sigma\rules\windows\process_creation\proc_creation_win_autorun_registry_modified_via_wmic.yml,Suspicious Autorun Registry Modified via WMI,scored,,wmic.exe,validated,False,7,2,evadable,37,26,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_baaupdate_susp_child_process.yml,Suspicious BitLocker Access Agent Update Utility Execution,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_bash_command_execution.yml,Indirect Inline Command Execution Via Bash.EXE,scored,,bash.exe,unvalidated,False,6,4,evadable,14,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_bash_file_execution.yml,Indirect Command Execution From Script File Via Bash.EXE,no_commandline,rule does not constrain CommandLine,,,,,,,,,
@@ -32,12 +32,12 @@ path,title,status,reason,program,program_status,other_paths,mutations_argv,evade
 ..\sigma\rules\windows\process_creation\proc_creation_win_bginfo_suspicious_child_process.yml,Suspicious Child Process Of BgInfo.EXE,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_bginfo_uncommon_child_process.yml,Uncommon Child Process Of BgInfo.EXE,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_bitlockertogo_execution.yml,BitLockerTogo.EXE Execution,no_commandline,rule does not constrain CommandLine,,,,,,,,,
-..\sigma\rules\windows\process_creation\proc_creation_win_bitsadmin_download.yml,File Download Via Bitsadmin,scored,,bitsadmin.exe,unvalidated,False,8,6,evadable,17,9,0
-..\sigma\rules\windows\process_creation\proc_creation_win_bitsadmin_download_direct_ip.yml,Suspicious Download From Direct IP Via Bitsadmin,scored,,bitsadmin.exe,unvalidated,False,14,12,evadable,26,18,0
-..\sigma\rules\windows\process_creation\proc_creation_win_bitsadmin_download_file_sharing_domains.yml,Suspicious Download From File-Sharing Website Via Bitsadmin,scored,,bitsadmin.exe,unvalidated,False,15,12,evadable,27,18,0
-..\sigma\rules\windows\process_creation\proc_creation_win_bitsadmin_download_susp_extensions.yml,File With Suspicious Extension Downloaded Via Bitsadmin,scored,,bitsadmin.exe,unvalidated,False,13,10,evadable,24,15,0
-..\sigma\rules\windows\process_creation\proc_creation_win_bitsadmin_download_susp_targetfolder.yml,File Download Via Bitsadmin To A Suspicious Target Folder,scored,,bitsadmin.exe,unvalidated,False,14,12,evadable,26,18,0
-..\sigma\rules\windows\process_creation\proc_creation_win_bitsadmin_potential_persistence.yml,Monitoring For Persistence Via BITS,scored,,bitsadmin.exe,unvalidated,False,15,9,evadable,27,15,0
+..\sigma\rules\windows\process_creation\proc_creation_win_bitsadmin_download.yml,File Download Via Bitsadmin,scored,,bitsadmin.exe,validated,False,8,6,evadable,17,9,0
+..\sigma\rules\windows\process_creation\proc_creation_win_bitsadmin_download_direct_ip.yml,Suspicious Download From Direct IP Via Bitsadmin,scored,,bitsadmin.exe,validated,False,14,12,evadable,26,18,0
+..\sigma\rules\windows\process_creation\proc_creation_win_bitsadmin_download_file_sharing_domains.yml,Suspicious Download From File-Sharing Website Via Bitsadmin,scored,,bitsadmin.exe,validated,False,15,12,evadable,27,18,0
+..\sigma\rules\windows\process_creation\proc_creation_win_bitsadmin_download_susp_extensions.yml,File With Suspicious Extension Downloaded Via Bitsadmin,scored,,bitsadmin.exe,validated,False,13,10,evadable,24,15,0
+..\sigma\rules\windows\process_creation\proc_creation_win_bitsadmin_download_susp_targetfolder.yml,File Download Via Bitsadmin To A Suspicious Target Folder,scored,,bitsadmin.exe,validated,False,14,12,evadable,26,18,0
+..\sigma\rules\windows\process_creation\proc_creation_win_bitsadmin_potential_persistence.yml,Monitoring For Persistence Via BITS,scored,,bitsadmin.exe,validated,False,15,9,evadable,27,15,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_browsers_chromium_headless_debugging.yml,Potential Data Stealing Via Chromium Headless Debugging,scored,,(unspecified),unspecified,False,19,12,evadable,34,21,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_browsers_chromium_headless_exec.yml,Browser Execution In Headless Mode,scored,,brave.exe,unvalidated,False,8,3,evadable,17,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_browsers_chromium_headless_file_download.yml,File Download with Headless Browser,scored,,brave.exe,unvalidated,False,19,12,evadable,34,21,0
@@ -445,32 +445,32 @@ path,title,status,reason,program,program_status,other_paths,mutations_argv,evade
 ..\sigma\rules\windows\process_creation\proc_creation_win_mstsc_run_local_rpd_file_susp_parent.yml,Mstsc.EXE Execution From Uncommon Parent,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_msxsl_execution.yml,Msxsl.EXE Execution,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_msxsl_remote_execution.yml,Remote XSL Execution Via Msxsl.EXE,scored,,msxsl.exe,unvalidated,False,8,3,evadable,17,6,0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_groups_and_accounts_recon.yml,Suspicious Group And Account Reconnaissance Activity Using Net.EXE,scored,,net.exe,unvalidated,False,19,18,evadable,34,27,0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_share_unmount.yml,Unmount Share Via Net.EXE,scored,,net.exe,unvalidated,False,15,9,evadable,27,15,0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_start_service.yml,Start Windows Service Via Net.EXE,scored,,net.exe,unvalidated,False,8,6,evadable,17,9,0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_stop_service.yml,Stop Windows Service Via Net.EXE,scored,,net.exe,unvalidated,False,8,6,evadable,17,9,0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_use_mount_admin_share.yml,Windows Admin Share Mount Via Net.EXE,scored,,net.exe,unvalidated,False,10,7,evadable,19,9,0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_use_mount_internet_share.yml,Windows Internet Hosted WebDav Share Mount Via Net.EXE,scored,,net.exe,unvalidated,False,13,11,evadable,24,16,0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_use_mount_share.yml,Windows Share Mount Via Net.EXE,scored,,net.exe,unvalidated,False,7,5,evadable,15,7,0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_use_network_connections_discovery.yml,System Network Connections Discovery Via Net.EXE,scored,,net.exe,unvalidated,False,6,5,evadable,14,7,0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_use_password_plaintext.yml,Password Provided In Command Line Of Net.EXE,scored,,net.exe,unvalidated,False,15,9,evadable,27,13,0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_user_add.yml,New User Created Via Net.EXE,scored,,net.exe,unvalidated,False,13,7,evadable,24,12,0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_user_add_never_expire.yml,New User Created Via Net.EXE With Never Expire Option,scored,,net.exe,unvalidated,False,18,11,evadable,32,19,0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_user_default_accounts_manipulation.yml,Suspicious Manipulation Of Default Accounts Via Net.EXE,scored,,net.exe,unvalidated,False,15,12,evadable,27,18,0
-..\sigma\rules\windows\process_creation\proc_creation_win_net_view_share_and_sessions_enum.yml,Share And Session Enumeration Using Net.EXE,scored,,net.exe,unvalidated,False,8,3,evadable,17,6,0
-..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_add_rule.yml,New Firewall Rule Added Via Netsh.EXE,scored,,netsh.exe,unvalidated,False,13,11,evadable,24,16,0
-..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_allow_program_in_susp_location.yml,Suspicious Program Location Whitelisted In Firewall Via Netsh.EXE,scored,,netsh.exe,unvalidated,False,21,14,evadable,38,25,0
-..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_allow_rdp.yml,RDP Connection Allowed Via Netsh.EXE,scored,,netsh.exe,unvalidated,False,25,21,evadable,44,34,0
-..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_delete_rule.yml,Firewall Rule Deleted Via Netsh.EXE,scored,,netsh.exe,unvalidated,False,15,12,evadable,27,18,0
-..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_disable.yml,Firewall Disabled via Netsh.EXE,scored,,netsh.exe,unvalidated,False,22,14,evadable,39,25,0
-..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_enable_group_rule.yml,Netsh Allow Group Policy on Microsoft Defender Firewall,scored,,netsh.exe,unvalidated,False,33,19,evadable,58,35,0
-..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_rules_discovery.yml,Firewall Configuration Discovery Via Netsh.EXE,scored,,netsh.exe,unvalidated,False,19,17,evadable,34,32,0
-..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_set_rule.yml,Firewall Rule Update Via Netsh.EXE,scored,,netsh.exe,unvalidated,False,13,11,evadable,24,16,0
-..\sigma\rules\windows\process_creation\proc_creation_win_netsh_helper_dll_persistence.yml,Potential Persistence Via Netsh Helper DLL,scored,,netsh.exe,unvalidated,False,13,7,evadable,24,12,0
-..\sigma\rules\windows\process_creation\proc_creation_win_netsh_packet_capture.yml,New Network Trace Capture Started Via Netsh.EXE,scored,,netsh.exe,unvalidated,False,15,9,evadable,27,15,0
-..\sigma\rules\windows\process_creation\proc_creation_win_netsh_port_forwarding.yml,New Port Forwarding Rule Added Via Netsh.EXE,scored,,netsh.exe,unvalidated,False,22,14,evadable,39,25,0
-..\sigma\rules\windows\process_creation\proc_creation_win_netsh_port_forwarding_3389.yml,RDP Port Forwarding Rule Added Via Netsh.EXE,scored,,netsh.exe,unvalidated,False,11,8,evadable,20,11,0
-..\sigma\rules\windows\process_creation\proc_creation_win_netsh_wifi_credential_harvesting.yml,Harvesting Of Wifi Credentials Via Netsh.EXE,scored,,netsh.exe,unvalidated,False,18,14,evadable,30,20,0
+..\sigma\rules\windows\process_creation\proc_creation_win_net_groups_and_accounts_recon.yml,Suspicious Group And Account Reconnaissance Activity Using Net.EXE,scored,,net.exe,validated,False,18,17,evadable,34,27,0
+..\sigma\rules\windows\process_creation\proc_creation_win_net_share_unmount.yml,Unmount Share Via Net.EXE,scored,,net.exe,validated,False,14,9,evadable,27,15,0
+..\sigma\rules\windows\process_creation\proc_creation_win_net_start_service.yml,Start Windows Service Via Net.EXE,scored,,net.exe,validated,False,7,5,evadable,17,9,0
+..\sigma\rules\windows\process_creation\proc_creation_win_net_stop_service.yml,Stop Windows Service Via Net.EXE,scored,,net.exe,validated,False,7,5,evadable,17,9,0
+..\sigma\rules\windows\process_creation\proc_creation_win_net_use_mount_admin_share.yml,Windows Admin Share Mount Via Net.EXE,scored,,net.exe,validated,False,9,6,evadable,19,9,0
+..\sigma\rules\windows\process_creation\proc_creation_win_net_use_mount_internet_share.yml,Windows Internet Hosted WebDav Share Mount Via Net.EXE,scored,,net.exe,validated,False,12,10,evadable,24,16,0
+..\sigma\rules\windows\process_creation\proc_creation_win_net_use_mount_share.yml,Windows Share Mount Via Net.EXE,scored,,net.exe,validated,False,6,4,evadable,15,7,0
+..\sigma\rules\windows\process_creation\proc_creation_win_net_use_network_connections_discovery.yml,System Network Connections Discovery Via Net.EXE,scored,,net.exe,validated,False,5,4,evadable,14,7,0
+..\sigma\rules\windows\process_creation\proc_creation_win_net_use_password_plaintext.yml,Password Provided In Command Line Of Net.EXE,scored,,net.exe,validated,False,14,8,evadable,27,13,0
+..\sigma\rules\windows\process_creation\proc_creation_win_net_user_add.yml,New User Created Via Net.EXE,scored,,net.exe,validated,False,12,7,evadable,24,12,0
+..\sigma\rules\windows\process_creation\proc_creation_win_net_user_add_never_expire.yml,New User Created Via Net.EXE With Never Expire Option,scored,,net.exe,validated,False,17,11,evadable,32,19,0
+..\sigma\rules\windows\process_creation\proc_creation_win_net_user_default_accounts_manipulation.yml,Suspicious Manipulation Of Default Accounts Via Net.EXE,scored,,net.exe,validated,False,14,11,evadable,27,18,0
+..\sigma\rules\windows\process_creation\proc_creation_win_net_view_share_and_sessions_enum.yml,Share And Session Enumeration Using Net.EXE,scored,,net.exe,validated,False,7,3,evadable,17,6,0
+..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_add_rule.yml,New Firewall Rule Added Via Netsh.EXE,scored,,netsh.exe,validated,False,13,11,evadable,24,16,0
+..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_allow_program_in_susp_location.yml,Suspicious Program Location Whitelisted In Firewall Via Netsh.EXE,scored,,netsh.exe,validated,False,21,14,evadable,38,25,0
+..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_allow_rdp.yml,RDP Connection Allowed Via Netsh.EXE,scored,,netsh.exe,validated,False,25,21,evadable,44,34,0
+..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_delete_rule.yml,Firewall Rule Deleted Via Netsh.EXE,scored,,netsh.exe,validated,False,15,12,evadable,27,18,0
+..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_disable.yml,Firewall Disabled via Netsh.EXE,scored,,netsh.exe,validated,False,22,14,evadable,39,25,0
+..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_enable_group_rule.yml,Netsh Allow Group Policy on Microsoft Defender Firewall,scored,,netsh.exe,validated,False,33,19,evadable,58,35,0
+..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_rules_discovery.yml,Firewall Configuration Discovery Via Netsh.EXE,scored,,netsh.exe,validated,False,19,17,evadable,34,32,0
+..\sigma\rules\windows\process_creation\proc_creation_win_netsh_fw_set_rule.yml,Firewall Rule Update Via Netsh.EXE,scored,,netsh.exe,validated,False,13,11,evadable,24,16,0
+..\sigma\rules\windows\process_creation\proc_creation_win_netsh_helper_dll_persistence.yml,Potential Persistence Via Netsh Helper DLL,scored,,netsh.exe,validated,False,13,7,evadable,24,12,0
+..\sigma\rules\windows\process_creation\proc_creation_win_netsh_packet_capture.yml,New Network Trace Capture Started Via Netsh.EXE,scored,,netsh.exe,validated,False,15,9,evadable,27,15,0
+..\sigma\rules\windows\process_creation\proc_creation_win_netsh_port_forwarding.yml,New Port Forwarding Rule Added Via Netsh.EXE,scored,,netsh.exe,validated,False,22,14,evadable,39,25,0
+..\sigma\rules\windows\process_creation\proc_creation_win_netsh_port_forwarding_3389.yml,RDP Port Forwarding Rule Added Via Netsh.EXE,scored,,netsh.exe,validated,False,11,8,evadable,20,11,0
+..\sigma\rules\windows\process_creation\proc_creation_win_netsh_wifi_credential_harvesting.yml,Harvesting Of Wifi Credentials Via Netsh.EXE,scored,,netsh.exe,validated,False,18,14,evadable,30,20,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_nltest_execution.yml,Nltest.EXE Execution,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_nltest_recon.yml,Potential Recon Activity Via Nltest.EXE,scored,,nltest.exe,unvalidated,False,15,9,evadable,27,15,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_node_abuse.yml,Potential Arbitrary Code Execution Via Node.EXE,scored,,node.exe,unvalidated,False,21,16,evadable,38,27,0
@@ -672,7 +672,7 @@ path,title,status,reason,program,program_status,other_paths,mutations_argv,evade
 ..\sigma\rules\windows\process_creation\proc_creation_win_rar_compression_with_password.yml,Rar Usage with Password and Compression Level,scored,,(unspecified),unspecified,False,9,8,evadable,20,13,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_rar_susp_greedy_compression.yml,Suspicious Greedy Compression Using Rar.EXE,scored,,rar.exe,unvalidated,False,14,12,evadable,27,19,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_rasdial_execution.yml,Suspicious RASdial Activity,no_commandline,rule does not constrain CommandLine,,,,,,,,,
-..\sigma\rules\windows\process_creation\proc_creation_win_rdp_enable_or_disable_via_win32_terminalservicesetting_wmi_class.yml,RDP Enable or Disable via Win32_TerminalServiceSetting WMI Class,scored,,wmic.exe,unvalidated,False,15,9,evadable,27,15,0
+..\sigma\rules\windows\process_creation\proc_creation_win_rdp_enable_or_disable_via_win32_terminalservicesetting_wmi_class.yml,RDP Enable or Disable via Win32_TerminalServiceSetting WMI Class,scored,,wmic.exe,validated,False,5,0,resistant,27,15,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_rdrleakdiag_process_dumping.yml,Process Memory Dump via RdrLeakDiag.EXE,scored,,rdrleakdiag.exe,unvalidated,False,11,8,evadable,21,12,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_reagentc_disable_windows_recovery_environment.yml,Windows Recovery Environment Disabled Via Reagentc,scored,,reagentc.exe,unvalidated,False,8,3,evadable,17,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_reg_add_run_key.yml,Potential Persistence Attempt Via Run Keys Using Reg.EXE,scored,,reg.exe,validated,False,12,10,evadable,21,19,0
@@ -762,7 +762,7 @@ path,title,status,reason,program,program_status,other_paths,mutations_argv,evade
 ..\sigma\rules\windows\process_creation\proc_creation_win_remote_access_tools_tacticalrmm_agent_registration_via_cli.yml,Remote Access Tool - TacticalRMM Agent Registration to Potentially Attacker-Controlled Server,scored,,tacticalrmm.exe,unvalidated,False,27,18,evadable,48,33,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_remote_access_tools_teamviewer_incoming_connection.yml,Remote Access Tool - Team Viewer Session Started On Windows Host,scored,,teamviewer_desktop.exe,unvalidated,False,20,20,evadable,35,35,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_remote_access_tools_ultraviewer.yml,Remote Access Tool - UltraViewer Execution,no_commandline,rule does not constrain CommandLine,,,,,,,,,
-..\sigma\rules\windows\process_creation\proc_creation_win_remote_time_discovery.yml,Discovery of a System Time,scored,,net.exe,unvalidated,False,8,3,evadable,17,6,0
+..\sigma\rules\windows\process_creation\proc_creation_win_remote_time_discovery.yml,Discovery of a System Time,scored,,net.exe,validated,False,7,3,evadable,17,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_renamed_adfind.yml,Renamed AdFind Execution,scored,,adfind.exe,unvalidated,True,8,3,evadable,17,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_renamed_autohotkey.yml,Renamed AutoHotkey.EXE Execution,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_renamed_autoit.yml,Renamed AutoIt Execution,scored,,autoit3.exe,unvalidated,True,7,6,evadable,16,9,0
@@ -831,18 +831,18 @@ path,title,status,reason,program,program_status,other_paths,mutations_argv,evade
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_webdav_client_susp_execution.yml,Suspicious WebDav Client Execution Via Rundll32.EXE,unsupported,unsupported modifier(s): ['re'],,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_rundll32_without_parameters.yml,Rundll32 Execution Without Parameters,scored,,(unspecified),unspecified,False,1,1,evadable,7,7,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_runonce_execution.yml,Run Once Task Execution as Configured in Registry,scored,,runonce.exe,unvalidated,False,8,3,evadable,17,6,0
-..\sigma\rules\windows\process_creation\proc_creation_win_sc_change_sevice_image_path_by_non_admin.yml,Possible Privilege Escalation via Weak Service Permissions,scored,,sc.exe,unvalidated,False,15,9,evadable,27,15,0
-..\sigma\rules\windows\process_creation\proc_creation_win_sc_create_service.yml,New Service Creation Using Sc.EXE,scored,,sc.exe,unvalidated,False,15,9,evadable,27,15,0
-..\sigma\rules\windows\process_creation\proc_creation_win_sc_disable_service.yml,Service StartupType Change Via Sc.EXE,scored,,sc.exe,unvalidated,False,19,15,evadable,34,24,0
-..\sigma\rules\windows\process_creation\proc_creation_win_sc_new_kernel_driver.yml,New Kernel Driver Via SC.EXE,scored,,sc.exe,unvalidated,False,23,15,evadable,41,27,0
-..\sigma\rules\windows\process_creation\proc_creation_win_sc_query_interesting_services.yml,Interesting Service Enumeration Via Sc.EXE,scored,,sc.exe,unvalidated,False,15,9,evadable,27,15,0
-..\sigma\rules\windows\process_creation\proc_creation_win_sc_sdset_allow_service_changes.yml,Allow Service Access Using Security Descriptor Tampering Via Sc.EXE,scored,,sc.exe,unvalidated,False,15,8,evadable,27,14,0
-..\sigma\rules\windows\process_creation\proc_creation_win_sc_sdset_deny_service_access.yml,Deny Service Access Using Security Descriptor Tampering Via Sc.EXE,scored,,sc.exe,unvalidated,False,15,8,evadable,27,14,0
-..\sigma\rules\windows\process_creation\proc_creation_win_sc_sdset_hide_sevices.yml,Service DACL Abuse To Hide Services Via Sc.EXE,scored,,sc.exe,unvalidated,False,15,9,evadable,27,15,0
-..\sigma\rules\windows\process_creation\proc_creation_win_sc_sdset_modification.yml,Service Security Descriptor Tampering Via Sc.EXE,scored,,sc.exe,unvalidated,False,8,3,evadable,17,6,0
-..\sigma\rules\windows\process_creation\proc_creation_win_sc_service_path_modification.yml,Suspicious Service Path Modification,scored,,sc.exe,unvalidated,False,19,12,evadable,34,21,0
+..\sigma\rules\windows\process_creation\proc_creation_win_sc_change_sevice_image_path_by_non_admin.yml,Possible Privilege Escalation via Weak Service Permissions,scored,,sc.exe,validated,False,15,9,evadable,27,15,0
+..\sigma\rules\windows\process_creation\proc_creation_win_sc_create_service.yml,New Service Creation Using Sc.EXE,scored,,sc.exe,validated,False,15,9,evadable,27,15,0
+..\sigma\rules\windows\process_creation\proc_creation_win_sc_disable_service.yml,Service StartupType Change Via Sc.EXE,scored,,sc.exe,validated,False,19,15,evadable,34,24,0
+..\sigma\rules\windows\process_creation\proc_creation_win_sc_new_kernel_driver.yml,New Kernel Driver Via SC.EXE,scored,,sc.exe,validated,False,23,15,evadable,41,27,0
+..\sigma\rules\windows\process_creation\proc_creation_win_sc_query_interesting_services.yml,Interesting Service Enumeration Via Sc.EXE,scored,,sc.exe,validated,False,15,9,evadable,27,15,0
+..\sigma\rules\windows\process_creation\proc_creation_win_sc_sdset_allow_service_changes.yml,Allow Service Access Using Security Descriptor Tampering Via Sc.EXE,scored,,sc.exe,validated,False,15,8,evadable,27,14,0
+..\sigma\rules\windows\process_creation\proc_creation_win_sc_sdset_deny_service_access.yml,Deny Service Access Using Security Descriptor Tampering Via Sc.EXE,scored,,sc.exe,validated,False,15,8,evadable,27,14,0
+..\sigma\rules\windows\process_creation\proc_creation_win_sc_sdset_hide_sevices.yml,Service DACL Abuse To Hide Services Via Sc.EXE,scored,,sc.exe,validated,False,15,9,evadable,27,15,0
+..\sigma\rules\windows\process_creation\proc_creation_win_sc_sdset_modification.yml,Service Security Descriptor Tampering Via Sc.EXE,scored,,sc.exe,validated,False,8,3,evadable,17,6,0
+..\sigma\rules\windows\process_creation\proc_creation_win_sc_service_path_modification.yml,Suspicious Service Path Modification,scored,,sc.exe,validated,False,19,12,evadable,34,21,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_sc_service_tamper_for_persistence.yml,Potential Persistence Attempt Via Existing Service Tampering,scored,,(unspecified),unspecified,False,17,14,evadable,30,21,0
-..\sigma\rules\windows\process_creation\proc_creation_win_sc_stop_service.yml,Stop Windows Service Via Sc.EXE,scored,,sc.exe,unvalidated,False,8,6,evadable,17,9,0
+..\sigma\rules\windows\process_creation\proc_creation_win_sc_stop_service.yml,Stop Windows Service Via Sc.EXE,scored,,sc.exe,validated,False,8,6,evadable,17,9,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_schtasks_appdata_local_system.yml,Suspicious Schtasks Execution AppData Folder,scored,,schtasks.exe,unvalidated,False,25,21,evadable,44,34,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_schtasks_change.yml,Suspicious Modification Of Scheduled Tasks,scored,,schtasks.exe,unvalidated,False,22,18,evadable,39,29,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_schtasks_creation.yml,Scheduled Task Creation Via Schtasks.EXE,scored,,schtasks.exe,unvalidated,False,8,6,evadable,17,9,0
@@ -942,7 +942,7 @@ path,title,status,reason,program,program_status,other_paths,mutations_argv,evade
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_etw_trace_evasion.yml,ETW Trace Evasion Activity,scored,,wevtutil.exe,unvalidated,False,10,8,evadable,20,12,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_eventlog_clear.yml,Suspicious Eventlog Clearing or Configuration Change Activity,scored,,powershell.exe,validated,False,8,3,evadable,17,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_eventlog_content_recon.yml,Potentially Suspicious EventLog Recon Activity Using Log Query Utilities,scored,,wevtutil.exe,unvalidated,False,19,12,evadable,34,21,0
-..\sigma\rules\windows\process_creation\proc_creation_win_susp_execution_from_public_folder_as_parent.yml,Potentially Suspicious Execution From Parent Process In Public Folder,scored,,bitsadmin.exe,unvalidated,True,1,0,inconclusive,7,6,0
+..\sigma\rules\windows\process_creation\proc_creation_win_susp_execution_from_public_folder_as_parent.yml,Potentially Suspicious Execution From Parent Process In Public Folder,scored,,bitsadmin.exe,validated,True,1,0,inconclusive,7,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_execution_path.yml,Process Execution From A Potentially Suspicious Folder,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_file_characteristics.yml,Suspicious File Characteristics Due to Missing Fields,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_filefix_execution_pattern.yml,Suspicious FileFix Execution Pattern,scored,,(unspecified),unspecified,False,9,3,evadable,18,6,0
@@ -956,7 +956,7 @@ path,title,status,reason,program,program_status,other_paths,mutations_argv,evade
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_inline_win_api_access.yml,Potential WinAPI Calls Via CommandLine,scored,,(unspecified),unspecified,False,8,3,evadable,17,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_jwt_token_search.yml,Potentially Suspicious JWT Token Search Via CLI,scored,,(unspecified),unspecified,False,15,11,evadable,27,16,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_lnk_exec_hidden_cmd.yml,Suspicious LNK Command-Line Padding with Whitespace Characters,unsupported,unsupported modifier(s): ['re'],(unspecified),unspecified,False,,,,,,
-..\sigma\rules\windows\process_creation\proc_creation_win_susp_local_system_owner_account_discovery.yml,Local Accounts Discovery,scored,,wmic.exe,unvalidated,True,13,7,evadable,24,12,0
+..\sigma\rules\windows\process_creation\proc_creation_win_susp_local_system_owner_account_discovery.yml,Local Accounts Discovery,scored,,wmic.exe,validated,True,5,0,resistant,24,12,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_lolbin_exec_from_non_c_drive.yml,LOLBIN Execution From Abnormal Drive,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_lsass_dmp_cli_keywords.yml,LSASS Dump Keyword In CommandLine,scored,,(unspecified),unspecified,False,8,3,evadable,17,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_ms_appinstaller_download.yml,Potential File Download Via MS-AppInstaller Protocol Handler,scored,,(unspecified),unspecified,False,15,9,evadable,27,15,0
@@ -989,9 +989,9 @@ path,title,status,reason,program,program_status,other_paths,mutations_argv,evade
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_script_exec_from_env_folder.yml,Script Interpreter Execution From Suspicious Folder,scored,,cscript.exe,unvalidated,False,6,3,evadable,15,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_script_interpretor_spawn_credential_scanner.yml,Script Interpreter Spawning Credential Scanner - Windows,scored,,trufflehog.exe,unvalidated,True,1,0,inconclusive,7,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_sensitive_file_access_shadowcopy.yml,Sensitive File Access Via Volume Shadow Copy Backup,scored,,(unspecified),unspecified,False,8,3,evadable,17,6,0
-..\sigma\rules\windows\process_creation\proc_creation_win_susp_service_creation.yml,Suspicious New Service Creation,scored,,sc.exe,unvalidated,False,19,12,evadable,34,21,0
+..\sigma\rules\windows\process_creation\proc_creation_win_susp_service_creation.yml,Suspicious New Service Creation,scored,,sc.exe,validated,False,19,12,evadable,34,21,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_service_dir.yml,Suspicious Service Binary Directory,no_commandline,rule does not constrain CommandLine,,,,,,,,,
-..\sigma\rules\windows\process_creation\proc_creation_win_susp_service_tamper.yml,Suspicious Windows Service Tampering,scored,,net.exe,unvalidated,False,14,12,evadable,26,18,0
+..\sigma\rules\windows\process_creation\proc_creation_win_susp_service_tamper.yml,Suspicious Windows Service Tampering,scored,,net.exe,validated,False,13,11,evadable,26,18,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_shadow_copies_creation.yml,Shadow Copies Creation Using Operating Systems Utilities,scored,,powershell.exe,validated,False,15,9,evadable,27,15,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_shadow_copies_deletion.yml,Shadow Copies Deletion Using Operating Systems Utilities,scored,,powershell.exe,validated,False,15,9,evadable,27,15,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_susp_shell_spawn_susp_program.yml,Windows Shell/Scripting Processes Spawning Suspicious Programs,no_commandline,rule does not constrain CommandLine,,,,,,,,,
@@ -1108,7 +1108,7 @@ path,title,status,reason,program,program_status,other_paths,mutations_argv,evade
 ..\sigma\rules\windows\process_creation\proc_creation_win_webdav_lnk_execution.yml,Potentially Suspicious WebDAV LNK Execution,scored,,cmd.exe,self-parsing,False,3,0,inconclusive,15,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_webshell_chopper.yml,Chopper Webshell Process Pattern,scored,,w3wp.exe,unvalidated,False,8,3,evadable,17,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_webshell_hacking.yml,Webshell Hacking Activity Patterns,scored,,ntdsutil.exe,unvalidated,True,15,9,evadable,27,15,0
-..\sigma\rules\windows\process_creation\proc_creation_win_webshell_recon_commands_and_processes.yml,Webshell Detection With Command Line Keywords,scored,,net.exe,unvalidated,True,8,6,evadable,17,9,0
+..\sigma\rules\windows\process_creation\proc_creation_win_webshell_recon_commands_and_processes.yml,Webshell Detection With Command Line Keywords,scored,,net.exe,validated,True,7,5,evadable,17,9,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_webshell_susp_process_spawned_from_webserver.yml,Suspicious Process By Web Server Process,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_webshell_tool_recon.yml,Webshell Tool Reconnaissance Activity,scored,,(unspecified),unspecified,False,15,14,evadable,27,20,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_werfault_lsass_shtinkering.yml,Potential Credential Dumping Via WER,scored,,werfault.exe,unvalidated,False,14,13,evadable,29,22,0
@@ -1143,34 +1143,34 @@ path,title,status,reason,program,program_status,other_paths,mutations_argv,evade
 ..\sigma\rules\windows\process_creation\proc_creation_win_winzip_password_compression.yml,Compress Data and Lock With Password for Exfiltration With WINZIP,scored,,(unspecified),unspecified,False,15,12,evadable,29,20,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_wlrmdr_uncommon_child_process.yml,Wlrmdr.EXE Uncommon Argument Or Child Process,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_wmi_backdoor_exchange_transport_agent.yml,WMI Backdoor Exchange Transport Agent,no_commandline,rule does not constrain CommandLine,,,,,,,,,
-..\sigma\rules\windows\process_creation\proc_creation_win_wmi_password_never_expire.yml,Password Set to Never Expire via WMI,scored,,wmic.exe,unvalidated,False,22,17,evadable,39,28,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmi_password_never_expire.yml,Password Set to Never Expire via WMI,scored,,wmic.exe,validated,False,7,2,evadable,39,28,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_wmi_persistence_script_event_consumer.yml,WMI Persistence - Script Event Consumer,no_commandline,rule does not constrain CommandLine,,,,,,,,,
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_eventconsumer_creation.yml,NewActiveScriptEventConsumer Creation Attempt via Wmic.EXE,scored,,wmic.exe,unvalidated,False,15,12,evadable,27,18,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_namespace_defender.yml,Potential Windows Defender Tampering Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,8,3,evadable,17,6,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_process_creation.yml,Process Creation Attempt via Wmic.EXE,scored,,wmic.exe,unvalidated,False,19,12,evadable,34,21,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_computersystem.yml,Computer System Reconnaissance Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,8,3,evadable,17,6,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_csproduct.yml,Hardware Model Reconnaissance Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,8,3,evadable,17,6,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_group.yml,Local Groups Reconnaissance Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,7,6,evadable,16,9,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_hotfix.yml,Windows Hotfix Updates Reconnaissance Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,6,5,evadable,14,7,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_process.yml,Potential Process Reconnaissance via Wmic.EXE,scored,,wmic.exe,unvalidated,False,8,3,evadable,17,6,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_product.yml,Potential Product Reconnaissance Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,8,3,evadable,17,6,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_product_class.yml,Potential Product Class Reconnaissance Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,8,3,evadable,17,6,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_service.yml,Service Reconnaissance Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,8,3,evadable,17,6,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_system_info_uncommon.yml,Uncommon System Information Discovery Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,18,17,evadable,32,25,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_unquoted_service_search.yml,Potential Unquoted Service Path Reconnaissance Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,18,16,evadable,32,24,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_volume.yml,System Disk And Volume Reconnaissance Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,7,6,evadable,16,9,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_remote_execution.yml,WMIC Remote Command Execution,scored,,wmic.exe,unvalidated,False,8,3,evadable,17,6,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_service_manipulation.yml,Service Started/Stopped Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,19,16,evadable,34,25,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_service_startup_change.yml,Service Startup Type Change Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,19,15,evadable,34,24,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_squiblytwo_bypass.yml,Potential Remote SquiblyTwo Technique Execution,scored,,wmic.exe,unvalidated,False,13,7,evadable,24,12,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_stdregprov_reg_enumeration.yml,Registry Enumeration via WMI Stdregprov,scored,,wmic.exe,unvalidated,False,19,12,evadable,34,21,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_stdregprov_reg_modification.yml,Registry Manipulation via WMI Stdregprov,scored,,wmic.exe,unvalidated,False,19,12,evadable,34,21,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_susp_execution_via_office_process.yml,Suspicious WMIC Execution Via Office Process,scored,,wmic.exe,unvalidated,False,23,15,evadable,41,27,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_eventconsumer_creation.yml,NewActiveScriptEventConsumer Creation Attempt via Wmic.EXE,scored,,wmic.exe,validated,False,5,2,evadable,27,18,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_namespace_defender.yml,Potential Windows Defender Tampering Via Wmic.EXE,scored,,wmic.exe,validated,False,4,0,resistant,17,6,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_process_creation.yml,Process Creation Attempt via Wmic.EXE,scored,,wmic.exe,validated,False,6,0,resistant,34,21,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_computersystem.yml,Computer System Reconnaissance Via Wmic.EXE,scored,,wmic.exe,validated,False,4,0,resistant,17,6,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_csproduct.yml,Hardware Model Reconnaissance Via Wmic.EXE,scored,,wmic.exe,validated,False,4,0,resistant,17,6,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_group.yml,Local Groups Reconnaissance Via Wmic.EXE,scored,,wmic.exe,validated,False,3,2,evadable,16,9,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_hotfix.yml,Windows Hotfix Updates Reconnaissance Via Wmic.EXE,scored,,wmic.exe,validated,False,3,2,evadable,14,7,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_process.yml,Potential Process Reconnaissance via Wmic.EXE,scored,,wmic.exe,validated,False,4,0,resistant,17,6,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_product.yml,Potential Product Reconnaissance Via Wmic.EXE,scored,,wmic.exe,validated,False,4,0,resistant,17,6,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_product_class.yml,Potential Product Class Reconnaissance Via Wmic.EXE,scored,,wmic.exe,validated,False,4,0,resistant,17,6,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_service.yml,Service Reconnaissance Via Wmic.EXE,scored,,wmic.exe,validated,False,4,0,resistant,17,6,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_system_info_uncommon.yml,Uncommon System Information Discovery Via Wmic.EXE,scored,,wmic.exe,validated,False,6,5,evadable,32,25,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_unquoted_service_search.yml,Potential Unquoted Service Path Reconnaissance Via Wmic.EXE,scored,,wmic.exe,validated,False,6,4,evadable,32,24,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_recon_volume.yml,System Disk And Volume Reconnaissance Via Wmic.EXE,scored,,wmic.exe,validated,False,3,2,evadable,16,9,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_remote_execution.yml,WMIC Remote Command Execution,scored,,wmic.exe,validated,False,4,0,resistant,17,6,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_service_manipulation.yml,Service Started/Stopped Via Wmic.EXE,scored,,wmic.exe,validated,False,6,3,evadable,34,25,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_service_startup_change.yml,Service Startup Type Change Via Wmic.EXE,scored,,wmic.exe,validated,False,6,2,evadable,34,24,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_squiblytwo_bypass.yml,Potential Remote SquiblyTwo Technique Execution,scored,,wmic.exe,validated,False,5,0,resistant,24,12,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_stdregprov_reg_enumeration.yml,Registry Enumeration via WMI Stdregprov,scored,,wmic.exe,validated,False,6,0,resistant,34,21,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_stdregprov_reg_modification.yml,Registry Manipulation via WMI Stdregprov,scored,,wmic.exe,validated,False,6,0,resistant,34,21,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_susp_execution_via_office_process.yml,Suspicious WMIC Execution Via Office Process,scored,,wmic.exe,validated,False,7,0,resistant,41,27,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_wmic_susp_process_creation.yml,Suspicious Process Created Via Wmic.EXE,scored,,(unspecified),unspecified,False,23,20,evadable,41,32,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_terminate_application.yml,Application Termination Attempt via Wmic.EXE,scored,,wmic.exe,unvalidated,False,15,9,evadable,27,15,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_uninstall_application.yml,Application Removed Via Wmic.EXE,scored,,wmic.exe,unvalidated,False,15,9,evadable,27,15,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_terminate_application.yml,Application Termination Attempt via Wmic.EXE,scored,,wmic.exe,validated,False,5,0,resistant,27,15,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_uninstall_application.yml,Application Removed Via Wmic.EXE,scored,,wmic.exe,validated,False,5,0,resistant,27,15,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_wmic_uninstall_security_products.yml,Potential Tampering With Security Products Via WMIC,scored,,(unspecified),unspecified,False,27,21,evadable,48,36,0
-..\sigma\rules\windows\process_creation\proc_creation_win_wmic_xsl_script_processing.yml,XSL Script Execution Via WMIC.EXE,scored,,wmic.exe,unvalidated,False,8,3,evadable,18,6,0
+..\sigma\rules\windows\process_creation\proc_creation_win_wmic_xsl_script_processing.yml,XSL Script Execution Via WMIC.EXE,scored,,wmic.exe,validated,False,4,0,resistant,18,6,0
 ..\sigma\rules\windows\process_creation\proc_creation_win_wmiprvse_spawning_process.yml,WmiPrvSE Spawned A Process,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_wmiprvse_spawns_powershell.yml,Potential WMI Lateral Movement WmiPrvSE Spawned PowerShell,no_commandline,rule does not constrain CommandLine,,,,,,,,,
 ..\sigma\rules\windows\process_creation\proc_creation_win_wmiprvse_susp_child_processes.yml,Suspicious WmiPrvSE Child Process,scored,,cmd.exe,self-parsing,True,3,0,inconclusive,17,6,0

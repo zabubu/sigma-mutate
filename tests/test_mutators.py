@@ -56,9 +56,21 @@ class MutatorTests(unittest.TestCase):
     def test_program_status(self):
         from sigma_mutate.mutators import program_status
         self.assertEqual(program_status("certutil.exe -urlcache x"), "validated")
+        self.assertEqual(program_status("sc.exe query x"), "validated")
+        self.assertEqual(program_status("schtasks.exe /query"), "unvalidated")
         self.assertEqual(program_status("C:" + BS + "Windows" + BS + "System32" + BS + "CMD.EXE /c x"), "self-parsing")
         self.assertEqual(program_status("mshta.exe x"), "unvalidated")
         self.assertEqual(program_status("app.exe x"), "unspecified")
+
+    def test_counter_examples_from_the_windows_run(self):
+        net = {m.mutator for m in generate("net.exe accounts /domain")}
+        self.assertNotIn("tab_separator", net)           # net.exe does not split on a tab
+        self.assertIn("quote_wrap", net)
+        wmic = {m.mutator for m in generate("wmic.exe os get caption")}
+        self.assertNotIn("quote_split", wmic)            # wmic.exe keeps the inner quotes
+        self.assertIn("quote_wrap", wmic)
+        full = generate("net.exe accounts", ("argv", "cmd.exe", "program"))
+        self.assertTrue([m for m in full if m.mutator == "tab_separator" and m.assumption == "program"])
 
     def test_default_is_argv_only(self):
         self.assertEqual({m.assumption for m in generate("a.exe -b http://x")}, {"argv"})
