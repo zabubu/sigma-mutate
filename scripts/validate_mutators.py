@@ -40,6 +40,12 @@ def test_commands(tmp_file: str) -> list[tuple[str, str]]:
         ("powershell", "powershell.exe -NoProfile -NonInteractive -Command Write-Output hello"),
         ("curl", "curl.exe --version"),
         ("where", "where.exe /q cmd.exe"),
+        ("schtasks", "schtasks.exe /query /fo csv /nh"),
+        ("net", "net.exe accounts"),
+        ("netsh", "netsh.exe interface show interface"),
+        ("sc", "sc.exe query wuauserv"),
+        ("bitsadmin", "bitsadmin.exe /list"),
+        ("wmic", "wmic.exe os get caption"),
     ]
 
 

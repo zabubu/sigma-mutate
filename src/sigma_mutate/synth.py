@@ -40,6 +40,21 @@ def _candidates(names):
             yield c
 
 
+def _is_minimal(chosen, names, conds) -> bool:
+    """True if removing any selection from `chosen` breaks the condition.
+
+    A non-minimal set (e.g. both sides of an `A or B`) would let a redundant alternative
+    keep the rule firing, hiding any evasion of the other one."""
+    for n in chosen:
+        truth = {m: (m in chosen and m != n) for m in names}
+        try:
+            if any(eval_condition(c, truth) for c in conds):
+                return False
+        except (NotImplementedError, ValueError):
+            pass
+    return True
+
+
 def iter_satisfying(det: dict):
     names = [k for k in det if k not in ("condition", "timeframe")]
     cond = det["condition"]
@@ -53,7 +68,7 @@ def iter_satisfying(det: dict):
             raise SynthError(f"unsupported condition: {e}")
         except ValueError as e:
             raise SynthError(f"invalid condition: {e}")
-        if ok:
+        if ok and _is_minimal(chosen, names, conds):
             found = True
             yield list(chosen)
     if not found:
@@ -168,21 +183,70 @@ def _falsify_null_filters(det: dict, chosen: list[str], event: dict) -> None:
 
 
 # ---------------------------------------------------------------- public API
-def _program_name(event: dict) -> str:
+def _program_hint(det: dict) -> str | None:
+    """A program name found in the rule (Image / OriginalFileName of a non-filter selection)."""
+    for name, sel in det.items():
+        if name in ("condition", "timeframe") or name.lower().startswith("filter"):
+            continue
+        for m in (sel if isinstance(sel, list) else [sel]):
+            if not isinstance(m, dict):
+                continue
+            for key, expected in m.items():
+                if key.split("|")[0] in ("Image", "OriginalFileName"):
+                    for pat in (expected if isinstance(expected, list) else [expected]):
+                        if isinstance(pat, str):
+                            base = re.split(r"[\\/]", literal_value(pat))[-1]
+                            if base.lower().endswith(".exe"):
+                                return base
+    return None
+
+
+def _program_name(event: dict, hint: str | None) -> str:
     img = event.get("Image")
     if img:
         base = re.split(r"[\\/]", str(img))[-1]
         if base:
             return base
-    return str(event.get("OriginalFileName") or "app.exe")
+    return str(event.get("OriginalFileName") or hint or "app.exe")
 
 
-def _with_program(event: dict) -> dict | None:
+def _with_program(event: dict, hint: str | None) -> dict | None:
     """Real command lines start with the program name; the rule's patterns usually do not."""
     cmd = event.get("CommandLine")
     if not cmd:
         return None
-    return {**event, "CommandLine": f"{_program_name(event)} {cmd}"}
+    name = _program_name(event, hint)
+    stem = name.lower().rsplit(".", 1)[0]
+    if name != "app.exe" and stem and stem in cmd.split(" ")[0].lower():
+        return None  # the rule's own pattern already provides the program name: do not duplicate it
+    return {**event, "CommandLine": f"{name} {cmd}"}
+
+
+def rule_program(rule: dict, event: dict) -> str | None:
+    """The program the rule is about (Image / OriginalFileName / hint), None if it names none."""
+    name = _program_name(event, _program_hint(rule.get("detection") or {}))
+    return None if name == "app.exe" else name
+
+
+def field_independent(rule: dict, field: str = "CommandLine") -> bool:
+    """True if the rule can also fire through a detection path that does not constrain `field`
+    (for example by binary name). Then evading `field` alone does not evade the whole rule."""
+    det = rule.get("detection")
+    if not isinstance(det, dict) or "condition" not in det:
+        return False
+    try:
+        for chosen in islice(iter_satisfying(det), 20):
+            ok = True
+            for n in chosen:
+                alts = _alternatives(det[n], field)
+                if not any(not any(c[0] == field and c[1] != "null" for c in alt) for alt in alts):
+                    ok = False
+                    break
+            if ok:
+                return True
+    except SynthError:
+        return False
+    return False
 
 
 def synthesize_ex(rule: dict, verify: bool = True, prefer_field: str = "CommandLine"):
@@ -191,6 +255,7 @@ def synthesize_ex(rule: dict, verify: bool = True, prefer_field: str = "CommandL
     if not isinstance(det, dict) or "condition" not in det:
         raise SynthError("no detection/condition")
     mentions = _mentions(det, prefer_field)
+    hint = _program_hint(det)
     best, first_error = None, None
     for chosen in islice(iter_satisfying(det), MAX_SELECTION_SETS):
         for per_field in islice(_per_field_variants(det, chosen, prefer_field), MAX_CANDIDATES):
@@ -203,7 +268,7 @@ def synthesize_ex(rule: dict, verify: bool = True, prefer_field: str = "CommandL
             positive = set(event)
             _falsify_null_filters(det, chosen, event)
             variants = [event]
-            prefixed = _with_program(event)
+            prefixed = _with_program(event, hint)
             if prefixed:
                 variants.insert(0, prefixed)  # preferred: starts with the program name
             if not verify:

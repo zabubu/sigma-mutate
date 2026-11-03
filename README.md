@@ -39,8 +39,8 @@ python scripts/corpus.py path/to/sigma/rules/windows/process_creation --verify-r
 
 ## Verdicts
 
-Per rule: **evadable** (at least one undetected variant), **robust** (at least N non-trivial
-variants, all detected) or **inconclusive** (too few meaningful variants to claim anything).
+Per rule: **evadable** (at least one undetected variant), **resistant** (at least N non-trivial
+variants, all detected: it only means the rule survived these mutators) or **inconclusive** (too few meaningful variants to claim anything).
 
 ## Validation on Windows
 
@@ -64,11 +64,13 @@ Verdicts are reported separately for rules whose program was validated.
 - Events are **minimal**: they contain what the rule asks for, not a realistic attack.
 - Variants are **not yet validated on a real Windows host**; some programs do not use standard
   argument parsing. Planned: validate each mutator against representative programs.
+- A verdict concerns the **CommandLine detection path** of a rule. A rule that can also fire another way
+  (e.g. by binary name) is flagged `other_paths`; evading the command line alone does not evade it.
 - Only `CommandLine` is mutated; `re`, `base64offset` and `fieldref` rules are not supported yet.
 
 ## Status
 
-v0.0.12 - matcher validated against rsigma on SigmaHQ `windows/process_creation`
+v0.0.15 - matcher validated against rsigma on SigmaHQ `windows/process_creation`
 (events and variants, no disagreement at last run).
 
 ## Roadmap

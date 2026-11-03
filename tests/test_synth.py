@@ -109,6 +109,42 @@ class SynthTests(unittest.TestCase):
         r = rule({"selection": {"CommandLine|startswith": "-x"}, "condition": "selection"})
         self.assertTrue(matches(r, synthesize(r)))
 
+    def test_only_minimal_selection_sets(self):
+        from sigma_mutate.synth import iter_satisfying
+        det = {"a": {"CommandLine|contains": "x"}, "b": {"Image|endswith": "y"}, "condition": "a or b"}
+        self.assertEqual(sorted(map(tuple, iter_satisfying(det))), [("a",), ("b",)])
+
+    def test_or_alternative_is_not_kept_alongside_the_command_line_path(self):
+        from sigma_mutate.synth import field_independent, synthesize_ex
+        r = rule({"selection_img": {"Image|endswith": chr(92) + "certify.exe"},
+                  "selection_cli_a": {"CommandLine|contains": " find "},
+                  "selection_cli_b": {"CommandLine|contains": " /ca:"},
+                  "condition": "selection_img or all of selection_cli_*"})
+        ev, positive = synthesize_ex(r)
+        self.assertNotIn("Image", ev)                       # the redundant alternative is not added
+        self.assertTrue(ev["CommandLine"].startswith("certify.exe "))   # but the program name is hinted
+        self.assertTrue(field_independent(r))               # the rule can also fire by binary name
+        only_cli = rule({"sel": {"CommandLine|contains": "x"}, "condition": "sel"})
+        self.assertFalse(field_independent(only_cli))
+
+    def test_program_name_is_not_duplicated(self):
+        # rundll32 rule: the CommandLine pattern 'rundll32' already provides the program name
+        r = rule({"selection_img": [{"Image|endswith": chr(92) + "rundll32.exe"}, {"CommandLine|contains": "rundll32"}],
+                  "selection_cli": {"CommandLine|contains": ["#+", "#0"]},
+                  "condition": "all of selection_*"})
+        ev = synthesize(r)
+        self.assertTrue(matches(r, ev))
+        self.assertEqual(ev["CommandLine"].lower().count("rundll32"), 1)
+
+    def test_rule_program(self):
+        from sigma_mutate.synth import rule_program, synthesize_ex
+        r = rule({"selection": {"CommandLine|contains": "whoami*>"}, "condition": "selection"})
+        ev, _ = synthesize_ex(r)
+        self.assertIsNone(rule_program(r, ev))
+        r2 = rule({"selection": {"Image|endswith": chr(92) + "whoami.exe", "CommandLine|contains": "x"},
+                   "condition": "selection"})
+        self.assertEqual(rule_program(r2, synthesize(r2)), "whoami.exe")
+
     def test_windash_rule(self):
         r = rule({"sel": {"CommandLine|contains|windash": " -urlcache "}, "condition": "sel"})
         self.assertTrue(matches(r, synthesize(r)))

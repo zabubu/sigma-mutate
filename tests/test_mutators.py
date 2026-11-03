@@ -14,9 +14,19 @@ class MutatorTests(unittest.TestCase):
         self.assertIn('"whoami"', values["quote_wrap"])
         self.assertEqual(values["tab_separator"], "app.exe\t/c\twhoami")
 
-    def test_short_tokens_get_no_quote_split(self):
-        names = {m.label for m in generate("attrib +h +s") if m.mutator == "quote_split"}
-        self.assertFalse(any("+h" in n or "+s" in n for n in names))
+    def test_single_character_tokens_get_no_quote_split(self):
+        names = [m.label for m in generate("app.exe x -") if m.mutator == "quote_split"]
+        self.assertFalse(any(("(x)" in n or "(-)" in n) for n in names))
+
+    def test_punctuation_boundaries_are_used(self):
+        values = [m.value for m in generate("app.exe -i #+") if m.mutator == "quote_split"]
+        self.assertIn('app.exe -""i #+', values)
+        self.assertIn('app.exe -i #""+', values)
+
+    def test_all_arguments_variant(self):
+        values = [m.value for m in generate("app.exe -ab -cd") if m.label.startswith("all arguments")]
+        self.assertTrue(values)
+        self.assertTrue(all(v.count('""') == 2 for v in values))
 
     def test_never_inserts_next_to_a_backslash(self):
         cmd = "C:" + BS + "dir" + BS + "file.exe"
@@ -48,6 +58,7 @@ class MutatorTests(unittest.TestCase):
         self.assertEqual(program_status("certutil.exe -urlcache x"), "validated")
         self.assertEqual(program_status("C:" + BS + "Windows" + BS + "System32" + BS + "CMD.EXE /c x"), "self-parsing")
         self.assertEqual(program_status("mshta.exe x"), "unvalidated")
+        self.assertEqual(program_status("app.exe x"), "unspecified")
 
     def test_default_is_argv_only(self):
         self.assertEqual({m.assumption for m in generate("a.exe -b http://x")}, {"argv"})

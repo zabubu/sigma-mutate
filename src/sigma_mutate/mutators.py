@@ -23,14 +23,21 @@ class Mutation:
     assumption: str
 
 
-def _boundaries(tok: str) -> list[tuple[str, int]]:
-    """Insertion points between two ASCII alphanumerics: first, middle and last.
+_NO_INSERT = set('\\"^&|<>%! \t')
 
-    Never right after a backslash (a backslash before a quote changes its meaning in
-    Windows argument parsing) and never next to punctuation.
+
+def _boundaries(tok: str) -> list[tuple[str, int]]:
+    """Insertion points between two ordinary ASCII characters: first, middle and last.
+
+    Never next to a backslash (a backslash before a quote changes its meaning in Windows
+    argument parsing), a quote, whitespace or a cmd.exe metacharacter; tokens that already
+    contain a quote are left alone.
     """
+    if '"' in tok:
+        return []
     ok = [i for i in range(1, len(tok))
-          if tok[i - 1].isascii() and tok[i - 1].isalnum() and tok[i].isascii() and tok[i].isalnum()]
+          if tok[i - 1].isascii() and tok[i].isascii()
+          and tok[i - 1] not in _NO_INSERT and tok[i] not in _NO_INSERT]
     if not ok:
         return []
     picks = {"first": ok[0], "middle": min(ok, key=lambda i: abs(i - len(tok) // 2)), "last": ok[-1]}
@@ -55,10 +62,28 @@ def _per_token(cmd: str, ins: str, name: str, assumption: str, first_token: str 
     return out
 
 
+def _all_arguments(cmd: str, ins: str, name: str, assumption: str) -> list[Mutation]:
+    """The same insertion in EVERY argument at once (a pattern may occur in several tokens)."""
+    toks = cmd.split(" ")
+    out = []
+    for where in ("first", "middle", "last"):
+        new, hit = list(toks), 0
+        for i in range(1, len(toks)):
+            for w, pos in _boundaries(toks[i]):
+                if w == where:
+                    new[i] = toks[i][:pos] + ins + toks[i][pos:]
+                    hit += 1
+                    break
+        if hit >= 2:
+            out.append(Mutation(name, f"all arguments {where}", " ".join(new), assumption))
+    return out
+
+
 def quote_split(cmd: str) -> list[Mutation]:
     # h""ttp is parsed back to http by the Windows argument parser. The program name (token 0)
     # is parsed by CreateProcess, which does not strip inner quotes: only cmd.exe does.
-    return _per_token(cmd, '""', "quote_split", ARGV, first_token=CMD)
+    return (_per_token(cmd, '""', "quote_split", ARGV, first_token=CMD)
+            + _all_arguments(cmd, '""', "quote_split", ARGV))
 
 
 def quote_wrap(cmd: str) -> list[Mutation]:
@@ -69,6 +94,10 @@ def quote_wrap(cmd: str) -> list[Mutation]:
         if tok and '"' not in tok and "\\" not in tok[-1:]:
             value = " ".join(toks[:i] + ['"' + tok + '"'] + toks[i + 1 :])
             out.append(Mutation("quote_wrap", f"token {i} ({tok})", value, ARGV))
+    eligible = [i for i, t in enumerate(toks) if t and '"' not in t and "\\" not in t[-1:]]
+    if len(eligible) >= 2:
+        wrapped = ['"' + t + '"' if i in eligible else t for i, t in enumerate(toks)]
+        out.append(Mutation("quote_wrap", "all tokens", " ".join(wrapped), ARGV))
     return out
 
 
@@ -121,11 +150,17 @@ def program_of(cmd: str) -> str:
     return name if "." in name else name + ".exe"
 
 
-def program_status(cmd: str) -> str:
-    prog = program_of(cmd)
+def status_for(prog: str | None) -> str:
+    if not prog or prog.lower() == "app.exe":  # placeholder used when the rule names no program
+        return "unspecified"
+    prog = prog.lower()
     if prog in SELF_PARSING:
         return "self-parsing"
     return "validated" if prog in VALIDATED_PROGRAMS else "unvalidated"
+
+
+def program_status(cmd: str) -> str:
+    return status_for(program_of(cmd))
 
 
 def generate(cmd: str, assumptions=(ARGV,)) -> list[Mutation]:
