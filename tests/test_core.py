@@ -84,9 +84,28 @@ class MatcherTests(unittest.TestCase):
         self.assertFalse(matches(rule, {"CommandLine": "x", "Hashes": "abc"}))
 
     def test_unsupported_modifier_is_explicit(self):
-        rule = {"detection": {"sel": {"CommandLine|re": "a.*"}, "condition": "sel"}}
+        rule = {"detection": {"sel": {"CommandLine|fieldref": "Image"}, "condition": "sel"}}
         with self.assertRaises(NotImplementedError):
             matches(rule, {"CommandLine": "abc"})
+
+    def test_regex_is_case_sensitive_unless_asked(self):
+        def r(key, pattern):
+            return {"detection": {"sel": {key: pattern}, "condition": "sel"}}
+        self.assertTrue(matches(r("CommandLine|re", r"\s-H\s"), {"CommandLine": "curl -H x"}))
+        self.assertFalse(matches(r("CommandLine|re", r"\s-H\s"), {"CommandLine": "curl -h x"}))
+        self.assertTrue(matches(r("CommandLine|re|i", r"\s-H\s"), {"CommandLine": "curl -h x"}))
+        self.assertTrue(matches(r("CommandLine|re", r"(?i)\s-H\s"), {"CommandLine": "curl -h x"}))
+        self.assertFalse(matches(r("CommandLine|re", r"^abc$"), {"CommandLine": "xabc"}))
+
+    def test_base64offset(self):
+        import base64
+        rule = {"detection": {"sel": {"CommandLine|base64offset|contains": "Set-MpPreference "},
+                              "condition": "sel"}}
+        for prefix in ("", "a", "ab"):
+            blob = base64.b64encode((prefix + "Set-MpPreference -x").encode()).decode()
+            self.assertTrue(matches(rule, {"CommandLine": "powershell -e " + blob}), prefix)
+        plain = base64.b64encode(b"Get-Process").decode()
+        self.assertFalse(matches(rule, {"CommandLine": "powershell -e " + plain}))
 
 
 class ScoringTests(unittest.TestCase):

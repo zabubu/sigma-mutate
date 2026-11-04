@@ -1,16 +1,10 @@
-"""Run sigma-mutate over a directory of Sigma rules (e.g. a SigmaHQ clone).
+"""Run sigma-mutate over a folder of Sigma rules (e.g. a SigmaHQ clone).
 
-For each rule: synthesize a true-positive event, mutate its CommandLine, check which
-variants are still detected. Rules the MVP cannot handle are counted with a reason.
-
-Headline metric: among rules with at least one 'argv' mutation (variants equivalent under
-standard Windows argument parsing), how many have at least one variant that is NOT detected?
-
-With --verify-rsigma, every event (original + all mutations) is also replayed through rsigma
-and any disagreement between the two engines is reported.
+For each rule, build a matching event, rewrite its CommandLine and count the variants that are
+no longer detected. --verify-rsigma also replays every event through rsigma.
 
 Usage:
-    py scripts\\corpus.py C:\\path\\to\\sigma\\rules\\windows\\process_creation --csv results.csv
+    py scripts\\corpus.py C:\\path\\to\\sigma\\rules\\windows\\process_creation --csv verif.csv
     py scripts\\corpus.py <dir> --limit 50 --verify-rsigma
 """
 from __future__ import annotations
@@ -33,7 +27,7 @@ from sigma_mutate.synth import SynthError, field_independent, rule_program, synt
 
 ALL_ASSUMPTIONS = ("argv", "cmd.exe", "program")
 FIELDS = ["path", "title", "status", "reason", "program", "program_status", "other_paths", "mutations_argv", "evaded_argv", "argv_verdict",
-          "mutations_all", "evaded_all", "engine_diffs"]
+          "mutations_all", "evaded_all", "engine_diffs", "original", "example"]
 
 
 def load_rule(path: str):
@@ -49,7 +43,7 @@ def analyse(path: str, args, diffs: list) -> dict:
     row["path"] = path
     try:
         rule = load_rule(path)
-    except Exception as e:  # malformed YAML
+    except Exception as e:
         row.update(status="load_error", reason=str(e)[:120])
         return row
     if rule is None:
@@ -95,14 +89,16 @@ def analyse(path: str, args, diffs: list) -> dict:
     argv = [r for r in report.results if r.mutation.assumption == "argv"]
     nontrivial = [r for r in argv if r.mutation.mutator not in TRIVIAL]
     evaded_argv = sum(not r.detected for r in argv)
+    missed = sorted((r for r in argv if not r.detected), key=lambda r: r.mutation.mutator in TRIVIAL)
     if evaded_argv:
         verdict = "evadable"
     elif len(nontrivial) >= args.min_variants:
         verdict = "resistant"
     else:
-        verdict = "inconclusive"  # too few meaningful variants to claim anything
+        verdict = "inconclusive"
     row.update(status="scored", mutations_argv=len(argv), evaded_argv=evaded_argv, argv_verdict=verdict,
-               mutations_all=report.total, evaded_all=len(report.evasions))
+               mutations_all=report.total, evaded_all=len(report.evasions),
+               original=event["CommandLine"], example=missed[0].mutation.value if missed else "")
     return row
 
 
@@ -111,7 +107,7 @@ def main() -> int:
     p.add_argument("directory")
     p.add_argument("--category", default="process_creation", help="logsource category filter ('' = all)")
     p.add_argument("--limit", type=int, default=0, help="analyse only the first N rules")
-    p.add_argument("--csv", default="results.csv")
+    p.add_argument("--csv", default="verif.csv")
     p.add_argument("--min-variants", type=int, default=3,
                    help="a rule is called 'resistant' only if at least N non-trivial variants were all detected")
     p.add_argument("--verify-rsigma", action="store_true",
@@ -137,7 +133,7 @@ def main() -> int:
         print(f"  {status:18} {n}")
     reasons = collections.Counter(r["reason"] for r in rows if r["status"] == "unsupported")
     if reasons:
-        print("\nTop reasons for 'unsupported' (our feature backlog):")
+        print("\nTop reasons for 'unsupported':")
         for reason, n in reasons.most_common(8):
             print(f"  {n:4}  {reason}")
 
@@ -156,10 +152,10 @@ def main() -> int:
     if scored:
         by_status = collections.Counter(r["program_status"] for r in scored)
         print(f"\nPrograms: {dict(by_status)}")
-        show("Verdict, ALL rules (hypothesis for unvalidated programs)", scored)
+        show("Verdict, all rules", scored)
         sole = [r for r in scored if not r["other_paths"]]
-        show("Verdict, rules where CommandLine is the SOLE detection path", sole)
-        show("Verdict, SOLE path AND program VALIDATED on Windows (strongest claim)",
+        show("Verdict, CommandLine is the only detection path", sole)
+        show("Verdict, only path and program validated on Windows",
              [r for r in sole if r["program_status"] == "validated"])
         print("\n('other path' = the rule can also fire another way, e.g. by binary name, so evading the"
               "\n command line alone does not evade the whole rule.)")
@@ -170,9 +166,6 @@ def main() -> int:
         unv = collections.Counter(r["program"] for r in scored if r["program_status"] == "unvalidated")
         for prog, n in unv.most_common(12):
             print(f"  {n:4}  {prog}")
-        print("\n'resistant' only means the rule survived OUR mutators (for instance because its patterns are"
-              "\n punctuation or very short tokens that quote insertion cannot touch). It is not proof of robustness.")
-        print("\nNote: events are minimal; variants are validated only for the programs listed above.")
 
     if args.verify_rsigma:
         checked = [r for r in scored if r["engine_diffs"] != ""]

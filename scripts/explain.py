@@ -1,7 +1,4 @@
-"""Explain why a rule could not be turned into an event (or how it was).
-
-Prints: the selections chosen to be true, the candidate event, and the truth value of
-every selection and of the whole condition on that event.
+"""Show how an event is built for a rule, or why it can't be.
 
 Usage:
     py scripts\\explain.py ..\\sigma\\rules\\windows\\process_creation\\some_rule.yml
@@ -22,7 +19,7 @@ from sigma_mutate.synth import SynthError, satisfying_selections, synthesize_ex 
 
 
 def resolve(arg: str) -> str | None:
-    """A path, or a part of a file name searched in the SigmaHQ folder (env SIGMA_RULES to override)."""
+    # a path, or part of a file name looked up in ../sigma (or $SIGMA_RULES)
     if os.path.isfile(arg):
         return arg
     root = os.environ.get("SIGMA_RULES") or os.path.join(

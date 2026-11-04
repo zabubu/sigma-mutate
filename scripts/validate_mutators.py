@@ -1,11 +1,8 @@
-"""Validate the mutators on a REAL Windows host, with harmless commands.
+"""Check on a real Windows host that the variants really do the same thing as the original.
 
-For each test program, run the original command line and every 'argv' variant, then compare
-exit code and output. This checks the assumption behind each mutator ("Windows parses the
-variant like the original") per program, instead of taking it on faith.
-
-Safe by design: read-only commands and one temporary text file (deleted at the end).
-Note: some security products flag obfuscated command lines, even harmless ones.
+Runs harmless, read-only commands and each of their variants, and compares exit code and output.
+Uses one temporary text file, deleted at the end. Some security products flag obfuscated
+command lines even when they are harmless.
 
 Usage (Windows only):
     py scripts\\validate_mutators.py
@@ -29,7 +26,7 @@ from sigma_mutate.mutators import generate  # noqa: E402
 
 
 def test_commands(tmp_file: str) -> list[tuple[str, str]]:
-    """(program label, command line). No quotes in the originals: the mutators assume none."""
+    # no quotes in the originals, the mutators expect none
     return [
         ("certutil", f"certutil.exe -hashfile {tmp_file} SHA256"),
         ("whoami", "whoami.exe /groups /fo csv"),
@@ -49,11 +46,14 @@ def test_commands(tmp_file: str) -> list[tuple[str, str]]:
     ]
 
 
+_CWD = None  # commands run from the temp folder so the CSV holds no local path
+
+
 def run(cmdline: str):
-    """Run a raw command line (passed unchanged to CreateProcess). -> (exit code, stdout, stderr)."""
+    # the string goes to CreateProcess unchanged
     try:
         p = subprocess.run(cmdline, capture_output=True, text=True, errors="replace", timeout=30,
-                           stdin=subprocess.DEVNULL)
+                           stdin=subprocess.DEVNULL, cwd=_CWD)
         return p.returncode, p.stdout.strip(), p.stderr.strip()
     except FileNotFoundError:
         return "not-found", "", ""
@@ -63,14 +63,13 @@ def run(cmdline: str):
         return f"oserror:{e.winerror if hasattr(e, 'winerror') else e}", "", ""
 
 
-def launch(m_assumption: str, cmdline: str):
-    """Variants that assume cmd.exe are run through cmd.exe, the others directly."""
-    return run("cmd.exe /d /c " + cmdline) if m_assumption == "cmd.exe" else run(cmdline)
+def launch(assumption: str, cmdline: str):
+    return run("cmd.exe /d /c " + cmdline) if assumption == "cmd.exe" else run(cmdline)
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--assumptions", default="argv,cmd.exe", help="comma list: argv,cmd.exe,program")
+    ap.add_argument("--assumptions", default="argv,cmd.exe,program", help="comma list: argv,cmd.exe,program")
     ap.add_argument("--csv", default="validation.csv")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
@@ -78,14 +77,18 @@ def main() -> int:
         print("This script must run on Windows (use --dry-run elsewhere).")
         return 2
 
-    workdir = tempfile.mkdtemp(prefix="sigma_mutate_")
-    tmp_file = os.path.join(workdir, "sample.txt")
-    with open(tmp_file, "w", encoding="utf-8", newline="\n") as f:
+    global _CWD
+    workdir = _CWD = tempfile.mkdtemp(prefix="sigma_mutate_")
+
+    def hide(text: str) -> str:
+        return text.replace(workdir, "%TEMP%").replace("\n", " | ")
+
+    with open(os.path.join(workdir, "sample.txt"), "w", encoding="utf-8", newline="\n") as f:
         f.write("hello world\n")
     assumptions = tuple(args.assumptions.split(","))
     rows = []
     try:
-        for program, cmd in test_commands(tmp_file):
+        for program, cmd in test_commands("sample.txt"):
             muts = generate(cmd, assumptions)
             if args.dry_run:
                 print(f"{program}: {len(muts)} variants of: {cmd}")
@@ -97,21 +100,21 @@ def main() -> int:
                 continue
             again = run(cmd)
             if (again[0], again[1]) != (base[0], base[1]):
-                print("  skipped: the ORIGINAL command gives different output on two runs (non-deterministic)")
+                print("  skipped: the original command gives different output on two runs")
                 continue
             for m in muts:
                 res = launch(m.assumption, m.value)
                 blocked = str(res[0]).startswith("oserror")
                 same = None if blocked else (res[0], res[1]) == (base[0], base[1])
                 direct = ""
-                if m.assumption == "cmd.exe":  # would it also work WITHOUT cmd.exe? (justifies the assumption)
+                if m.assumption == "cmd.exe":  # does it also work without cmd.exe?
                     d = run(m.value)
                     direct = (d[0], d[1]) == (base[0], base[1])
                 kind = "program name" if m.label.startswith("token 0") else "argument"
                 rows.append({"program": program, "mutator": m.mutator, "assumption": m.assumption, "kind": kind,
                              "label": m.label, "equivalent": same, "works_directly": direct, "exit": res[0],
-                             "output_start": res[1][:60].replace("\n", " | "), "expected_start": base[1][:60].replace("\n", " | "),
-                             "variant": m.value})
+                             "output_start": hide(res[1])[:60], "expected_start": hide(base[1])[:60],
+                             "variant": hide(m.value)})
     finally:
         shutil.rmtree(workdir, ignore_errors=True)
     if args.dry_run:

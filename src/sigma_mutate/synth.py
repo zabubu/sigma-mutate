@@ -1,34 +1,28 @@
-"""Synthesize a minimal true-positive event from a Sigma rule.
+"""Build a minimal true-positive event from a Sigma rule.
 
-SigmaHQ rules ship without matching events, so we build one from the rule itself:
-  1. pick a set of selections that makes the condition true,
-  2. for each chosen selection pick one alternative (list-of-maps) and one value (lists),
-  3. build a value for each constrained field,
-  4. add harmless filler values so that "field is null" filters do not fire,
-  5. verify the result with the matcher; try other combinations if it fails.
-
-Caveat: synthesized command lines are minimal (they contain what the rule asks for,
-not a realistic attack), so scores measure the rule's fragility on its own patterns.
+SigmaHQ rules ship without sample events, so we derive one from the rule: pick selections that
+make the condition true, one value per constrained field, then check the result with the matcher.
+The command lines it produces only contain what the rule asks for, not a realistic attack.
 """
 from __future__ import annotations
 
 import re
 from itertools import combinations, islice, product
 
-from .matcher import (SUPPORTED_MODIFIERS, _selection_matches, eval_condition,
-                      literal_value, matches)
+from . import regex_sample
+from .matcher import (_selection_matches, base64_variants, check_modifiers, escape, eval_condition,
+                      literal_value, matches, operator, user_regex)
 
-MAX_SELECTION_SETS = 5   # how many different "true" selection sets to try
-MAX_CANDIDATES = 60      # how many alternative/value combinations per selection set
+MAX_SELECTION_SETS = 5
+MAX_CANDIDATES = 60  # value combinations tried per selection set
 
 
 class SynthError(Exception):
-    """The rule cannot be turned into an event (reason in the message)."""
+    pass
 
 
-# ---------------------------------------------------------------- selection sets
 def _candidates(names):
-    """Small selection sets first, then 'everything' and 'everything but one'."""
+    # small sets first, then everything and everything-but-one
     seen = set()
     for k in range(0, min(len(names), 3) + 1):
         for c in combinations(names, k):
@@ -41,10 +35,7 @@ def _candidates(names):
 
 
 def _is_minimal(chosen, names, conds) -> bool:
-    """True if removing any selection from `chosen` breaks the condition.
-
-    A non-minimal set (e.g. both sides of an `A or B`) would let a redundant alternative
-    keep the rule firing, hiding any evasion of the other one."""
+    # With both sides of an `A or B` true, evading A would go unnoticed because B still fires.
     for n in chosen:
         truth = {m: (m in chosen and m != n) for m in names}
         try:
@@ -79,24 +70,53 @@ def satisfying_selections(det: dict) -> list[str]:
     return next(iter_satisfying(det))
 
 
-# ---------------------------------------------------------------- constraints
+def _regex_constraint(pats, mods):
+    out = []
+    for p in pats:
+        try:
+            compiled = user_regex(p, mods)
+            value = regex_sample.sample(p, compiled.flags)
+            start, end = regex_sample.anchored(p)
+        except (regex_sample.Unsupported, re.error, NotImplementedError) as e:
+            raise SynthError(f"cannot build a value for regex: {e}")
+        if not compiled.search(value):
+            raise SynthError(f"cannot build a value for regex {p!r}")
+        op = "equals" if start and end else "startswith" if start else "endswith" if end else "contains"
+        out.append((op, escape(value)))
+    return out
+
+
 def _constraints(sel_map: dict):
-    """-> list of (field, op, patterns, is_all). op 'null' means: the field must be absent."""
+    """-> list of (field, op, patterns, is_all). op 'null' means the field must be absent."""
     out = []
     for key, expected in sel_map.items():
         field, *mods = key.split("|")
-        unknown = set(mods) - SUPPORTED_MODIFIERS
-        if unknown:
-            raise SynthError(f"unsupported modifier(s): {sorted(unknown)}")
+        try:
+            check_modifiers(mods)
+        except NotImplementedError as e:
+            raise SynthError(str(e))
         if isinstance(expected, list) and any(e is None for e in expected):
             raise SynthError("null inside a value list is not supported yet")
         if expected is None:
             out.append((field, "null", [], False))
             continue
         pats = [str(p) for p in (expected if isinstance(expected, list) else [expected])]
-        op = ("contains" if "contains" in mods else "startswith" if "startswith" in mods
-              else "endswith" if "endswith" in mods else "equals")
-        out.append((field, op, pats, "all" in mods))
+        if "re" in mods:
+            built = _regex_constraint(pats, mods)
+            if "all" in mods:
+                out.extend((field, op, [v], True) for op, v in built)
+            else:
+                # one regex is enough; prefer an unanchored one, it combines more easily
+                built.sort(key=lambda b: b[0] != "contains")
+                op = built[0][0]
+                out.append((field, op, [v for o, v in built if o == op], False))
+            continue
+        if "base64" in mods or "base64offset" in mods:
+            try:
+                pats = [escape(base64_variants(p, "base64offset" in mods)[0]) for p in pats]
+            except NotImplementedError as e:
+                raise SynthError(str(e))
+        out.append((field, operator(mods), pats, "all" in mods))
     return out
 
 
@@ -144,7 +164,6 @@ def _per_field_variants(det: dict, chosen: list[str], prefer: str):
             yield per_field
 
 
-# ---------------------------------------------------------------- value building
 def _build(items) -> str:
     def collect(wanted):
         return [p for op, ps in items for p in ps if op == wanted]
@@ -165,7 +184,7 @@ def _build(items) -> str:
 
 
 def _falsify_null_filters(det: dict, chosen: list[str], event: dict) -> None:
-    """A filter like `Field: null` is true when the field is absent. Give such fields a filler value."""
+    # `Field: null` filters fire when the field is absent, so give those fields a dummy value.
     for name, sel in det.items():
         if name in ("condition", "timeframe") or name in chosen:
             continue
@@ -182,9 +201,8 @@ def _falsify_null_filters(det: dict, chosen: list[str], event: dict) -> None:
                         event[field] = "x"
 
 
-# ---------------------------------------------------------------- public API
 def _program_hint(det: dict) -> str | None:
-    """A program name found in the rule (Image / OriginalFileName of a non-filter selection)."""
+    # program name from Image / OriginalFileName in a selection that is not a filter
     for name, sel in det.items():
         if name in ("condition", "timeframe") or name.lower().startswith("filter"):
             continue
@@ -211,26 +229,26 @@ def _program_name(event: dict, hint: str | None) -> str:
 
 
 def _with_program(event: dict, hint: str | None) -> dict | None:
-    """Real command lines start with the program name; the rule's patterns usually do not."""
+    # real command lines start with the program name, the rule's patterns usually don't
     cmd = event.get("CommandLine")
     if not cmd:
         return None
     name = _program_name(event, hint)
     stem = name.lower().rsplit(".", 1)[0]
     if name != "app.exe" and stem and stem in cmd.split(" ")[0].lower():
-        return None  # the rule's own pattern already provides the program name: do not duplicate it
+        return None  # already there
     return {**event, "CommandLine": f"{name} {cmd}"}
 
 
 def rule_program(rule: dict, event: dict) -> str | None:
-    """The program the rule is about (Image / OriginalFileName / hint), None if it names none."""
+    """Program the rule targets, or None if it names none."""
     name = _program_name(event, _program_hint(rule.get("detection") or {}))
     return None if name == "app.exe" else name
 
 
 def field_independent(rule: dict, field: str = "CommandLine") -> bool:
-    """True if the rule can also fire through a detection path that does not constrain `field`
-    (for example by binary name). Then evading `field` alone does not evade the whole rule."""
+    """True if the rule can also fire without looking at `field` (e.g. on the binary name alone),
+    in which case evading `field` does not evade the rule."""
     det = rule.get("detection")
     if not isinstance(det, dict) or "condition" not in det:
         return False
@@ -250,7 +268,7 @@ def field_independent(rule: dict, field: str = "CommandLine") -> bool:
 
 
 def synthesize_ex(rule: dict, verify: bool = True, prefer_field: str = "CommandLine"):
-    """Return (event, positive_fields). positive_fields excludes filler values."""
+    """Return (event, fields set to satisfy the rule, i.e. without the dummy values)."""
     det = rule.get("detection")
     if not isinstance(det, dict) or "condition" not in det:
         raise SynthError("no detection/condition")
@@ -270,7 +288,7 @@ def synthesize_ex(rule: dict, verify: bool = True, prefer_field: str = "CommandL
             variants = [event]
             prefixed = _with_program(event, hint)
             if prefixed:
-                variants.insert(0, prefixed)  # preferred: starts with the program name
+                variants.insert(0, prefixed)
             if not verify:
                 return variants[0], positive
             good = None

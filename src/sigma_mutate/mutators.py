@@ -1,11 +1,8 @@
-"""Mutators: rewrite a command line so it does the same thing, written differently.
+"""Rewrite a command line so that it does the same thing but reads differently.
 
-Every mutator declares the assumption under which the variant is semantically
-equivalent. Without this, a "surviving evasion" would be meaningless:
-  argv     -> same result after standard Windows argument parsing (CommandLineToArgvW)
-  cmd.exe  -> only equivalent if the command is interpreted by cmd.exe
-  program  -> depends on the target program (e.g. it accepts both '-' and '/')
-Default is 'argv' only (highest confidence); the others are opt-in.
+Each variant carries the assumption it relies on: "argv" (standard Windows argument parsing,
+CommandLineToArgvW), "cmd.exe" (only true when cmd.exe interprets the line) or "program"
+(depends on the program, e.g. accepting /x for -x). Only argv is used by default.
 """
 from __future__ import annotations
 
@@ -27,12 +24,9 @@ _NO_INSERT = set('\\"^&|<>%! \t')
 
 
 def _boundaries(tok: str) -> list[tuple[str, int]]:
-    """Insertion points between two ordinary ASCII characters: first, middle and last.
-
-    Never next to a backslash (a backslash before a quote changes its meaning in Windows
-    argument parsing), a quote, whitespace or a cmd.exe metacharacter; tokens that already
-    contain a quote are left alone.
-    """
+    # First, middle and last spot between two plain ASCII characters. Never next to a backslash
+    # (\" means something else to the argument parser), a quote, whitespace or a cmd.exe
+    # metacharacter, and tokens that already contain a quote are left alone.
     if '"' in tok:
         return []
     ok = [i for i in range(1, len(tok))
@@ -50,7 +44,6 @@ def _boundaries(tok: str) -> list[tuple[str, int]]:
 
 
 def _per_token(cmd: str, ins: str, name: str, assumption: str, first_token: str | None = None) -> list[Mutation]:
-    """`first_token`: assumption to use for token 0 (the program name), if different."""
     toks = cmd.split(" ")
     out = []
     for i, tok in enumerate(toks):
@@ -63,7 +56,7 @@ def _per_token(cmd: str, ins: str, name: str, assumption: str, first_token: str 
 
 
 def _all_arguments(cmd: str, ins: str, name: str, assumption: str) -> list[Mutation]:
-    """The same insertion in EVERY argument at once (a pattern may occur in several tokens)."""
+    # same insertion in every argument at once, for patterns that span several tokens
     toks = cmd.split(" ")
     out = []
     for where in ("first", "middle", "last"):
@@ -80,14 +73,14 @@ def _all_arguments(cmd: str, ins: str, name: str, assumption: str) -> list[Mutat
 
 
 def quote_split(cmd: str) -> list[Mutation]:
-    # h""ttp is parsed back to http by the Windows argument parser. The program name (token 0)
-    # is parsed by CreateProcess, which does not strip inner quotes: only cmd.exe does.
+    # h""ttp becomes http again once parsed. Not for the program name though: CreateProcess
+    # keeps the quotes there, only cmd.exe removes them.
     return (_per_token(cmd, '""', "quote_split", ARGV, first_token=CMD)
             + _all_arguments(cmd, '""', "quote_split", ARGV))
 
 
 def quote_wrap(cmd: str) -> list[Mutation]:
-    # "-urlcache" is parsed back to -urlcache; it breaks rules that expect ' -urlcache '.
+    # "-urlcache" parses back to -urlcache, and breaks patterns like ' -urlcache '.
     toks = cmd.split(" ")
     out = []
     for i, tok in enumerate(toks):
@@ -107,7 +100,6 @@ def space_padding(cmd: str) -> list[Mutation]:
 
 
 def tab_separator(cmd: str) -> list[Mutation]:
-    # the Windows argument parser treats a tab like a space
     value = cmd.replace(" ", "\t")
     return [Mutation("tab_separator", "tabs instead of spaces", value, ARGV)] if value != cmd else []
 
@@ -126,38 +118,34 @@ def option_prefix_swap(cmd: str) -> list[Mutation]:
     return out
 
 
-# Evidence from scripts/validate_mutators.py on a real Windows host (variants gave the same exit code and
-# output as the original): quote_split / quote_wrap on arguments, whitespace tweaks, quote_wrap on the
-# program name, and (through cmd.exe) caret_insert and quote_split on the program name.
+# Programs for which scripts/validate_mutators.py showed the variants behave like the original.
 VALIDATED_PROGRAMS = {"certutil.exe", "whoami.exe", "reg.exe", "findstr.exe", "sort.exe",
                       "powershell.exe", "curl.exe", "where.exe",
                       "bitsadmin.exe", "netsh.exe", "sc.exe", "net.exe", "wmic.exe"}
 
-# Counter-examples found on a real host: for these programs the mutator is NOT argv-equivalent
-# (net.exe and wmic.exe do not treat a tab as a separator; wmic.exe does not strip inner quotes).
-# schtasks.exe is not listed as validated: its test output changes between runs (to be redone).
+# Found on a real host: net.exe and wmic.exe don't split on tabs, wmic.exe keeps inner quotes.
+# schtasks.exe is left out of the validated list, its first test run gave unstable output.
 MUTATOR_EXCEPTIONS = {"net.exe": {"tab_separator"}, "wmic.exe": {"quote_split", "tab_separator"}}
 
-# Programs that interpret their own command line instead of using standard argument parsing.
-# Evidence: in `cmd.exe /c ty""pe file` the command is not found, and `echo he""llo` prints the quotes.
-# Candidates still to validate: rundll32, msiexec, mshta, wscript, cscript, regsvr32.
+# Programs that parse their own command line: `cmd.exe /c ty""pe file` fails, `echo he""llo`
+# prints the quotes. rundll32, msiexec, mshta, wscript, cscript and regsvr32 still need checking.
 SELF_PARSING = {"cmd.exe"}
 
 MUTATORS = [quote_split, quote_wrap, space_padding, tab_separator, caret_insert, option_prefix_swap]
 
-# Whitespace-only tweaks: they only break rules whose patterns contain spaces.
+# whitespace only: these can only break patterns that contain spaces
 TRIVIAL = {"space_padding", "tab_separator"}
 
 
 def program_of(cmd: str) -> str:
-    """Lower-case file name of the program (first token), e.g. 'certutil.exe'."""
+    """'certutil.exe' for 'C:\\Windows\\System32\\CertUtil.exe -urlcache ...'."""
     first = cmd.strip().split(" ")[0].strip('"').replace("\\", "/")
     name = first.rsplit("/", 1)[-1].lower()
     return name if "." in name else name + ".exe"
 
 
 def status_for(prog: str | None) -> str:
-    if not prog or prog.lower() == "app.exe":  # placeholder used when the rule names no program
+    if not prog or prog.lower() == "app.exe":  # app.exe: the synthesizer's placeholder
         return "unspecified"
     prog = prog.lower()
     if prog in SELF_PARSING:
@@ -170,8 +158,7 @@ def program_status(cmd: str) -> str:
 
 
 def generate(cmd: str, assumptions=(ARGV,)) -> list[Mutation]:
-    """Variants of a command line. For self-parsing programs (cmd.exe), quote mutations of the
-    arguments are only valid command by command, so they are filed under 'program'."""
+    # Known exceptions and self-parsing programs downgrade the affected variants to "program".
     allowed = set(assumptions)
     prog = program_of(cmd)
     self_parsing = prog in SELF_PARSING

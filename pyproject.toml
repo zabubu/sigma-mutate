@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sigma-mutate"
-version = "0.0.1"
+version = "0.1.0"
 description = "Mutation testing for Sigma detection rules: how easily can a rule be evaded?"
 readme = "README.md"
 requires-python = ">=3.10"

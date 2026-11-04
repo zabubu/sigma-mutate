@@ -1,4 +1,4 @@
-"""Thin wrapper around rsigma, used as a reference engine for differential tests."""
+"""Run rsigma (https://github.com/timescale/rsigma) to cross-check our matcher."""
 from __future__ import annotations
 
 import json
@@ -12,10 +12,7 @@ PROCESSED = re.compile(r"Processed\s+(\d+)\s+events?,\s+(\d+)\s+match", re.IGNOR
 
 
 def _run_rsigma(rsigma: str, rule_path: str, events: list[dict], retries: int = 3) -> str:
-    """Run `rsigma engine eval` on events (NDJSON file) and return stdout + stderr.
-
-    On Windows an antivirus can briefly lock the temporary file: retry a few times.
-    """
+    # Antivirus software sometimes locks the temp file for a moment on Windows, hence the retries.
     last: Exception | None = None
     for attempt in range(retries):
         tmp = None
@@ -62,16 +59,14 @@ def _json_objects(text: str) -> list:
 
 
 def rsigma_matches(rsigma: str, rule_path: str, event: dict) -> bool:
-    """Run rsigma on a single event; True if the rule fired."""
     return _counts(_run_rsigma(rsigma, rule_path, [event]))[1] > 0
 
 
 def rsigma_matches_many(rsigma: str, rule_path: str, events: list[dict], key_field: str = "CommandLine") -> list[bool]:
-    """One rsigma run for many events. Returns one boolean per event, in order.
+    """One boolean per event, using a single rsigma run when possible.
 
-    rsigma reports which fields matched, not which event: we attribute each match through
-    the value of `key_field` (unique per event). When attribution is ambiguous we fall back
-    to one run per event, so the result is always exact.
+    rsigma reports matched field values rather than event indexes, so matches are mapped back
+    through `key_field`. If that is ambiguous, fall back to one run per event.
     """
     if not events:
         return []

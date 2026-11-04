@@ -1,25 +1,19 @@
-"""Minimal Sigma matcher (MVP).
+"""A small Sigma matcher, covering what the SigmaHQ process_creation rules use.
 
-Supports: field modifiers contains / startswith / endswith / all, wildcards (* ?) and
-Sigma escapes (\\\\ \\* \\?), list-of-maps selections, and conditions made of selection names with
-and / or / not / parentheses and '1 of X*' / 'all of them' quantifiers. Matching is case-insensitive, like Sigma.
-
-Anything else raises NotImplementedError instead of silently guessing.
-Later milestone: cross-check this matcher against pySigma on the SigmaHQ corpus.
+Anything it does not understand raises NotImplementedError rather than guessing.
 """
 from __future__ import annotations
 
+import base64
 import fnmatch
 import re
 
-_MODS = {"contains", "startswith", "endswith", "all", "windash"}
+_MODS = {"contains", "startswith", "endswith", "all", "windash", "base64", "base64offset", "re", "i", "m", "s"}
+_RE_FLAGS = {"i": re.IGNORECASE, "m": re.MULTILINE, "s": re.DOTALL}
 
 
 def parse_pattern(p: str) -> list[tuple]:
-    """Parse a Sigma value: '\\\\' -> backslash, '\\*' and '\\?' -> literals, '*' / '?' -> wildcards.
-
-    A backslash followed by anything else stays a literal backslash (Sigma spec).
-    """
+    # Sigma escapes: \\ is a backslash, \* and \? are literals. Any other backslash is kept as is.
     out: list[tuple] = []
     buf: list[str] = []
 
@@ -46,13 +40,36 @@ def parse_pattern(p: str) -> list[tuple]:
 
 
 def literal_value(p) -> str:
-    """A concrete string that matches the pattern (wildcards replaced by 'x')."""
+    """Some string matching the pattern (wildcards become 'x')."""
     return "".join(part[1] if part[0] == "lit" else "x" for part in parse_pattern(str(p)))
 
 
+def escape(s: str) -> str:
+    """Inverse of literal_value for plain strings."""
+    return s.replace("\\", "\\\\").replace("*", "\\*").replace("?", "\\?")
+
+
+def _plain(p: str) -> bytes:
+    parts = parse_pattern(p)
+    if any(x[0] != "lit" for x in parts):
+        raise NotImplementedError("wildcards inside base64 values are not supported")
+    return "".join(x[1] for x in parts).encode("utf-8")
+
+
+def base64_variants(p: str, offset: bool) -> list[str]:
+    """What the base64 / base64offset modifiers turn a value into (same rules as pySigma)."""
+    raw = _plain(p)
+    if not offset:
+        return [base64.b64encode(raw).decode()]
+    # The value can sit at any of three positions relative to base64 blocks; the characters
+    # that also depend on neighbouring bytes are cut off.
+    start, end = (0, 2, 3), (None, -3, -2)
+    return [base64.b64encode(b" " * i + raw)[start[i]:end[(len(raw) + i) % 3]].decode() for i in range(3)]
+
+
 _REGEX_CACHE: dict = {}
-# 'windash': a dash may also be written as a slash or as a typographic dash (en dash, em dash, horizontal bar).
-_DASH_CLASS = r"[\-/\u2013\u2014\u2015]"
+# windash: a dash can also be written as a slash, an en dash, an em dash or a horizontal bar.
+_DASH_CLASS = r"[\-/–—―]"
 
 
 def _regex(pattern: str, op: str, windash: bool = False):
@@ -73,12 +90,55 @@ def _regex(pattern: str, op: str, windash: bool = False):
     return _REGEX_CACHE[key]
 
 
+def user_regex(pattern: str, mods) -> re.Pattern:
+    # Sigma regexes are case-sensitive unless the rule says |i or (?i).
+    flags = 0
+    for m in mods:
+        flags |= _RE_FLAGS.get(m, 0)
+    key = ("re", pattern, flags)
+    if key not in _REGEX_CACHE:
+        try:
+            _REGEX_CACHE[key] = re.compile(pattern, flags)
+        except re.error as e:
+            raise NotImplementedError(f"regex not understood by Python: {e}")
+    return _REGEX_CACHE[key]
+
+
+def check_modifiers(mods) -> None:
+    unknown = set(mods) - _MODS
+    if unknown:
+        raise NotImplementedError(f"unsupported modifier(s): {sorted(unknown)}")
+    if "re" in mods:
+        if set(mods) - {"re", "i", "m", "s", "all"}:
+            raise NotImplementedError(f"unsupported modifier combination: {sorted(mods)}")
+    elif set(mods) & {"i", "m", "s"}:
+        raise NotImplementedError("regex flags without |re")
+    if "base64offset" in mods and "contains" not in mods:
+        raise NotImplementedError("base64offset without contains")
+
+
+def expand(p: str, mods) -> list[str]:
+    if "base64offset" in mods:
+        return base64_variants(p, offset=True)
+    if "base64" in mods:
+        return base64_variants(p, offset=False)
+    return [p]
+
+
+def operator(mods) -> str:
+    for op in ("contains", "startswith", "endswith"):
+        if op in mods:
+            return op
+    return "equals"
+
+
 def _field_matches(value, mods, patterns) -> bool:
     v = str(value)
-    op = ("contains" if "contains" in mods else "startswith" if "startswith" in mods
-          else "endswith" if "endswith" in mods else "equals")
-    windash = "windash" in mods
-    results = [bool(_regex(str(p), op, windash).search(v)) for p in patterns]
+    if "re" in mods:
+        results = [bool(user_regex(str(p), mods).search(v)) for p in patterns]
+    else:
+        op, windash = operator(mods), "windash" in mods
+        results = [any(_regex(alt, op, windash).search(v) for alt in expand(str(p), mods)) for p in patterns]
     return all(results) if "all" in mods else any(results)
 
 
@@ -89,12 +149,10 @@ def _selection_matches(sel, event) -> bool:
         raise NotImplementedError("keyword selections are not supported yet")
     for key, expected in sel.items():
         field, *mods = key.split("|")
-        unknown = set(mods) - _MODS
-        if unknown:
-            raise NotImplementedError(f"unsupported modifier(s): {sorted(unknown)}")
+        check_modifiers(mods)
         if isinstance(expected, list) and any(e is None for e in expected):
             raise NotImplementedError("null inside a value list is not supported yet")
-        if expected is None:  # the field must be absent (or empty)
+        if expected is None:  # absent or empty
             if event.get(field) not in (None, ""):
                 return False
             continue
@@ -175,7 +233,6 @@ def _eval_condition(cond: str, truth: dict) -> bool:
 
 
 def matches(rule: dict, event: dict) -> bool:
-    """Return True if the Sigma rule (parsed YAML dict) fires on the event."""
     det = rule["detection"]
     truth = {
         name: _selection_matches(sel, event)
@@ -187,6 +244,4 @@ def matches(rule: dict, event: dict) -> bool:
     return any(_eval_condition(c, truth) for c in conds)
 
 
-# Public aliases used by the event synthesizer.
 eval_condition = _eval_condition
-SUPPORTED_MODIFIERS = _MODS

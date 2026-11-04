@@ -1,8 +1,4 @@
-"""Differential test: sigma-mutate's matcher vs rsigma (reference engine).
-
-For one rule + one true-positive event, replay the original event, a few probe
-events and every mutation through BOTH engines, then report disagreements.
-A disagreement is either a bug in our matcher or a Sigma feature to support.
+"""Compare our matcher with rsigma on one rule: the event, a few probes and every variant.
 
 Usage:
     py scripts\\crosscheck.py examples\\certutil_rule.yml examples\\certutil_event.json
@@ -23,8 +19,8 @@ from sigma_mutate.matcher import matches  # noqa: E402
 from sigma_mutate.mutators import generate  # noqa: E402
 from sigma_mutate.reference import rsigma_matches  # noqa: E402
 
+
 def probes(event: dict, field: str) -> list[tuple[str, dict]]:
-    """Events that test matcher semantics rather than mutations."""
     cmd = str(event[field])
     without = {k: v for k, v in event.items() if k != field}
     return [

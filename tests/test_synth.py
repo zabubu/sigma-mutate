@@ -159,9 +159,25 @@ class SynthTests(unittest.TestCase):
         r = rule({"sel": {"CommandLine|contains": "abc*xyz"}, "condition": "sel"})
         self.assertTrue(matches(r, synthesize(r)))
 
+    def test_regex_rules(self):
+        for det in [
+            {"sel": {"CommandLine|re": r"://[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"},
+             "flag": {"CommandLine|contains": "-GetCACAPS"}, "condition": "all of *"},
+            {"sel": {"CommandLine|re": r"(?:[Pp]rogram[Dd]ata|\\[Aa]pp[Dd]ata\\(?:[Ll]ocal|[Rr]oaming))\\[^\\]{1,256}$"},
+             "condition": "sel"},
+            {"sel": {"CommandLine|re": [r"\s-[FTd]\s", r"\s-sT\s"]}, "condition": "sel"},
+            {"sel": {"CommandLine|re|i": r"echo.*clip.*&&.*(?:Clipboard|i`?n`?v`?o`?k`?e`?)"}, "condition": "sel"},
+        ]:
+            r = rule(det)
+            self.assertTrue(matches(r, synthesize(r)), det)
+
+    def test_base64offset_rule(self):
+        r = rule({"sel": {"CommandLine|base64offset|contains": ["IEX (New", "iex (New"]}, "condition": "sel"})
+        self.assertTrue(matches(r, synthesize(r)))
+
     def test_unsupported_things_are_reported_not_guessed(self):
         bad = [
-            rule({"sel": {"CommandLine|re": "a.*"}, "condition": "sel"}),
+            rule({"sel": {"CommandLine|fieldref": "Image"}, "condition": "sel"}),
             rule({"sel": {"CommandLine|contains": ["a", None]}, "condition": "sel"}),
             rule({"sel": ["keyword"], "condition": "sel"}),
         ]

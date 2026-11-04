@@ -7,7 +7,7 @@ from .mutators import ARGV, Mutation, generate
 
 
 class BaselineError(ValueError):
-    """The rule does not fire on the unmodified event: nothing to mutate."""
+    pass
 
 
 @dataclass

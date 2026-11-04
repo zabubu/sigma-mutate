@@ -1,0 +1,405 @@
+program,mutator,assumption,kind,label,equivalent,works_directly,exit,output_start,expected_start,variant
+certutil,quote_split,cmd.exe,program name,token 0 (certutil.exe) first,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"c""""ertutil.exe -hashfile sample.txt SHA256"
+certutil,quote_split,cmd.exe,program name,token 0 (certutil.exe) middle,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certut""""il.exe -hashfile sample.txt SHA256"
+certutil,quote_split,cmd.exe,program name,token 0 (certutil.exe) last,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.ex""""e -hashfile sample.txt SHA256"
+certutil,quote_split,argv,argument,token 1 (-hashfile) first,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -""""hashfile sample.txt SHA256"
+certutil,quote_split,argv,argument,token 1 (-hashfile) middle,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -has""""hfile sample.txt SHA256"
+certutil,quote_split,argv,argument,token 1 (-hashfile) last,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -hashfil""""e sample.txt SHA256"
+certutil,quote_split,argv,argument,token 2 (sample.txt) first,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -hashfile s""""ample.txt SHA256"
+certutil,quote_split,argv,argument,token 2 (sample.txt) middle,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -hashfile sampl""""e.txt SHA256"
+certutil,quote_split,argv,argument,token 2 (sample.txt) last,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -hashfile sample.tx""""t SHA256"
+certutil,quote_split,argv,argument,token 3 (SHA256) first,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -hashfile sample.txt S""""HA256"
+certutil,quote_split,argv,argument,token 3 (SHA256) middle,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -hashfile sample.txt SHA""""256"
+certutil,quote_split,argv,argument,token 3 (SHA256) last,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -hashfile sample.txt SHA25""""6"
+certutil,quote_split,argv,argument,all arguments first,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -""""hashfile s""""ample.txt S""""HA256"
+certutil,quote_split,argv,argument,all arguments middle,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -has""""hfile sampl""""e.txt SHA""""256"
+certutil,quote_split,argv,argument,all arguments last,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -hashfil""""e sample.tx""""t SHA25""""6"
+certutil,quote_wrap,argv,program name,token 0 (certutil.exe),True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"""certutil.exe"" -hashfile sample.txt SHA256"
+certutil,quote_wrap,argv,argument,token 1 (-hashfile),True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe ""-hashfile"" sample.txt SHA256"
+certutil,quote_wrap,argv,argument,token 2 (sample.txt),True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -hashfile ""sample.txt"" SHA256"
+certutil,quote_wrap,argv,argument,token 3 (SHA256),True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"certutil.exe -hashfile sample.txt ""SHA256"""
+certutil,quote_wrap,argv,argument,all tokens,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,"""certutil.exe"" ""-hashfile"" ""sample.txt"" ""SHA256"""
+certutil,space_padding,argv,argument,double spaces,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certutil.exe  -hashfile  sample.txt  SHA256
+certutil,tab_separator,argv,argument,tabs instead of spaces,True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certutil.exe	-hashfile	sample.txt	SHA256
+certutil,caret_insert,cmd.exe,program name,token 0 (certutil.exe) first,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,c^ertutil.exe -hashfile sample.txt SHA256
+certutil,caret_insert,cmd.exe,program name,token 0 (certutil.exe) middle,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certut^il.exe -hashfile sample.txt SHA256
+certutil,caret_insert,cmd.exe,program name,token 0 (certutil.exe) last,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certutil.ex^e -hashfile sample.txt SHA256
+certutil,caret_insert,cmd.exe,argument,token 1 (-hashfile) first,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certutil.exe -^hashfile sample.txt SHA256
+certutil,caret_insert,cmd.exe,argument,token 1 (-hashfile) middle,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certutil.exe -has^hfile sample.txt SHA256
+certutil,caret_insert,cmd.exe,argument,token 1 (-hashfile) last,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certutil.exe -hashfil^e sample.txt SHA256
+certutil,caret_insert,cmd.exe,argument,token 2 (sample.txt) first,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certutil.exe -hashfile s^ample.txt SHA256
+certutil,caret_insert,cmd.exe,argument,token 2 (sample.txt) middle,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certutil.exe -hashfile sampl^e.txt SHA256
+certutil,caret_insert,cmd.exe,argument,token 2 (sample.txt) last,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certutil.exe -hashfile sample.tx^t SHA256
+certutil,caret_insert,cmd.exe,argument,token 3 (SHA256) first,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certutil.exe -hashfile sample.txt S^HA256
+certutil,caret_insert,cmd.exe,argument,token 3 (SHA256) middle,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certutil.exe -hashfile sample.txt SHA^256
+certutil,caret_insert,cmd.exe,argument,token 3 (SHA256) last,True,False,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certutil.exe -hashfile sample.txt SHA25^6
+certutil,option_prefix_swap,program,argument,token 1 (-hashfile),True,,0,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,Hachage SHA256 de sample.txt : | a948904f2f0f479b8f8197694b3,certutil.exe /hashfile sample.txt SHA256
+whoami,quote_split,cmd.exe,program name,token 0 (whoami.exe) first,True,False,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","w""""hoami.exe /groups /fo csv"
+whoami,quote_split,cmd.exe,program name,token 0 (whoami.exe) middle,True,False,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoam""""i.exe /groups /fo csv"
+whoami,quote_split,cmd.exe,program name,token 0 (whoami.exe) last,True,False,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoami.ex""""e /groups /fo csv"
+whoami,quote_split,argv,argument,token 1 (/groups) first,True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoami.exe /""""groups /fo csv"
+whoami,quote_split,argv,argument,token 1 (/groups) middle,True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoami.exe /gr""""oups /fo csv"
+whoami,quote_split,argv,argument,token 1 (/groups) last,True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoami.exe /group""""s /fo csv"
+whoami,quote_split,argv,argument,token 2 (/fo) first,True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoami.exe /groups /""""fo csv"
+whoami,quote_split,argv,argument,token 2 (/fo) last,True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoami.exe /groups /f""""o csv"
+whoami,quote_split,argv,argument,token 3 (csv) first,True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoami.exe /groups /fo c""""sv"
+whoami,quote_split,argv,argument,token 3 (csv) last,True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoami.exe /groups /fo cs""""v"
+whoami,quote_split,argv,argument,all arguments first,True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoami.exe /""""groups /""""fo c""""sv"
+whoami,quote_split,argv,argument,all arguments last,True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoami.exe /group""""s /f""""o cs""""v"
+whoami,quote_wrap,argv,program name,token 0 (whoami.exe),True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""whoami.exe"" /groups /fo csv"
+whoami,quote_wrap,argv,argument,token 1 (/groups),True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoami.exe ""/groups"" /fo csv"
+whoami,quote_wrap,argv,argument,token 2 (/fo),True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoami.exe /groups ""/fo"" csv"
+whoami,quote_wrap,argv,argument,token 3 (csv),True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","whoami.exe /groups /fo ""csv"""
+whoami,quote_wrap,argv,argument,all tokens,True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""whoami.exe"" ""/groups"" ""/fo"" ""csv"""
+whoami,space_padding,argv,argument,double spaces,True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""",whoami.exe  /groups  /fo  csv
+whoami,tab_separator,argv,argument,tabs instead of spaces,True,,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""",whoami.exe	/groups	/fo	csv
+whoami,caret_insert,cmd.exe,program name,token 0 (whoami.exe) first,True,False,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""",w^hoami.exe /groups /fo csv
+whoami,caret_insert,cmd.exe,program name,token 0 (whoami.exe) middle,True,False,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""",whoam^i.exe /groups /fo csv
+whoami,caret_insert,cmd.exe,program name,token 0 (whoami.exe) last,True,False,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""",whoami.ex^e /groups /fo csv
+whoami,caret_insert,cmd.exe,argument,token 1 (/groups) first,True,False,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""",whoami.exe /^groups /fo csv
+whoami,caret_insert,cmd.exe,argument,token 1 (/groups) middle,True,False,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""",whoami.exe /gr^oups /fo csv
+whoami,caret_insert,cmd.exe,argument,token 1 (/groups) last,True,False,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""",whoami.exe /group^s /fo csv
+whoami,caret_insert,cmd.exe,argument,token 2 (/fo) first,True,False,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""",whoami.exe /groups /^fo csv
+whoami,caret_insert,cmd.exe,argument,token 2 (/fo) last,True,False,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""",whoami.exe /groups /f^o csv
+whoami,caret_insert,cmd.exe,argument,token 3 (csv) first,True,False,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""",whoami.exe /groups /fo c^sv
+whoami,caret_insert,cmd.exe,argument,token 3 (csv) last,True,False,0,"""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""","""Nom du groupe"",""Type"",""SID"",""Attributs"" | ""Tout le monde"",""",whoami.exe /groups /fo cs^v
+reg,quote_split,cmd.exe,program name,token 0 (reg.exe) first,True,False,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"r""""eg.exe query HKCU\Environment"
+reg,quote_split,cmd.exe,program name,token 0 (reg.exe) middle,True,False,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"reg"""".exe query HKCU\Environment"
+reg,quote_split,cmd.exe,program name,token 0 (reg.exe) last,True,False,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"reg.ex""""e query HKCU\Environment"
+reg,quote_split,argv,argument,token 1 (query) first,True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"reg.exe q""""uery HKCU\Environment"
+reg,quote_split,argv,argument,token 1 (query) middle,True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"reg.exe qu""""ery HKCU\Environment"
+reg,quote_split,argv,argument,token 1 (query) last,True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"reg.exe quer""""y HKCU\Environment"
+reg,quote_split,argv,argument,token 2 (HKCU\Environment) first,True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"reg.exe query H""""KCU\Environment"
+reg,quote_split,argv,argument,token 2 (HKCU\Environment) middle,True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"reg.exe query HKCU\Env""""ironment"
+reg,quote_split,argv,argument,token 2 (HKCU\Environment) last,True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"reg.exe query HKCU\Environmen""""t"
+reg,quote_split,argv,argument,all arguments first,True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"reg.exe q""""uery H""""KCU\Environment"
+reg,quote_split,argv,argument,all arguments middle,True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"reg.exe qu""""ery HKCU\Env""""ironment"
+reg,quote_split,argv,argument,all arguments last,True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"reg.exe quer""""y HKCU\Environmen""""t"
+reg,quote_wrap,argv,program name,token 0 (reg.exe),True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"""reg.exe"" query HKCU\Environment"
+reg,quote_wrap,argv,argument,token 1 (query),True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"reg.exe ""query"" HKCU\Environment"
+reg,quote_wrap,argv,argument,token 2 (HKCU\Environment),True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"reg.exe query ""HKCU\Environment"""
+reg,quote_wrap,argv,argument,all tokens,True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,"""reg.exe"" ""query"" ""HKCU\Environment"""
+reg,space_padding,argv,argument,double spaces,True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,reg.exe  query  HKCU\Environment
+reg,tab_separator,argv,argument,tabs instead of spaces,True,,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,reg.exe	query	HKCU\Environment
+reg,caret_insert,cmd.exe,program name,token 0 (reg.exe) first,True,False,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,r^eg.exe query HKCU\Environment
+reg,caret_insert,cmd.exe,program name,token 0 (reg.exe) middle,True,False,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,reg^.exe query HKCU\Environment
+reg,caret_insert,cmd.exe,program name,token 0 (reg.exe) last,True,False,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,reg.ex^e query HKCU\Environment
+reg,caret_insert,cmd.exe,argument,token 1 (query) first,True,False,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,reg.exe q^uery HKCU\Environment
+reg,caret_insert,cmd.exe,argument,token 1 (query) middle,True,False,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,reg.exe qu^ery HKCU\Environment
+reg,caret_insert,cmd.exe,argument,token 1 (query) last,True,False,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,reg.exe quer^y HKCU\Environment
+reg,caret_insert,cmd.exe,argument,token 2 (HKCU\Environment) first,True,False,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,reg.exe query H^KCU\Environment
+reg,caret_insert,cmd.exe,argument,token 2 (HKCU\Environment) middle,True,False,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,reg.exe query HKCU\Env^ironment
+reg,caret_insert,cmd.exe,argument,token 2 (HKCU\Environment) last,True,False,0,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,HKEY_CURRENT_USER\Environment |     JAVA_HOME    REG_SZ    C,reg.exe query HKCU\Environmen^t
+findstr,quote_split,cmd.exe,program name,token 0 (findstr.exe) first,True,False,0,hello world,hello world,"f""""indstr.exe /i /c:hello sample.txt"
+findstr,quote_split,cmd.exe,program name,token 0 (findstr.exe) middle,True,False,0,hello world,hello world,"finds""""tr.exe /i /c:hello sample.txt"
+findstr,quote_split,cmd.exe,program name,token 0 (findstr.exe) last,True,False,0,hello world,hello world,"findstr.ex""""e /i /c:hello sample.txt"
+findstr,quote_split,argv,argument,token 1 (/i) first,True,,0,hello world,hello world,"findstr.exe /""""i /c:hello sample.txt"
+findstr,quote_split,argv,argument,token 2 (/c:hello) first,True,,0,hello world,hello world,"findstr.exe /i /""""c:hello sample.txt"
+findstr,quote_split,argv,argument,token 2 (/c:hello) middle,True,,0,hello world,hello world,"findstr.exe /i /c:h""""ello sample.txt"
+findstr,quote_split,argv,argument,token 2 (/c:hello) last,True,,0,hello world,hello world,"findstr.exe /i /c:hell""""o sample.txt"
+findstr,quote_split,argv,argument,token 3 (sample.txt) first,True,,0,hello world,hello world,"findstr.exe /i /c:hello s""""ample.txt"
+findstr,quote_split,argv,argument,token 3 (sample.txt) middle,True,,0,hello world,hello world,"findstr.exe /i /c:hello sampl""""e.txt"
+findstr,quote_split,argv,argument,token 3 (sample.txt) last,True,,0,hello world,hello world,"findstr.exe /i /c:hello sample.tx""""t"
+findstr,quote_split,argv,argument,all arguments first,True,,0,hello world,hello world,"findstr.exe /""""i /""""c:hello s""""ample.txt"
+findstr,quote_split,argv,argument,all arguments middle,True,,0,hello world,hello world,"findstr.exe /i /c:h""""ello sampl""""e.txt"
+findstr,quote_split,argv,argument,all arguments last,True,,0,hello world,hello world,"findstr.exe /i /c:hell""""o sample.tx""""t"
+findstr,quote_wrap,argv,program name,token 0 (findstr.exe),True,,0,hello world,hello world,"""findstr.exe"" /i /c:hello sample.txt"
+findstr,quote_wrap,argv,argument,token 1 (/i),True,,0,hello world,hello world,"findstr.exe ""/i"" /c:hello sample.txt"
+findstr,quote_wrap,argv,argument,token 2 (/c:hello),True,,0,hello world,hello world,"findstr.exe /i ""/c:hello"" sample.txt"
+findstr,quote_wrap,argv,argument,token 3 (sample.txt),True,,0,hello world,hello world,"findstr.exe /i /c:hello ""sample.txt"""
+findstr,quote_wrap,argv,argument,all tokens,True,,0,hello world,hello world,"""findstr.exe"" ""/i"" ""/c:hello"" ""sample.txt"""
+findstr,space_padding,argv,argument,double spaces,True,,0,hello world,hello world,findstr.exe  /i  /c:hello  sample.txt
+findstr,tab_separator,argv,argument,tabs instead of spaces,True,,0,hello world,hello world,findstr.exe	/i	/c:hello	sample.txt
+findstr,caret_insert,cmd.exe,program name,token 0 (findstr.exe) first,True,False,0,hello world,hello world,f^indstr.exe /i /c:hello sample.txt
+findstr,caret_insert,cmd.exe,program name,token 0 (findstr.exe) middle,True,False,0,hello world,hello world,finds^tr.exe /i /c:hello sample.txt
+findstr,caret_insert,cmd.exe,program name,token 0 (findstr.exe) last,True,False,0,hello world,hello world,findstr.ex^e /i /c:hello sample.txt
+findstr,caret_insert,cmd.exe,argument,token 1 (/i) first,True,True,0,hello world,hello world,findstr.exe /^i /c:hello sample.txt
+findstr,caret_insert,cmd.exe,argument,token 2 (/c:hello) first,True,True,0,hello world,hello world,findstr.exe /i /^c:hello sample.txt
+findstr,caret_insert,cmd.exe,argument,token 2 (/c:hello) middle,True,False,0,hello world,hello world,findstr.exe /i /c:h^ello sample.txt
+findstr,caret_insert,cmd.exe,argument,token 2 (/c:hello) last,True,False,0,hello world,hello world,findstr.exe /i /c:hell^o sample.txt
+findstr,caret_insert,cmd.exe,argument,token 3 (sample.txt) first,True,False,0,hello world,hello world,findstr.exe /i /c:hello s^ample.txt
+findstr,caret_insert,cmd.exe,argument,token 3 (sample.txt) middle,True,False,0,hello world,hello world,findstr.exe /i /c:hello sampl^e.txt
+findstr,caret_insert,cmd.exe,argument,token 3 (sample.txt) last,True,False,0,hello world,hello world,findstr.exe /i /c:hello sample.tx^t
+sort,quote_split,cmd.exe,program name,token 0 (sort.exe) first,True,False,0,hello world,hello world,"s""""ort.exe /r sample.txt"
+sort,quote_split,cmd.exe,program name,token 0 (sort.exe) middle,True,False,0,hello world,hello world,"sort"""".exe /r sample.txt"
+sort,quote_split,cmd.exe,program name,token 0 (sort.exe) last,True,False,0,hello world,hello world,"sort.ex""""e /r sample.txt"
+sort,quote_split,argv,argument,token 1 (/r) first,True,,0,hello world,hello world,"sort.exe /""""r sample.txt"
+sort,quote_split,argv,argument,token 2 (sample.txt) first,True,,0,hello world,hello world,"sort.exe /r s""""ample.txt"
+sort,quote_split,argv,argument,token 2 (sample.txt) middle,True,,0,hello world,hello world,"sort.exe /r sampl""""e.txt"
+sort,quote_split,argv,argument,token 2 (sample.txt) last,True,,0,hello world,hello world,"sort.exe /r sample.tx""""t"
+sort,quote_split,argv,argument,all arguments first,True,,0,hello world,hello world,"sort.exe /""""r s""""ample.txt"
+sort,quote_wrap,argv,program name,token 0 (sort.exe),True,,0,hello world,hello world,"""sort.exe"" /r sample.txt"
+sort,quote_wrap,argv,argument,token 1 (/r),True,,0,hello world,hello world,"sort.exe ""/r"" sample.txt"
+sort,quote_wrap,argv,argument,token 2 (sample.txt),True,,0,hello world,hello world,"sort.exe /r ""sample.txt"""
+sort,quote_wrap,argv,argument,all tokens,True,,0,hello world,hello world,"""sort.exe"" ""/r"" ""sample.txt"""
+sort,space_padding,argv,argument,double spaces,True,,0,hello world,hello world,sort.exe  /r  sample.txt
+sort,tab_separator,argv,argument,tabs instead of spaces,True,,0,hello world,hello world,sort.exe	/r	sample.txt
+sort,caret_insert,cmd.exe,program name,token 0 (sort.exe) first,True,False,0,hello world,hello world,s^ort.exe /r sample.txt
+sort,caret_insert,cmd.exe,program name,token 0 (sort.exe) middle,True,False,0,hello world,hello world,sort^.exe /r sample.txt
+sort,caret_insert,cmd.exe,program name,token 0 (sort.exe) last,True,False,0,hello world,hello world,sort.ex^e /r sample.txt
+sort,caret_insert,cmd.exe,argument,token 1 (/r) first,True,False,0,hello world,hello world,sort.exe /^r sample.txt
+sort,caret_insert,cmd.exe,argument,token 2 (sample.txt) first,True,False,0,hello world,hello world,sort.exe /r s^ample.txt
+sort,caret_insert,cmd.exe,argument,token 2 (sample.txt) middle,True,False,0,hello world,hello world,sort.exe /r sampl^e.txt
+sort,caret_insert,cmd.exe,argument,token 2 (sample.txt) last,True,False,0,hello world,hello world,sort.exe /r sample.tx^t
+cmd-type,quote_split,cmd.exe,program name,token 0 (cmd.exe) first,True,False,0,hello world,hello world,"c""""md.exe /c type sample.txt"
+cmd-type,quote_split,cmd.exe,program name,token 0 (cmd.exe) middle,True,False,0,hello world,hello world,"cmd"""".exe /c type sample.txt"
+cmd-type,quote_split,cmd.exe,program name,token 0 (cmd.exe) last,True,False,0,hello world,hello world,"cmd.ex""""e /c type sample.txt"
+cmd-type,quote_split,program,argument,token 1 (/c) first,False,,0,Microsoft Windows [version 10.0.19045.6466] | (c) Microsoft ,hello world,"cmd.exe /""""c type sample.txt"
+cmd-type,quote_split,program,argument,token 2 (type) first,False,,1,,hello world,"cmd.exe /c t""""ype sample.txt"
+cmd-type,quote_split,program,argument,token 2 (type) middle,False,,1,,hello world,"cmd.exe /c ty""""pe sample.txt"
+cmd-type,quote_split,program,argument,token 2 (type) last,False,,1,,hello world,"cmd.exe /c typ""""e sample.txt"
+cmd-type,quote_split,program,argument,token 3 (sample.txt) first,True,,0,hello world,hello world,"cmd.exe /c type s""""ample.txt"
+cmd-type,quote_split,program,argument,token 3 (sample.txt) middle,True,,0,hello world,hello world,"cmd.exe /c type sampl""""e.txt"
+cmd-type,quote_split,program,argument,token 3 (sample.txt) last,True,,0,hello world,hello world,"cmd.exe /c type sample.tx""""t"
+cmd-type,quote_split,program,argument,all arguments first,False,,0,Microsoft Windows [version 10.0.19045.6466] | (c) Microsoft ,hello world,"cmd.exe /""""c t""""ype s""""ample.txt"
+cmd-type,quote_split,program,argument,all arguments middle,False,,1,,hello world,"cmd.exe /c ty""""pe sampl""""e.txt"
+cmd-type,quote_split,program,argument,all arguments last,False,,1,,hello world,"cmd.exe /c typ""""e sample.tx""""t"
+cmd-type,quote_wrap,argv,program name,token 0 (cmd.exe),True,,0,hello world,hello world,"""cmd.exe"" /c type sample.txt"
+cmd-type,quote_wrap,program,argument,token 1 (/c),True,,0,hello world,hello world,"cmd.exe ""/c"" type sample.txt"
+cmd-type,quote_wrap,program,argument,token 2 (type),True,,0,hello world,hello world,"cmd.exe /c ""type"" sample.txt"
+cmd-type,quote_wrap,program,argument,token 3 (sample.txt),True,,0,hello world,hello world,"cmd.exe /c type ""sample.txt"""
+cmd-type,quote_wrap,program,argument,all tokens,False,,1,,hello world,"""cmd.exe"" ""/c"" ""type"" ""sample.txt"""
+cmd-type,space_padding,argv,argument,double spaces,True,,0,hello world,hello world,cmd.exe  /c  type  sample.txt
+cmd-type,tab_separator,argv,argument,tabs instead of spaces,True,,0,hello world,hello world,cmd.exe	/c	type	sample.txt
+cmd-type,caret_insert,cmd.exe,program name,token 0 (cmd.exe) first,True,False,0,hello world,hello world,c^md.exe /c type sample.txt
+cmd-type,caret_insert,cmd.exe,program name,token 0 (cmd.exe) middle,True,False,0,hello world,hello world,cmd^.exe /c type sample.txt
+cmd-type,caret_insert,cmd.exe,program name,token 0 (cmd.exe) last,True,False,0,hello world,hello world,cmd.ex^e /c type sample.txt
+cmd-type,caret_insert,cmd.exe,argument,token 1 (/c) first,True,False,0,hello world,hello world,cmd.exe /^c type sample.txt
+cmd-type,caret_insert,cmd.exe,argument,token 2 (type) first,True,True,0,hello world,hello world,cmd.exe /c t^ype sample.txt
+cmd-type,caret_insert,cmd.exe,argument,token 2 (type) middle,True,True,0,hello world,hello world,cmd.exe /c ty^pe sample.txt
+cmd-type,caret_insert,cmd.exe,argument,token 2 (type) last,True,True,0,hello world,hello world,cmd.exe /c typ^e sample.txt
+cmd-type,caret_insert,cmd.exe,argument,token 3 (sample.txt) first,True,True,0,hello world,hello world,cmd.exe /c type s^ample.txt
+cmd-type,caret_insert,cmd.exe,argument,token 3 (sample.txt) middle,True,True,0,hello world,hello world,cmd.exe /c type sampl^e.txt
+cmd-type,caret_insert,cmd.exe,argument,token 3 (sample.txt) last,True,True,0,hello world,hello world,cmd.exe /c type sample.tx^t
+powershell,quote_split,cmd.exe,program name,token 0 (powershell.exe) first,True,False,0,hello,hello,"p""""owershell.exe -NoProfile -NonInteractive -Command Write-Output hello"
+powershell,quote_split,cmd.exe,program name,token 0 (powershell.exe) middle,True,False,0,hello,hello,"powersh""""ell.exe -NoProfile -NonInteractive -Command Write-Output hello"
+powershell,quote_split,cmd.exe,program name,token 0 (powershell.exe) last,True,False,0,hello,hello,"powershell.ex""""e -NoProfile -NonInteractive -Command Write-Output hello"
+powershell,quote_split,argv,argument,token 1 (-NoProfile) first,True,,0,hello,hello,"powershell.exe -""""NoProfile -NonInteractive -Command Write-Output hello"
+powershell,quote_split,argv,argument,token 1 (-NoProfile) middle,True,,0,hello,hello,"powershell.exe -NoPr""""ofile -NonInteractive -Command Write-Output hello"
+powershell,quote_split,argv,argument,token 1 (-NoProfile) last,True,,0,hello,hello,"powershell.exe -NoProfil""""e -NonInteractive -Command Write-Output hello"
+powershell,quote_split,argv,argument,token 2 (-NonInteractive) first,True,,0,hello,hello,"powershell.exe -NoProfile -""""NonInteractive -Command Write-Output hello"
+powershell,quote_split,argv,argument,token 2 (-NonInteractive) middle,True,,0,hello,hello,"powershell.exe -NoProfile -NonInt""""eractive -Command Write-Output hello"
+powershell,quote_split,argv,argument,token 2 (-NonInteractive) last,True,,0,hello,hello,"powershell.exe -NoProfile -NonInteractiv""""e -Command Write-Output hello"
+powershell,quote_split,argv,argument,token 3 (-Command) first,True,,0,hello,hello,"powershell.exe -NoProfile -NonInteractive -""""Command Write-Output hello"
+powershell,quote_split,argv,argument,token 3 (-Command) middle,True,,0,hello,hello,"powershell.exe -NoProfile -NonInteractive -Com""""mand Write-Output hello"
+powershell,quote_split,argv,argument,token 3 (-Command) last,True,,0,hello,hello,"powershell.exe -NoProfile -NonInteractive -Comman""""d Write-Output hello"
+powershell,quote_split,argv,argument,token 4 (Write-Output) first,True,,0,hello,hello,"powershell.exe -NoProfile -NonInteractive -Command W""""rite-Output hello"
+powershell,quote_split,argv,argument,token 4 (Write-Output) middle,True,,0,hello,hello,"powershell.exe -NoProfile -NonInteractive -Command Write-""""Output hello"
+powershell,quote_split,argv,argument,token 4 (Write-Output) last,True,,0,hello,hello,"powershell.exe -NoProfile -NonInteractive -Command Write-Outpu""""t hello"
+powershell,quote_split,argv,argument,token 5 (hello) first,True,,0,hello,hello,"powershell.exe -NoProfile -NonInteractive -Command Write-Output h""""ello"
+powershell,quote_split,argv,argument,token 5 (hello) middle,True,,0,hello,hello,"powershell.exe -NoProfile -NonInteractive -Command Write-Output he""""llo"
+powershell,quote_split,argv,argument,token 5 (hello) last,True,,0,hello,hello,"powershell.exe -NoProfile -NonInteractive -Command Write-Output hell""""o"
+powershell,quote_split,argv,argument,all arguments first,True,,0,hello,hello,"powershell.exe -""""NoProfile -""""NonInteractive -""""Command W""""rite-Output h""""ello"
+powershell,quote_split,argv,argument,all arguments middle,True,,0,hello,hello,"powershell.exe -NoPr""""ofile -NonInt""""eractive -Com""""mand Write-""""Output he""""llo"
+powershell,quote_split,argv,argument,all arguments last,True,,0,hello,hello,"powershell.exe -NoProfil""""e -NonInteractiv""""e -Comman""""d Write-Outpu""""t hell""""o"
+powershell,quote_wrap,argv,program name,token 0 (powershell.exe),True,,0,hello,hello,"""powershell.exe"" -NoProfile -NonInteractive -Command Write-Output hello"
+powershell,quote_wrap,argv,argument,token 1 (-NoProfile),True,,0,hello,hello,"powershell.exe ""-NoProfile"" -NonInteractive -Command Write-Output hello"
+powershell,quote_wrap,argv,argument,token 2 (-NonInteractive),True,,0,hello,hello,"powershell.exe -NoProfile ""-NonInteractive"" -Command Write-Output hello"
+powershell,quote_wrap,argv,argument,token 3 (-Command),True,,0,hello,hello,"powershell.exe -NoProfile -NonInteractive ""-Command"" Write-Output hello"
+powershell,quote_wrap,argv,argument,token 4 (Write-Output),True,,0,hello,hello,"powershell.exe -NoProfile -NonInteractive -Command ""Write-Output"" hello"
+powershell,quote_wrap,argv,argument,token 5 (hello),True,,0,hello,hello,"powershell.exe -NoProfile -NonInteractive -Command Write-Output ""hello"""
+powershell,quote_wrap,argv,argument,all tokens,True,,0,hello,hello,"""powershell.exe"" ""-NoProfile"" ""-NonInteractive"" ""-Command"" ""Write-Output"" ""hello"""
+powershell,space_padding,argv,argument,double spaces,True,,0,hello,hello,powershell.exe  -NoProfile  -NonInteractive  -Command  Write-Output  hello
+powershell,tab_separator,argv,argument,tabs instead of spaces,True,,0,hello,hello,powershell.exe	-NoProfile	-NonInteractive	-Command	Write-Output	hello
+powershell,caret_insert,cmd.exe,program name,token 0 (powershell.exe) first,,False,oserror:5,,hello,p^owershell.exe -NoProfile -NonInteractive -Command Write-Output hello
+powershell,caret_insert,cmd.exe,program name,token 0 (powershell.exe) middle,True,False,0,hello,hello,powersh^ell.exe -NoProfile -NonInteractive -Command Write-Output hello
+powershell,caret_insert,cmd.exe,program name,token 0 (powershell.exe) last,True,False,0,hello,hello,powershell.ex^e -NoProfile -NonInteractive -Command Write-Output hello
+powershell,caret_insert,cmd.exe,argument,token 1 (-NoProfile) first,True,False,0,hello,hello,powershell.exe -^NoProfile -NonInteractive -Command Write-Output hello
+powershell,caret_insert,cmd.exe,argument,token 1 (-NoProfile) middle,True,False,0,hello,hello,powershell.exe -NoPr^ofile -NonInteractive -Command Write-Output hello
+powershell,caret_insert,cmd.exe,argument,token 1 (-NoProfile) last,True,False,0,hello,hello,powershell.exe -NoProfil^e -NonInteractive -Command Write-Output hello
+powershell,caret_insert,cmd.exe,argument,token 2 (-NonInteractive) first,True,False,0,hello,hello,powershell.exe -NoProfile -^NonInteractive -Command Write-Output hello
+powershell,caret_insert,cmd.exe,argument,token 2 (-NonInteractive) middle,True,False,0,hello,hello,powershell.exe -NoProfile -NonInt^eractive -Command Write-Output hello
+powershell,caret_insert,cmd.exe,argument,token 2 (-NonInteractive) last,True,False,0,hello,hello,powershell.exe -NoProfile -NonInteractiv^e -Command Write-Output hello
+powershell,caret_insert,cmd.exe,argument,token 3 (-Command) first,True,False,0,hello,hello,powershell.exe -NoProfile -NonInteractive -^Command Write-Output hello
+powershell,caret_insert,cmd.exe,argument,token 3 (-Command) middle,True,False,0,hello,hello,powershell.exe -NoProfile -NonInteractive -Com^mand Write-Output hello
+powershell,caret_insert,cmd.exe,argument,token 3 (-Command) last,True,False,0,hello,hello,powershell.exe -NoProfile -NonInteractive -Comman^d Write-Output hello
+powershell,caret_insert,cmd.exe,argument,token 4 (Write-Output) first,True,False,0,hello,hello,powershell.exe -NoProfile -NonInteractive -Command W^rite-Output hello
+powershell,caret_insert,cmd.exe,argument,token 4 (Write-Output) middle,True,False,0,hello,hello,powershell.exe -NoProfile -NonInteractive -Command Write-^Output hello
+powershell,caret_insert,cmd.exe,argument,token 4 (Write-Output) last,True,False,0,hello,hello,powershell.exe -NoProfile -NonInteractive -Command Write-Outpu^t hello
+powershell,caret_insert,cmd.exe,argument,token 5 (hello) first,True,False,0,hello,hello,powershell.exe -NoProfile -NonInteractive -Command Write-Output h^ello
+powershell,caret_insert,cmd.exe,argument,token 5 (hello) middle,True,False,0,hello,hello,powershell.exe -NoProfile -NonInteractive -Command Write-Output he^llo
+powershell,caret_insert,cmd.exe,argument,token 5 (hello) last,True,False,0,hello,hello,powershell.exe -NoProfile -NonInteractive -Command Write-Output hell^o
+powershell,option_prefix_swap,program,argument,token 1 (-NoProfile),True,,0,hello,hello,powershell.exe /NoProfile -NonInteractive -Command Write-Output hello
+powershell,option_prefix_swap,program,argument,token 2 (-NonInteractive),True,,0,hello,hello,powershell.exe -NoProfile /NonInteractive -Command Write-Output hello
+powershell,option_prefix_swap,program,argument,token 3 (-Command),True,,0,hello,hello,powershell.exe -NoProfile -NonInteractive /Command Write-Output hello
+curl,quote_split,cmd.exe,program name,token 0 (curl.exe) first,True,False,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,"c""""url.exe --version"
+curl,quote_split,cmd.exe,program name,token 0 (curl.exe) middle,True,False,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,"curl"""".exe --version"
+curl,quote_split,cmd.exe,program name,token 0 (curl.exe) last,True,False,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,"curl.ex""""e --version"
+curl,quote_split,argv,argument,token 1 (--version) first,True,,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,"curl.exe -""""-version"
+curl,quote_split,argv,argument,token 1 (--version) middle,True,,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,"curl.exe --ve""""rsion"
+curl,quote_split,argv,argument,token 1 (--version) last,True,,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,"curl.exe --versio""""n"
+curl,quote_wrap,argv,program name,token 0 (curl.exe),True,,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,"""curl.exe"" --version"
+curl,quote_wrap,argv,argument,token 1 (--version),True,,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,"curl.exe ""--version"""
+curl,quote_wrap,argv,argument,all tokens,True,,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,"""curl.exe"" ""--version"""
+curl,space_padding,argv,argument,double spaces,True,,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl.exe  --version
+curl,tab_separator,argv,argument,tabs instead of spaces,True,,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl.exe	--version
+curl,caret_insert,cmd.exe,program name,token 0 (curl.exe) first,True,False,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,c^url.exe --version
+curl,caret_insert,cmd.exe,program name,token 0 (curl.exe) middle,True,False,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl^.exe --version
+curl,caret_insert,cmd.exe,program name,token 0 (curl.exe) last,True,False,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl.ex^e --version
+curl,caret_insert,cmd.exe,argument,token 1 (--version) first,True,False,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl.exe -^-version
+curl,caret_insert,cmd.exe,argument,token 1 (--version) middle,True,False,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl.exe --ve^rsion
+curl,caret_insert,cmd.exe,argument,token 1 (--version) last,True,False,0,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl 8.13.0 (Windows) libcurl/8.13.0 Schannel zlib/1.3.1 Win,curl.exe --versio^n
+where,quote_split,cmd.exe,program name,token 0 (where.exe) first,True,False,0,,,"w""""here.exe /q cmd.exe"
+where,quote_split,cmd.exe,program name,token 0 (where.exe) middle,True,False,0,,,"wher""""e.exe /q cmd.exe"
+where,quote_split,cmd.exe,program name,token 0 (where.exe) last,True,False,0,,,"where.ex""""e /q cmd.exe"
+where,quote_split,argv,argument,token 1 (/q) first,True,,0,,,"where.exe /""""q cmd.exe"
+where,quote_split,argv,argument,token 2 (cmd.exe) first,True,,0,,,"where.exe /q c""""md.exe"
+where,quote_split,argv,argument,token 2 (cmd.exe) middle,True,,0,,,"where.exe /q cmd"""".exe"
+where,quote_split,argv,argument,token 2 (cmd.exe) last,True,,0,,,"where.exe /q cmd.ex""""e"
+where,quote_split,argv,argument,all arguments first,True,,0,,,"where.exe /""""q c""""md.exe"
+where,quote_wrap,argv,program name,token 0 (where.exe),True,,0,,,"""where.exe"" /q cmd.exe"
+where,quote_wrap,argv,argument,token 1 (/q),True,,0,,,"where.exe ""/q"" cmd.exe"
+where,quote_wrap,argv,argument,token 2 (cmd.exe),True,,0,,,"where.exe /q ""cmd.exe"""
+where,quote_wrap,argv,argument,all tokens,True,,0,,,"""where.exe"" ""/q"" ""cmd.exe"""
+where,space_padding,argv,argument,double spaces,True,,0,,,where.exe  /q  cmd.exe
+where,tab_separator,argv,argument,tabs instead of spaces,True,,0,,,where.exe	/q	cmd.exe
+where,caret_insert,cmd.exe,program name,token 0 (where.exe) first,True,False,0,,,w^here.exe /q cmd.exe
+where,caret_insert,cmd.exe,program name,token 0 (where.exe) middle,True,False,0,,,wher^e.exe /q cmd.exe
+where,caret_insert,cmd.exe,program name,token 0 (where.exe) last,True,False,0,,,where.ex^e /q cmd.exe
+where,caret_insert,cmd.exe,argument,token 1 (/q) first,True,False,0,,,where.exe /^q cmd.exe
+where,caret_insert,cmd.exe,argument,token 2 (cmd.exe) first,True,False,0,,,where.exe /q c^md.exe
+where,caret_insert,cmd.exe,argument,token 2 (cmd.exe) middle,True,False,0,,,where.exe /q cmd^.exe
+where,caret_insert,cmd.exe,argument,token 2 (cmd.exe) last,True,False,0,,,where.exe /q cmd.ex^e
+schtasks,quote_split,cmd.exe,program name,token 0 (schtasks.exe) first,True,False,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],"s""""chtasks.exe /query /?"
+schtasks,quote_split,cmd.exe,program name,token 0 (schtasks.exe) middle,True,False,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],"schtas""""ks.exe /query /?"
+schtasks,quote_split,cmd.exe,program name,token 0 (schtasks.exe) last,True,False,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],"schtasks.ex""""e /query /?"
+schtasks,quote_split,argv,argument,token 1 (/query) first,True,,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],"schtasks.exe /""""query /?"
+schtasks,quote_split,argv,argument,token 1 (/query) middle,True,,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],"schtasks.exe /qu""""ery /?"
+schtasks,quote_split,argv,argument,token 1 (/query) last,True,,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],"schtasks.exe /quer""""y /?"
+schtasks,quote_split,argv,argument,token 2 (/?) first,True,,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],"schtasks.exe /query /""""?"
+schtasks,quote_split,argv,argument,all arguments first,True,,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],"schtasks.exe /""""query /""""?"
+schtasks,quote_wrap,argv,program name,token 0 (schtasks.exe),True,,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],"""schtasks.exe"" /query /?"
+schtasks,quote_wrap,argv,argument,token 1 (/query),True,,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],"schtasks.exe ""/query"" /?"
+schtasks,quote_wrap,argv,argument,token 2 (/?),True,,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],"schtasks.exe /query ""/?"""
+schtasks,quote_wrap,argv,argument,all tokens,True,,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],"""schtasks.exe"" ""/query"" ""/?"""
+schtasks,space_padding,argv,argument,double spaces,True,,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],schtasks.exe  /query  /?
+schtasks,tab_separator,argv,argument,tabs instead of spaces,True,,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],schtasks.exe	/query	/?
+schtasks,caret_insert,cmd.exe,program name,token 0 (schtasks.exe) first,True,False,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],s^chtasks.exe /query /?
+schtasks,caret_insert,cmd.exe,program name,token 0 (schtasks.exe) middle,True,False,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],schtas^ks.exe /query /?
+schtasks,caret_insert,cmd.exe,program name,token 0 (schtasks.exe) last,True,False,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],schtasks.ex^e /query /?
+schtasks,caret_insert,cmd.exe,argument,token 1 (/query) first,True,False,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],schtasks.exe /^query /?
+schtasks,caret_insert,cmd.exe,argument,token 1 (/query) middle,True,False,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],schtasks.exe /qu^ery /?
+schtasks,caret_insert,cmd.exe,argument,token 1 (/query) last,True,False,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],schtasks.exe /quer^y /?
+schtasks,caret_insert,cmd.exe,argument,token 2 (/?) first,True,False,0,SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],SCHTASKS/Query [/S systÃ¨me [/U utilisateur [/P [mot_passe]],schtasks.exe /query /^?
+net,quote_split,cmd.exe,program name,token 0 (net.exe) first,True,False,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,"n""""et.exe accounts"
+net,quote_split,cmd.exe,program name,token 0 (net.exe) middle,True,False,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,"net"""".exe accounts"
+net,quote_split,cmd.exe,program name,token 0 (net.exe) last,True,False,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,"net.ex""""e accounts"
+net,quote_split,argv,argument,token 1 (accounts) first,True,,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,"net.exe a""""ccounts"
+net,quote_split,argv,argument,token 1 (accounts) middle,True,,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,"net.exe acco""""unts"
+net,quote_split,argv,argument,token 1 (accounts) last,True,,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,"net.exe account""""s"
+net,quote_wrap,argv,program name,token 0 (net.exe),True,,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,"""net.exe"" accounts"
+net,quote_wrap,argv,argument,token 1 (accounts),True,,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,"net.exe ""accounts"""
+net,quote_wrap,argv,argument,all tokens,True,,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,"""net.exe"" ""accounts"""
+net,space_padding,argv,argument,double spaces,True,,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,net.exe  accounts
+net,tab_separator,program,argument,tabs instead of spaces,False,,1,,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,net.exe	accounts
+net,caret_insert,cmd.exe,program name,token 0 (net.exe) first,True,False,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,n^et.exe accounts
+net,caret_insert,cmd.exe,program name,token 0 (net.exe) middle,True,False,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,net^.exe accounts
+net,caret_insert,cmd.exe,program name,token 0 (net.exe) last,True,False,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,net.ex^e accounts
+net,caret_insert,cmd.exe,argument,token 1 (accounts) first,True,False,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,net.exe a^ccounts
+net,caret_insert,cmd.exe,argument,token 1 (accounts) middle,True,False,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,net.exe acco^unts
+net,caret_insert,cmd.exe,argument,token 1 (accounts) last,True,False,0,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,Fermeture forc‚e de la session aprŠs expirationÿ?ÿ:         ,net.exe account^s
+netsh,quote_split,cmd.exe,program name,token 0 (netsh.exe) first,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"n""""etsh.exe interface show interface"
+netsh,quote_split,cmd.exe,program name,token 0 (netsh.exe) middle,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"nets""""h.exe interface show interface"
+netsh,quote_split,cmd.exe,program name,token 0 (netsh.exe) last,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.ex""""e interface show interface"
+netsh,quote_split,argv,argument,token 1 (interface) first,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe i""""nterface show interface"
+netsh,quote_split,argv,argument,token 1 (interface) middle,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe inte""""rface show interface"
+netsh,quote_split,argv,argument,token 1 (interface) last,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe interfac""""e show interface"
+netsh,quote_split,argv,argument,token 2 (show) first,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe interface s""""how interface"
+netsh,quote_split,argv,argument,token 2 (show) middle,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe interface sh""""ow interface"
+netsh,quote_split,argv,argument,token 2 (show) last,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe interface sho""""w interface"
+netsh,quote_split,argv,argument,token 3 (interface) first,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe interface show i""""nterface"
+netsh,quote_split,argv,argument,token 3 (interface) middle,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe interface show inte""""rface"
+netsh,quote_split,argv,argument,token 3 (interface) last,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe interface show interfac""""e"
+netsh,quote_split,argv,argument,all arguments first,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe i""""nterface s""""how i""""nterface"
+netsh,quote_split,argv,argument,all arguments middle,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe inte""""rface sh""""ow inte""""rface"
+netsh,quote_split,argv,argument,all arguments last,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe interfac""""e sho""""w interfac""""e"
+netsh,quote_wrap,argv,program name,token 0 (netsh.exe),True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"""netsh.exe"" interface show interface"
+netsh,quote_wrap,argv,argument,token 1 (interface),True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe ""interface"" show interface"
+netsh,quote_wrap,argv,argument,token 2 (show),True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe interface ""show"" interface"
+netsh,quote_wrap,argv,argument,token 3 (interface),True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"netsh.exe interface show ""interface"""
+netsh,quote_wrap,argv,argument,all tokens,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,"""netsh.exe"" ""interface"" ""show"" ""interface"""
+netsh,space_padding,argv,argument,double spaces,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,netsh.exe  interface  show  interface
+netsh,tab_separator,argv,argument,tabs instead of spaces,True,,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,netsh.exe	interface	show	interface
+netsh,caret_insert,cmd.exe,program name,token 0 (netsh.exe) first,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,n^etsh.exe interface show interface
+netsh,caret_insert,cmd.exe,program name,token 0 (netsh.exe) middle,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,nets^h.exe interface show interface
+netsh,caret_insert,cmd.exe,program name,token 0 (netsh.exe) last,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,netsh.ex^e interface show interface
+netsh,caret_insert,cmd.exe,argument,token 1 (interface) first,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,netsh.exe i^nterface show interface
+netsh,caret_insert,cmd.exe,argument,token 1 (interface) middle,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,netsh.exe inte^rface show interface
+netsh,caret_insert,cmd.exe,argument,token 1 (interface) last,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,netsh.exe interfac^e show interface
+netsh,caret_insert,cmd.exe,argument,token 2 (show) first,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,netsh.exe interface s^how interface
+netsh,caret_insert,cmd.exe,argument,token 2 (show) middle,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,netsh.exe interface sh^ow interface
+netsh,caret_insert,cmd.exe,argument,token 2 (show) last,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,netsh.exe interface sho^w interface
+netsh,caret_insert,cmd.exe,argument,token 3 (interface) first,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,netsh.exe interface show i^nterface
+netsh,caret_insert,cmd.exe,argument,token 3 (interface) middle,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,netsh.exe interface show inte^rface
+netsh,caret_insert,cmd.exe,argument,token 3 (interface) last,True,False,0,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,Ã‰tat admin    Ã‰tat          Type            Nom de lâ€™int,netsh.exe interface show interfac^e
+sc,quote_split,cmd.exe,program name,token 0 (sc.exe) first,True,False,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"s""""c.exe query wuauserv"
+sc,quote_split,cmd.exe,program name,token 0 (sc.exe) middle,True,False,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"sc.""""exe query wuauserv"
+sc,quote_split,cmd.exe,program name,token 0 (sc.exe) last,True,False,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"sc.ex""""e query wuauserv"
+sc,quote_split,argv,argument,token 1 (query) first,True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"sc.exe q""""uery wuauserv"
+sc,quote_split,argv,argument,token 1 (query) middle,True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"sc.exe qu""""ery wuauserv"
+sc,quote_split,argv,argument,token 1 (query) last,True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"sc.exe quer""""y wuauserv"
+sc,quote_split,argv,argument,token 2 (wuauserv) first,True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"sc.exe query w""""uauserv"
+sc,quote_split,argv,argument,token 2 (wuauserv) middle,True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"sc.exe query wuau""""serv"
+sc,quote_split,argv,argument,token 2 (wuauserv) last,True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"sc.exe query wuauser""""v"
+sc,quote_split,argv,argument,all arguments first,True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"sc.exe q""""uery w""""uauserv"
+sc,quote_split,argv,argument,all arguments middle,True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"sc.exe qu""""ery wuau""""serv"
+sc,quote_split,argv,argument,all arguments last,True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"sc.exe quer""""y wuauser""""v"
+sc,quote_wrap,argv,program name,token 0 (sc.exe),True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"""sc.exe"" query wuauserv"
+sc,quote_wrap,argv,argument,token 1 (query),True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"sc.exe ""query"" wuauserv"
+sc,quote_wrap,argv,argument,token 2 (wuauserv),True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"sc.exe query ""wuauserv"""
+sc,quote_wrap,argv,argument,all tokens,True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,"""sc.exe"" ""query"" ""wuauserv"""
+sc,space_padding,argv,argument,double spaces,True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,sc.exe  query  wuauserv
+sc,tab_separator,argv,argument,tabs instead of spaces,True,,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,sc.exe	query	wuauserv
+sc,caret_insert,cmd.exe,program name,token 0 (sc.exe) first,True,False,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,s^c.exe query wuauserv
+sc,caret_insert,cmd.exe,program name,token 0 (sc.exe) middle,True,False,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,sc.^exe query wuauserv
+sc,caret_insert,cmd.exe,program name,token 0 (sc.exe) last,True,False,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,sc.ex^e query wuauserv
+sc,caret_insert,cmd.exe,argument,token 1 (query) first,True,False,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,sc.exe q^uery wuauserv
+sc,caret_insert,cmd.exe,argument,token 1 (query) middle,True,False,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,sc.exe qu^ery wuauserv
+sc,caret_insert,cmd.exe,argument,token 1 (query) last,True,False,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,sc.exe quer^y wuauserv
+sc,caret_insert,cmd.exe,argument,token 2 (wuauserv) first,True,False,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,sc.exe query w^uauserv
+sc,caret_insert,cmd.exe,argument,token 2 (wuauserv) middle,True,False,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,sc.exe query wuau^serv
+sc,caret_insert,cmd.exe,argument,token 2 (wuauserv) last,True,False,0,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,SERVICE_NAME: wuauserv  |         TYPE               : 30  W,sc.exe query wuauser^v
+bitsadmin,quote_split,cmd.exe,program name,token 0 (bitsadmin.exe) first,True,False,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,"b""""itsadmin.exe /list"
+bitsadmin,quote_split,cmd.exe,program name,token 0 (bitsadmin.exe) middle,True,False,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,"bitsad""""min.exe /list"
+bitsadmin,quote_split,cmd.exe,program name,token 0 (bitsadmin.exe) last,True,False,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,"bitsadmin.ex""""e /list"
+bitsadmin,quote_split,argv,argument,token 1 (/list) first,True,,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,"bitsadmin.exe /""""list"
+bitsadmin,quote_split,argv,argument,token 1 (/list) middle,True,,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,"bitsadmin.exe /l""""ist"
+bitsadmin,quote_split,argv,argument,token 1 (/list) last,True,,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,"bitsadmin.exe /lis""""t"
+bitsadmin,quote_wrap,argv,program name,token 0 (bitsadmin.exe),True,,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,"""bitsadmin.exe"" /list"
+bitsadmin,quote_wrap,argv,argument,token 1 (/list),True,,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,"bitsadmin.exe ""/list"""
+bitsadmin,quote_wrap,argv,argument,all tokens,True,,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,"""bitsadmin.exe"" ""/list"""
+bitsadmin,space_padding,argv,argument,double spaces,True,,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,bitsadmin.exe  /list
+bitsadmin,tab_separator,argv,argument,tabs instead of spaces,True,,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,bitsadmin.exe	/list
+bitsadmin,caret_insert,cmd.exe,program name,token 0 (bitsadmin.exe) first,True,False,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,b^itsadmin.exe /list
+bitsadmin,caret_insert,cmd.exe,program name,token 0 (bitsadmin.exe) middle,True,False,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,bitsad^min.exe /list
+bitsadmin,caret_insert,cmd.exe,program name,token 0 (bitsadmin.exe) last,True,False,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,bitsadmin.ex^e /list
+bitsadmin,caret_insert,cmd.exe,argument,token 1 (/list) first,True,False,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,bitsadmin.exe /^list
+bitsadmin,caret_insert,cmd.exe,argument,token 1 (/list) middle,True,False,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,bitsadmin.exe /l^ist
+bitsadmin,caret_insert,cmd.exe,argument,token 1 (/list) last,True,False,0,BITSADMIN version 3.0 | BITS administration utility. | (C) C,BITSADMIN version 3.0 | BITS administration utility. | (C) C,bitsadmin.exe /lis^t
+wmic,quote_split,cmd.exe,program name,token 0 (wmic.exe) first,True,False,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,"w""""mic.exe os get caption"
+wmic,quote_split,cmd.exe,program name,token 0 (wmic.exe) middle,True,False,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,"wmic"""".exe os get caption"
+wmic,quote_split,cmd.exe,program name,token 0 (wmic.exe) last,True,False,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,"wmic.ex""""e os get caption"
+wmic,quote_split,program,argument,token 1 (os) first,False,,44135,,Caption                              |  | Microsoft Windows ,"wmic.exe o""""s get caption"
+wmic,quote_split,program,argument,token 2 (get) first,False,,44010,,Caption                              |  | Microsoft Windows ,"wmic.exe os g""""et caption"
+wmic,quote_split,program,argument,token 2 (get) last,False,,44010,,Caption                              |  | Microsoft Windows ,"wmic.exe os ge""""t caption"
+wmic,quote_split,program,argument,token 3 (caption) first,False,,2147749911,,Caption                              |  | Microsoft Windows ,"wmic.exe os get c""""aption"
+wmic,quote_split,program,argument,token 3 (caption) middle,False,,2147749911,,Caption                              |  | Microsoft Windows ,"wmic.exe os get cap""""tion"
+wmic,quote_split,program,argument,token 3 (caption) last,False,,2147749911,,Caption                              |  | Microsoft Windows ,"wmic.exe os get captio""""n"
+wmic,quote_split,program,argument,all arguments first,False,,44135,,Caption                              |  | Microsoft Windows ,"wmic.exe o""""s g""""et c""""aption"
+wmic,quote_split,program,argument,all arguments last,False,,44010,,Caption                              |  | Microsoft Windows ,"wmic.exe os ge""""t captio""""n"
+wmic,quote_wrap,argv,program name,token 0 (wmic.exe),True,,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,"""wmic.exe"" os get caption"
+wmic,quote_wrap,argv,argument,token 1 (os),True,,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,"wmic.exe ""os"" get caption"
+wmic,quote_wrap,argv,argument,token 2 (get),True,,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,"wmic.exe os ""get"" caption"
+wmic,quote_wrap,argv,argument,token 3 (caption),True,,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,"wmic.exe os get ""caption"""
+wmic,quote_wrap,argv,argument,all tokens,True,,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,"""wmic.exe"" ""os"" ""get"" ""caption"""
+wmic,space_padding,argv,argument,double spaces,True,,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,wmic.exe  os  get  caption
+wmic,tab_separator,program,argument,tabs instead of spaces,False,,0,,Caption                              |  | Microsoft Windows ,wmic.exe	os	get	caption
+wmic,caret_insert,cmd.exe,program name,token 0 (wmic.exe) first,True,False,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,w^mic.exe os get caption
+wmic,caret_insert,cmd.exe,program name,token 0 (wmic.exe) middle,True,False,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,wmic^.exe os get caption
+wmic,caret_insert,cmd.exe,program name,token 0 (wmic.exe) last,True,False,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,wmic.ex^e os get caption
+wmic,caret_insert,cmd.exe,argument,token 1 (os) first,True,False,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,wmic.exe o^s get caption
+wmic,caret_insert,cmd.exe,argument,token 2 (get) first,True,False,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,wmic.exe os g^et caption
+wmic,caret_insert,cmd.exe,argument,token 2 (get) last,True,False,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,wmic.exe os ge^t caption
+wmic,caret_insert,cmd.exe,argument,token 3 (caption) first,True,False,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,wmic.exe os get c^aption
+wmic,caret_insert,cmd.exe,argument,token 3 (caption) middle,True,False,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,wmic.exe os get cap^tion
+wmic,caret_insert,cmd.exe,argument,token 3 (caption) last,True,False,0,Caption                              |  | Microsoft Windows ,Caption                              |  | Microsoft Windows ,wmic.exe os get captio^n

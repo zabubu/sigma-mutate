@@ -1,7 +1,5 @@
 __pycache__/
 *.egg-info/
 .venv/
-results.csv
-verif.csv
 *.ndjson
-validation.csv
+results.csv
