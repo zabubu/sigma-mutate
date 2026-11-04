@@ -110,9 +110,13 @@ The matcher is checked against rsigma on the whole corpus, events and variants i
 
 ## Upstream findings
 
-Running the corpus also surfaces rule bugs. Example: *COM Object Execution via Xwizard.EXE*
-requires `CommandLine` to equal `RunWizard` and, in the same selection, to contain a GUID. Both
-cannot be true, so the rule never fires (`synthesized event does not satisfy the rule`).
+Running the corpus also surfaces rule bugs. In the SigmaHQ snapshot used for RESULTS.md,
+*COM Object Execution via Xwizard.EXE* required `CommandLine` to equal `RunWizard` and, in the
+same selection, to contain a GUID. Both cannot be true, so the rule never fired
+(`synthesized event does not satisfy the rule`). SigmaHQ fixed that in #6546, but the fix used
+`Image|endswith: '/xwizard.exe'` with a forward slash, so the rule still cannot fire on sources
+without `OriginalFileName`. Proposed fix:
+[SigmaHQ/sigma#6562](https://github.com/SigmaHQ/sigma/pull/6562).
 
 ## Limits
 
