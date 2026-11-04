@@ -65,6 +65,16 @@ project checks itself at every step:
   automatically for each rule, including rules written as complex text patterns. Every number can
   be regenerated with three commands, and automated tests run on every change.
 
+## Contributions upstream
+
+Running the tool over the whole library also finds rules that are simply broken, and those fixes
+go back to the shared library so everyone using it benefits.
+
+- [SigmaHQ/sigma#6562](https://github.com/SigmaHQ/sigma/pull/6562): the rule that detects abuse
+  of the Windows tool `xwizard.exe` looked for the program path with the wrong kind of slash. On
+  many log sources it could never raise an alert. One-character fix, checked with an independent
+  engine. *(open)*
+
 ## Who it is for
 
 Teams that write or deploy detection rules can run sigma-mutate on their rules before putting
